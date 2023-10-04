@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:clipToOutline="true"
     android:background="#91C788">
-
     <TextView
         android:id="@+id/calo4u"
         android:layout_width="230dp"
@@ -15,8 +14,10 @@
         android:layout_marginLeft="92dp"
         android:layout_marginTop="334dp"
         android:gravity="center_horizontal|top"
+        android:includeFontPadding="false"
+        android:lineHeight="50dp"
         android:lineSpacingExtra="-5sp"
-        android:text="@string/calo4u"
+        android:text="Hello"
+        android:fontFamily="@font/nunito_black"
         android:textAppearance="@style/calo4u" />
-
 </RelativeLayout>

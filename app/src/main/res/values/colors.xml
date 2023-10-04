@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    //onboarding color
+    <color name="medium_green">#91C788</color>
+    <color name="light_green">#EFF7EE</color>
+    <color name="dark_green">#7CBC71</color>
 </resources>
