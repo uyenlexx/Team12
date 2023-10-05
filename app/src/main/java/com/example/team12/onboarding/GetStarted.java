@@ -1,4 +1,4 @@
-package com.example.team12;
+package com.example.team12.onboarding;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.team12.MainActivity;
+import com.example.team12.R;
 
 public class GetStarted extends AppCompatActivity {
     Button startBtn;

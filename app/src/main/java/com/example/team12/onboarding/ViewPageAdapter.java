@@ -1,4 +1,4 @@
-package com.example.team12;
+package com.example.team12.onboarding;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.team12.R;
 
 import org.w3c.dom.Text;
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NavigationActivity">
+    tools:context=".onboarding.NavigationActivity">
 
     <Button
         android:id="@+id/skip_btn"
@@ -37,9 +37,10 @@
         android:text="Back"
         android:textSize="18dp"
         android:fontFamily="@font/nunito_bold"
+        android:textColor="@color/medium_green"
         android:layout_marginStart="15dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/white"
+        android:backgroundTint="@color/white"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

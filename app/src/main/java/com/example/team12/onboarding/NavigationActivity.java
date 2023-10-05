@@ -1,4 +1,4 @@
-package com.example.team12;
+package com.example.team12.onboarding;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.team12.MainActivity;
+import com.example.team12.R;
 
 public class NavigationActivity extends AppCompatActivity {
     ViewPager slideViewPager;
@@ -105,7 +108,7 @@ public class NavigationActivity extends AppCompatActivity {
             dots[i].setTextColor(getResources().getColor(R.color.dark_green, getApplicationContext().getTheme()));
             dotIndicator.addView(dots[i]);
         }
-        dots[position].setTextColor(getResources().getColor(R.color.light_green, getApplicationContext().getTheme()));
+        dots[position].setTextColor(getResources().getColor(R.color.medium_green, getApplicationContext().getTheme()));
     }
 
     private int getItem(int i) {
