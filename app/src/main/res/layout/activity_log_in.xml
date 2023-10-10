@@ -78,9 +78,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_button"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="110dp"
+        android:layout_marginLeft="90dp"
         android:text="@string/dont_have_account"
-        android:fontFamily="@font/nunito" />
+        android:fontFamily="@font/nunito"
+        android:textSize="18dp"/>
     <TextView
         android:id="@+id/dont_have_account_2"
         android:layout_width="wrap_content"
@@ -91,6 +92,7 @@
         android:layout_marginLeft="5dp"
         android:text="@string/signup"
         android:textColor="@color/dark_green"
-        android:fontFamily="@font/nunito" />
+        android:fontFamily="@font/nunito"
+        android:textSize="18dp"/>
 
 </RelativeLayout>
