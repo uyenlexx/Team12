@@ -1,4 +1,4 @@
-package com.example.team12.onboarding;
+package com.example.team12.logging;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,21 +10,19 @@ import android.widget.Button;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 
-public class GetStarted extends AppCompatActivity {
-    Button startBtn;
-
+public class LogInActivity extends AppCompatActivity {
+    Button logInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_started);
+        setContentView(R.layout.activity_log_in);
 
-        startBtn = (Button) findViewById(R.id.startButton);
-        startBtn.setOnClickListener(new View.OnClickListener() {
+        logInButton = (Button) findViewById(R.id.login_button);
+        logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GetStarted.this, MainActivity.class);
+                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }

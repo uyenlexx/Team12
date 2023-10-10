@@ -5,6 +5,7 @@
         <item name="android:letterSpacing">-0.01</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
     <style name="by_team12">
         <item name="android:textSize">25sp</item>
         <item name="android:letterSpacing">-0.01</item>

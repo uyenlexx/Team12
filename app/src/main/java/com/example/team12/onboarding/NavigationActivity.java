@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.team12.MainActivity;
 import com.example.team12.R;
+import com.example.team12.logging.LogInActivity;
 
 public class NavigationActivity extends AppCompatActivity {
     ViewPager slideViewPager;
@@ -71,7 +72,7 @@ public class NavigationActivity extends AppCompatActivity {
                 if (getItem(0) < 2) {
                     slideViewPager.setCurrentItem(getItem(1), true);
                 } else {
-                    Intent intent = new Intent(NavigationActivity.this, GetStarted.class);
+                    Intent intent = new Intent(NavigationActivity.this, LogInActivity.class);
                     startActivity(intent);
                     finish();
                 }
