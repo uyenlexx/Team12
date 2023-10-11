@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="medium_green">#91C788</color>
+    <color name="light_green">#EFF7EE</color>
+    <color name="dark_green">#7CBC71</color>
+
+    <color name="medium_peachy">#F7A9A0</color>
+
+    //gradient background
+    <color name="gradient_start">#F3ECDD</color>
+    <color name="gradient_end">#DDF2DA</color>
 </resources>

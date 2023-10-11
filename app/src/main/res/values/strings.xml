@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Team12</string>
+    <string name="calo4u">Calo4U</string>
+    <string name="by_team12">by Team12</string>
+
+    //onboarding heading and description
+    <string name="heading_1">Eat Healthy</string>
+    <string name="heading_2">Healthy Recipes</string>
+    <string name="heading_3">Track Your Health</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="skip">SKIP</string>
+    <string name="next">NEXT</string>
+    <string name="finish">FINISH</string>
+
+    <string name="description_1">Maintaining good health should be the primary focus of everyone.</string>
+    <string name="description_2">Browse thousands of healthy recipes from all over the world.</string>
+    <string name="description_3">With amazing inbuilt tools you can track your progress.</string>
+
+    <string name="login">Log in</string>
+    <string name="google_login">Log in with Google Account</string>
+    <string name="signup">Sign up</string>
+    <string name="google_signup">Sign up with Google Account</string>
+    <string name="username">Username or Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="dob">Date of birth</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="have_account">Have an account?</string>
+
 </resources>

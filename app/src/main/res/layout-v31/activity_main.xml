@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToOutline="true"
+    android:background="#91C788">
+    <TextView
+        android:id="@+id/calo4u"
+        android:layout_width="230dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="92dp"
+        android:layout_marginTop="334dp"
+        android:gravity="center_horizontal|top"
+        android:includeFontPadding="false"
+        android:lineHeight="50dp"
+        android:lineSpacingExtra="-5sp"
+        android:text="Hello"
+        android:fontFamily="@font/nunito_black"
+        android:textAppearance="@style/calo4u" />
+</RelativeLayout>
