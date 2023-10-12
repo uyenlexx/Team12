@@ -27,4 +27,9 @@
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="have_account">Have an account?</string>
 
+    <string name="hello">Hello {name}</string>
+    <string name="hello_desc">Find recipes, calculate calories</string>
+    <string name="meal_calories">Meal calories calculator</string>
+    <string name="meal_calories_desc">Get to know the calories of your meal</string>
+    <string name="meal_calories_start">Start Now</string>
 </resources>
