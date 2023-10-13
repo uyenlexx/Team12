@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "149607042255",
+    "project_id": "calo-a7a97",
+    "storage_bucket": "calo-a7a97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149607042255:android:a48c28d15025fd228c7bba",
+        "android_client_info": {
+          "package_name": "com.example.team12"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArol8YdcZO7kA7PSicW_qe1lKtIFMd2ss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
