@@ -43,7 +43,7 @@
         android:layout_below="@+id/login_title"
         android:layout_centerInParent="true"
         android:background="@drawable/edit_text_border"
-        android:hint="@string/username"
+        android:hint="@string/username_or_email"
         android:padding="15dp" />
 
     <EditText

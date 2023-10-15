@@ -20,10 +20,12 @@
     <string name="google_login">Log in with Google Account</string>
     <string name="signup">Sign up</string>
     <string name="google_signup">Sign up with Google Account</string>
-    <string name="username">Username or Email</string>
+    <string name="username_or_email">Username or Email</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="dob">Date of birth</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="have_account">Have an account?</string>
 
