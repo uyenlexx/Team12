@@ -17,12 +17,21 @@
     <string name="description_3">With amazing inbuilt tools you can track your progress.</string>
 
     <string name="login">Log in</string>
+    <string name="google_login">Log in with Google Account</string>
     <string name="signup">Sign up</string>
-    <string name="username">Username or Email</string>
+    <string name="google_signup">Sign up with Google Account</string>
+    <string name="username_or_email">Username or Email</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="dob">Date of birth</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="have_account">Have an account?</string>
 
+    <string name="hello">Hello {name}</string>
+    <string name="hello_desc">Find recipes, calculate calories</string>
+    <string name="meal_calories">Meal calories calculator</string>
+    <string name="meal_calories_desc">Get to know the calories of your meal</string>
+    <string name="meal_calories_start">Start Now</string>
 </resources>

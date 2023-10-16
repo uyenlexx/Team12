@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".logging.LogInActivity">
-
+    tools:context=".logging.LogInOptionActivity">
     <TextView
         android:id="@+id/calo4u_title"
         android:layout_width="match_parent"
@@ -36,63 +35,31 @@
         android:textSize="30dp"
         android:layout_marginBottom="40dp"/>
 
-    <EditText
-        android:id="@+id/username_input"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/google_login_button"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_title"
-        android:layout_centerInParent="true"
-        android:background="@drawable/edit_text_border"
-        android:hint="@string/username_or_email"
-        android:padding="15dp" />
-
-    <EditText
-        android:id="@+id/password_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/google_login"
+        android:fontFamily="@font/nunito_black"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:padding="15dp"
+        android:background="@drawable/log_button"
+        android:backgroundTint="@color/medium_peachy"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/normal_login_button"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/username_input"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="30dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/edit_text_border"
-        android:hint="@string/password"
-        android:padding="15dp"
-        android:paddingTop="20dp" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/password_input"
+        android:layout_below="@+id/google_login_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="50dp"
         android:text="@string/login"
         android:fontFamily="@font/nunito_black"
         android:textColor="@color/white"
         android:textSize="25dp"
-        android:background="@drawable/log_button"/>
-
-    <TextView
-        android:id="@+id/dont_have_account_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_button"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="90dp"
-        android:text="@string/dont_have_account"
-        android:fontFamily="@font/nunito"
-        android:textSize="18dp"/>
-    <TextView
-        android:id="@+id/dont_have_account_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_button"
-        android:layout_toEndOf="@id/dont_have_account_1"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="5dp"
-        android:text="@string/signup"
-        android:textColor="@color/dark_green"
-        android:fontFamily="@font/nunito"
-        android:textSize="18dp"/>
-
+        android:background="@drawable/log_button"
+        android:backgroundTint="@color/medium_peachy"/>
 </RelativeLayout>

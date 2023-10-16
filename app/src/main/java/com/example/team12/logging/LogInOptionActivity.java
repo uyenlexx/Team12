@@ -6,33 +6,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 
-public class LogInActivity extends AppCompatActivity {
-    Button logInButton;
-    TextView signUpTextView;
+public class LogInOptionActivity extends AppCompatActivity {
+    Button googleLogInButton, normalLogInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_log_in_option);
 
-        logInButton = (Button) findViewById(R.id.login_button);
-        logInButton.setOnClickListener(new View.OnClickListener() {
+        googleLogInButton = (Button) findViewById(R.id.google_login_button);
+        googleLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+                Intent intent = new Intent(LogInOptionActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
-        signUpTextView = (TextView) findViewById(R.id.dont_have_account_2);
-        signUpTextView.setOnClickListener(new View.OnClickListener() {
+        normalLogInButton = (Button) findViewById(R.id.normal_login_button);
+        normalLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, SignUpOptionActivity.class);
+                Intent intent = new Intent(LogInOptionActivity.this, LogInActivity.class);
                 startActivity(intent);
             }
         });

@@ -39,30 +39,45 @@
     <EditText
         android:id="@+id/name_input"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/signup_title"
         android:layout_centerInParent="true"
         android:background="@drawable/edit_text_border"
         android:hint="@string/name"
+        android:inputType="text"
         android:padding="15dp" />
 
     <EditText
         android:id="@+id/dob_input"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/name_input"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_border"
         android:hint="@string/dob"
+        android:inputType="datetime"
+        android:padding="15dp"
+        android:paddingTop="20dp" />
+
+    <EditText
+        android:id="@+id/email_input"
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/dob_input"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_border"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:padding="15dp"
         android:paddingTop="20dp" />
 
     <EditText
         android:id="@+id/username_input"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dob_input"
+        android:layout_height="50dp"
+        android:layout_below="@+id/email_input"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_border"
@@ -73,12 +88,13 @@
     <EditText
         android:id="@+id/password_input"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/username_input"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_border"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:padding="15dp"
         android:paddingTop="20dp" />
 
@@ -101,9 +117,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/signup_button"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="130dp"
+        android:layout_marginLeft="110dp"
         android:text="@string/have_account"
-        android:fontFamily="@font/nunito" />
+        android:fontFamily="@font/nunito"
+        android:textSize="18dp"/>
     <TextView
         android:id="@+id/have_account_2"
         android:layout_width="wrap_content"
@@ -114,6 +131,7 @@
         android:layout_marginLeft="5dp"
         android:text="@string/login"
         android:textColor="@color/dark_green"
-        android:fontFamily="@font/nunito" />
+        android:fontFamily="@font/nunito"
+        android:textSize="18dp"/>
 
 </RelativeLayout>
