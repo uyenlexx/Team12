@@ -16,15 +16,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class FragmentSignup extends Fragment {
     FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    DatabaseReference reference;
     Button signupButton, signupGoogleButton;
     EditText nameEditText, dobEditText, emailEditText, usernameEditText, passwordEditText;
     TextView loginTextView;
@@ -54,6 +61,8 @@ public class FragmentSignup extends Fragment {
 
         loginTextView = (TextView) signUpView.findViewById(R.id.have_account_2);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
+        reference = database.getReference();
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +86,13 @@ public class FragmentSignup extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-
+                                    HashMap<String, String> user = new HashMap<>();
+                                    user.put("name", name);
+                                    user.put("email", email);
+                                    user.put("Date of birth", dob);
+                                    reference.child("Users")
+                                                    .child(username)
+                                                            .setValue(user);
                                     Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_SHORT).show();
 
                                 } else {
