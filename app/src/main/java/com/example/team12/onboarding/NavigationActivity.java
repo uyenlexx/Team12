@@ -11,10 +11,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.team12.MainActivity;
 import com.example.team12.R;
-import com.example.team12.logging.LogInActivity;
-import com.example.team12.logging.LogInOptionActivity;
+import com.example.team12.logging.LoggingActivity;
 
 public class NavigationActivity extends AppCompatActivity {
     ViewPager slideViewPager;
@@ -73,7 +71,7 @@ public class NavigationActivity extends AppCompatActivity {
                 if (getItem(0) < 2) {
                     slideViewPager.setCurrentItem(getItem(1), true);
                 } else {
-                    Intent intent = new Intent(NavigationActivity.this, LogInOptionActivity.class);
+                    Intent intent = new Intent(NavigationActivity.this, LoggingActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -83,7 +81,7 @@ public class NavigationActivity extends AppCompatActivity {
         skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NavigationActivity.this, LogInOptionActivity.class);
+                Intent intent = new Intent(NavigationActivity.this, LoggingActivity.class);
                 startActivity(intent);
                 finish();
             }
