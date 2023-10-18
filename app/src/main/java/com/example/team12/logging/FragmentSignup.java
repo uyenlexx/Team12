@@ -23,9 +23,12 @@ import com.google.firebase.database.DatabaseReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+
 import com.example.team12.MainActivity;
 import com.example.team12.R;
+import com.example.team12.components.MainScreenActivity;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -112,6 +115,14 @@ public class FragmentSignup extends Fragment {
                                             case "ERROR_INVALID_EMAIL":
                                                 Toast.makeText(getActivity(), "Email is invalid", Toast.LENGTH_SHORT).show();
                                                 break;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Account created successfully")
+                        .setTitle("Welcome to Calo4U");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
                                             case "ERROR_EMAIL_ALREADY_IN_USE":
                                                 Toast.makeText(getActivity(), "Email already existed", Toast.LENGTH_SHORT).show();
@@ -129,6 +140,10 @@ public class FragmentSignup extends Fragment {
                             }
                         });
 
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                ((LoggingActivity) getActivity()).replaceFragment(true);
             }
         });
 
@@ -147,5 +162,25 @@ public class FragmentSignup extends Fragment {
         });
 
         return signUpView;
+    }
+
+    private boolean isValidName(String name) {
+        return name.length() > 0;
+    }
+
+    private boolean isValidDOB(String dob) {
+        return dob.length() > 0;
+    }
+
+    private boolean isValidEmail(String email) {
+        return email.contains("@gmail.com");
+    }
+
+    private boolean isValidUsername(String username) {
+        return username.length() > 0;
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.length() > 6;
     }
 }

@@ -3,6 +3,13 @@
     <style name="Theme.RemoveSplashScreenTheme" parent="@style/Base.Theme.Team12">
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+    <style name="StatusBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="android:textColorPrimary">@color/dark_green</item>
+    </style>
+
     <style name="calo4u">
         <item name="android:textSize">40sp</item>
         <item name="android:letterSpacing">-0.01</item>

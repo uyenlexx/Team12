@@ -34,4 +34,6 @@
     <string name="meal_calories">Meal calories calculator</string>
     <string name="meal_calories_desc">Get to know the calories of your meal</string>
     <string name="meal_calories_start">Start Now</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

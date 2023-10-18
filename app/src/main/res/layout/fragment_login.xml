@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".logging.LogInActivity">
+    tools:context=".logging.FragmentLogin">
 
     <TextView
         android:id="@+id/calo4u_title"
@@ -51,11 +51,11 @@
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/username_input"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="30dp"
         android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
         android:background="@drawable/edit_text_border"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:padding="15dp"
         android:paddingTop="20dp" />
 

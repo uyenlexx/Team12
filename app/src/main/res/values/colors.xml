@@ -10,6 +10,7 @@
     <color name="dark_peachy">#FF806E</color>
     <color name="light_grey">#7B7B7B</color>
     <color name="red_brown">#330600</color>
+    <color name="light_red">#FF0505</color>
 
     //gradient background
     <color name="gradient_start">#F3ECDD</color>
