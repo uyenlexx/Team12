@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -55,7 +56,7 @@ public class FragmentSignup extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View signUpView = inflater.inflate(R.layout.signup_fragment, container, false);
+        View signUpView = inflater.inflate(R.layout.fragment_signup, container, false);
         nameEditText = (EditText) signUpView.findViewById(R.id.name_input);
         dobEditText = (EditText) signUpView.findViewById(R.id.dob_input);
         emailEditText = (EditText) signUpView.findViewById(R.id.email_input);
@@ -81,6 +82,32 @@ public class FragmentSignup extends Fragment {
                 email = emailEditText.getText().toString();
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
+
+                if (!isValidName(name)) {
+                    nameEditText.setError("Invalid name");
+                    nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    nameEditText.requestFocus();
+                    return;
+                }
+                nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidDOB(dob)) {
+                    dobEditText.setError("Invalid date of birth");
+                    dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    dobEditText.requestFocus();
+                    return;
+                }
+                dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidUsername(username)) {
+                    usernameEditText.setError("Invalid username");
+                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    usernameEditText.requestFocus();
+                    return;
+                }
+                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+
                 existedUsername = database.getReference("Users/" + username);
                 editor.putString("name", name);
                 editor.putString("dob", dob);
@@ -88,7 +115,7 @@ public class FragmentSignup extends Fragment {
                 editor.putString("username", username);
                 editor.putString("password", password);
                 editor.apply();
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -104,7 +131,18 @@ public class FragmentSignup extends Fragment {
                                         reference.child("Users")
                                                 .child(username)
                                                 .setValue(user);
-                                        Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_SHORT).show();
+                                        builder.setMessage("Account created successfully")
+                                                .setTitle("Welcome to Calo4U");
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException e) {
+                                            throw new RuntimeException(e);
+                                        }
+
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+
+                                        ((LoggingActivity) getActivity()).replaceFragment(true);
                                         Log.d("NAMEOFTHEUSER", String.valueOf(existedUsername));
 
                                     } else {
@@ -113,23 +151,24 @@ public class FragmentSignup extends Fragment {
                                         switch (errorCode) {
 
                                             case "ERROR_INVALID_EMAIL":
-                                                Toast.makeText(getActivity(), "Email is invalid", Toast.LENGTH_SHORT).show();
+                                                emailEditText.setError("Invalid Email");
+                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                emailEditText.requestFocus();
+                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
                                                 break;
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Account created successfully")
-                        .setTitle("Welcome to Calo4U");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
 
                                             case "ERROR_EMAIL_ALREADY_IN_USE":
-                                                Toast.makeText(getActivity(), "Email already existed", Toast.LENGTH_SHORT).show();
+                                                emailEditText.setError("Email already existed!");
+                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                emailEditText.requestFocus();
+                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
                                                 break;
 
                                             case "ERROR_WEAK_PASSWORD":
-                                                Toast.makeText(getActivity(), "Password is weak!", Toast.LENGTH_SHORT).show();
+                                                passwordEditText.setError("Password must be at least 6 characters long");
+                                                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                passwordEditText.requestFocus();
+                                                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
                                                 break;
                                         }
                                         // If sign in fails, display a message to the user.
@@ -140,10 +179,6 @@ public class FragmentSignup extends Fragment {
                             }
                         });
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-                ((LoggingActivity) getActivity()).replaceFragment(true);
             }
         });
 
@@ -172,15 +207,8 @@ public class FragmentSignup extends Fragment {
         return dob.length() > 0;
     }
 
-    private boolean isValidEmail(String email) {
-        return email.contains("@gmail.com");
-    }
-
     private boolean isValidUsername(String username) {
         return username.length() > 0;
     }
 
-    private boolean isValidPassword(String password) {
-        return password.length() > 6;
-    }
 }
