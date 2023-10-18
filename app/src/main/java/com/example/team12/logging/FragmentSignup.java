@@ -1,5 +1,6 @@
 package com.example.team12.logging;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.team12.MainActivity;
@@ -59,6 +60,46 @@ public class FragmentSignup extends Fragment {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
 
+                if (!isValidName(name)) {
+                    nameEditText.setError("Invalid name");
+                    nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    nameEditText.requestFocus();
+                    return;
+                }
+                nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidDOB(dob)) {
+                    dobEditText.setError("Invalid date of birth");
+                    dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    dobEditText.requestFocus();
+                    return;
+                }
+                dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidEmail(email)) {
+                    emailEditText.setError("Invalid email");
+                    emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    emailEditText.requestFocus();
+                    return;
+                }
+                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidUsername(username)) {
+                    usernameEditText.setError("Invalid username");
+                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    usernameEditText.requestFocus();
+                    return;
+                }
+                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidPassword(password)) {
+                    passwordEditText.setError("Password must be at least 6 characters long");
+                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    passwordEditText.requestFocus();
+                    return;
+                }
+                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
                 editor.putString("name", name);
                 editor.putString("dob", dob);
                 editor.putString("email", email);
@@ -66,10 +107,19 @@ public class FragmentSignup extends Fragment {
                 editor.putString("password", password);
                 editor.apply();
 
-                Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Account created successfully")
+                        .setTitle("Welcome to Calo4U");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
-                Intent intent = new Intent(getActivity(), MainScreenActivity.class);
-                startActivity(intent);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                ((LoggingActivity) getActivity()).replaceFragment(true);
             }
         });
 
@@ -88,5 +138,25 @@ public class FragmentSignup extends Fragment {
         });
 
         return signUpView;
+    }
+
+    private boolean isValidName(String name) {
+        return name.length() > 0;
+    }
+
+    private boolean isValidDOB(String dob) {
+        return dob.length() > 0;
+    }
+
+    private boolean isValidEmail(String email) {
+        return email.contains("@gmail.com");
+    }
+
+    private boolean isValidUsername(String username) {
+        return username.length() > 0;
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.length() > 6;
     }
 }

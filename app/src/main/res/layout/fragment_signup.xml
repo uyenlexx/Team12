@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".logging.SignUpActivity">
+    tools:context=".logging.FragmentSignup">
 
     <TextView
         android:id="@+id/calo4u_title"

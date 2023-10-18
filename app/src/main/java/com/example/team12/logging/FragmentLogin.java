@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.team12.MainActivity;
@@ -49,6 +50,22 @@ public class FragmentLogin extends Fragment {
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
+
+                if (!isValidUsername(username)) {
+                    usernameEditText.setError("Invalid username");
+                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    usernameEditText.requestFocus();
+                    return;
+                }
+                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidPassword(password)) {
+                    passwordEditText.setError("Invalid password");
+                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    return;
+                }
+                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
                 Intent intent = new Intent(getActivity(), MainScreenActivity.class);
                 startActivity(intent);
             }
@@ -69,5 +86,13 @@ public class FragmentLogin extends Fragment {
         });
 
         return loginView;
+    }
+
+    private boolean isValidUsername(String username) {
+        return username.equals("admin");
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.equals("admin");
     }
 }
