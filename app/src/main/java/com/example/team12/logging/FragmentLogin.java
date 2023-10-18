@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -19,6 +21,12 @@ import androidx.fragment.app.Fragment;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FragmentLogin extends Fragment {
     Button loginButton, loginGoogleButton;
@@ -27,6 +35,8 @@ public class FragmentLogin extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String username, password;
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
 
     @Override
     public void onAttach(Context context) {
@@ -45,29 +55,48 @@ public class FragmentLogin extends Fragment {
         loginButton = (Button) loginView.findViewById(R.id.login_button);
         loginGoogleButton = (Button) loginView.findViewById(R.id.login_button_2);
         signupTextView = (TextView) loginView.findViewById(R.id.dont_have_account_2);
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
 
-                if (!isValidUsername(username)) {
-                    usernameEditText.setError("Invalid username");
-                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                    usernameEditText.requestFocus();
-                    return;
-                }
-                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+//                if (!isValidUsername(username)) {
+//                    usernameEditText.setError("Invalid username");
+//                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+//                    usernameEditText.requestFocus();
+//                    return;
+//                }
+//                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+//
+//                if (!isValidPassword(password)) {
+//                    passwordEditText.setError("Invalid password");
+//                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+//                    return;
+//                }
+//                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
 
-                if (!isValidPassword(password)) {
-                    passwordEditText.setError("Invalid password");
-                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                    return;
-                }
-                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                mAuth.signInWithEmailAndPassword(username, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Toast.makeText(getActivity(), "Authentication success.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), MainScreenActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getActivity(), MainScreenActivity.class);
-                startActivity(intent);
+                                }
+                            }
+                        });
+
             }
         });
 
