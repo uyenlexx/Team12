@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.team12.MainActivity;
 import com.example.team12.R;
+import com.example.team12.components.MainScreenActivity;
 
 public class FragmentSignup extends Fragment {
     Button signupButton, signupGoogleButton;
@@ -36,7 +37,7 @@ public class FragmentSignup extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View signUpView = inflater.inflate(R.layout.signup_fragment, container, false);
+        View signUpView = inflater.inflate(R.layout.fragment_signup, container, false);
 
         nameEditText = (EditText) signUpView.findViewById(R.id.name_input);
         dobEditText = (EditText) signUpView.findViewById(R.id.dob_input);
@@ -67,7 +68,7 @@ public class FragmentSignup extends Fragment {
 
                 Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), MainScreenActivity.class);
                 startActivity(intent);
             }
         });

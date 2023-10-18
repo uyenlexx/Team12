@@ -16,7 +16,8 @@
             android:name=".logging.LoggingActivity"
             android:exported="false" />
         <activity
-            android:name=".components.HomeActivity"
+            android:name=".components.MainScreenActivity"
+            android:theme="@style/StatusBarTheme"
             android:exported="false" />
         <activity
             android:name=".onboarding.NavigationActivity"

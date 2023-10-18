@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.team12.MainActivity;
 import com.example.team12.R;
+import com.example.team12.components.MainScreenActivity;
 
 public class FragmentLogin extends Fragment {
     Button loginButton, loginGoogleButton;
@@ -35,7 +36,7 @@ public class FragmentLogin extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View loginView = inflater.inflate(R.layout.login_fragment, container, false);
+        View loginView = inflater.inflate(R.layout.fragment_login, container, false);
 
         usernameEditText = (EditText) loginView.findViewById(R.id.username_input);
         passwordEditText = (EditText) loginView.findViewById(R.id.password_input);
@@ -48,7 +49,7 @@ public class FragmentLogin extends Fragment {
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), MainScreenActivity.class);
                 startActivity(intent);
             }
         });
