@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,7 @@ import java.util.Objects;
 public class FragmentSignup extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference reference, existedUsername, existedEmail;
+    DatabaseReference reference, existedUsername;
     Button signupButton, signupGoogleButton;
     EditText nameEditText, dobEditText, emailEditText, usernameEditText, passwordEditText;
     TextView loginTextView;
@@ -70,8 +71,7 @@ public class FragmentSignup extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
         reference = database.getReference();
-
-
+        existedUsername = database.getReference().child("Users");
 
 
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -107,78 +107,94 @@ public class FragmentSignup extends Fragment {
                 }
                 usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
 
-
-                existedUsername = database.getReference("Users/" + username);
                 editor.putString("name", name);
                 editor.putString("dob", dob);
                 editor.putString("email", email);
                 editor.putString("username", username);
                 editor.putString("password", password);
                 editor.apply();
+
+                DatabaseReference userNameRef = existedUsername.child(username);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                userNameRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task1) {
+                        if (task1.isSuccessful()) {
+                            DataSnapshot snapshot = task1.getResult();
+                            if (snapshot.exists()) {
+                                usernameEditText.setError("Username already existed");
+                                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                usernameEditText.requestFocus();
+                                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                Log.d("EXISTEDNAME", username);
+                            } else {
+                                mAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        HashMap<String, String> user = new HashMap<>();
-                                        user.put("uid", Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-                                        user.put("name", name);
-                                        user.put("email", email);
-                                        user.put("Date of birth", dob);
-                                        reference.child("Users")
-                                                .child(username)
-                                                .setValue(user);
-                                        builder.setMessage("Account created successfully")
-                                                .setTitle("Welcome to Calo4U");
-                                        try {
-                                            Thread.sleep(2000);
-                                        } catch (InterruptedException e) {
-                                            throw new RuntimeException(e);
-                                        }
+                                                if (task.isSuccessful()) {
 
-                                        AlertDialog dialog = builder.create();
-                                        dialog.show();
+                                                    // Sign in success, update UI with the signed-in user's information
+                                                    HashMap<String, String> user = new HashMap<>();
+                                                    user.put("uid", Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+                                                    user.put("name", name);
+                                                    user.put("email", email);
+                                                    user.put("Date of birth", dob);
+                                                    reference.child("Users")
+                                                            .child(username)
+                                                            .setValue(user);
+                                                    builder.setMessage("Account created successfully")
+                                                            .setTitle("Welcome to Calo4U");
 
-                                        ((LoggingActivity) getActivity()).replaceFragment(true);
-                                        Log.d("NAMEOFTHEUSER", String.valueOf(existedUsername));
+                                                    AlertDialog dialog = builder.create();
+                                                    dialog.show();
 
-                                    } else {
-                                        String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+                                                    ((LoggingActivity) getActivity()).replaceFragment(true);
+                                                    Log.d("NAMEOFTHEUSER", String.valueOf(existedUsername));
 
-                                        switch (errorCode) {
+                                                } else {
+                                                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
 
-                                            case "ERROR_INVALID_EMAIL":
-                                                emailEditText.setError("Invalid Email");
-                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                                                emailEditText.requestFocus();
-                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-                                                break;
+                                                    switch (errorCode) {
 
-                                            case "ERROR_EMAIL_ALREADY_IN_USE":
-                                                emailEditText.setError("Email already existed!");
-                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                                                emailEditText.requestFocus();
-                                                emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-                                                break;
+                                                        case "ERROR_INVALID_EMAIL":
+                                                            emailEditText.setError("Invalid Email");
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                            emailEditText.requestFocus();
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                                            break;
 
-                                            case "ERROR_WEAK_PASSWORD":
-                                                passwordEditText.setError("Password must be at least 6 characters long");
-                                                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                                                passwordEditText.requestFocus();
-                                                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-                                                break;
-                                        }
-                                        // If sign in fails, display a message to the user.
-                                        Toast.makeText(getActivity(), "Account failed to create", Toast.LENGTH_SHORT).show();
-                                    }
+                                                        case "ERROR_EMAIL_ALREADY_IN_USE":
+                                                            emailEditText.setError("Email already existed!");
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                            emailEditText.requestFocus();
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                                            break;
+
+                                                        case "ERROR_WEAK_PASSWORD":
+                                                            passwordEditText.setError("Password must be at least 6 characters long");
+                                                            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                            passwordEditText.requestFocus();
+                                                            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                                            break;
+                                                    }
+                                                    // If sign in fails, display a message to the user.
+                                                    Toast.makeText(getActivity(), "Account failed to create", Toast.LENGTH_SHORT).show();
+                                                }
 
 
+                                            }
+                                        });
+                                Log.d("FragmentSignup Tag", "Usable");
                             }
-                        });
+                        } else {
+                            Log.d("SIGNUPERROR", task1.getException().getMessage());
+                        }
 
+                    }
+                });
             }
         });
 
