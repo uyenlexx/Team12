@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
@@ -31,7 +34,7 @@ import java.util.Objects;
 public class FragmentSignup extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference reference;
+    DatabaseReference reference, existedUsername, existedEmail;
     Button signupButton, signupGoogleButton;
     EditText nameEditText, dobEditText, emailEditText, usernameEditText, passwordEditText;
     TextView loginTextView;
@@ -64,6 +67,9 @@ public class FragmentSignup extends Fragment {
         database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
         reference = database.getReference();
 
+
+
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +78,7 @@ public class FragmentSignup extends Fragment {
                 email = emailEditText.getText().toString();
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
-
+                existedUsername = database.getReference("Users/" + username);
                 editor.putString("name", name);
                 editor.putString("dob", dob);
                 editor.putString("email", email);
@@ -84,21 +90,42 @@ public class FragmentSignup extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    HashMap<String, String> user = new HashMap<>();
-                                    user.put("name", name);
-                                    user.put("email", email);
-                                    user.put("Date of birth", dob);
-                                    reference.child("Users")
-                                                    .child(username)
-                                                            .setValue(user);
-                                    Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_SHORT).show();
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(getActivity(), "Account failed to create", Toast.LENGTH_SHORT).show();
-                                }
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        HashMap<String, String> user = new HashMap<>();
+                                        user.put("uid", Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+                                        user.put("name", name);
+                                        user.put("email", email);
+                                        user.put("Date of birth", dob);
+                                        reference.child("Users")
+                                                .child(username)
+                                                .setValue(user);
+                                        Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_SHORT).show();
+                                        Log.d("NAMEOFTHEUSER", String.valueOf(existedUsername));
+
+                                    } else {
+                                        String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+
+                                        switch (errorCode) {
+
+                                            case "ERROR_INVALID_EMAIL":
+                                                Toast.makeText(getActivity(), "Email is invalid", Toast.LENGTH_SHORT).show();
+                                                break;
+
+                                            case "ERROR_EMAIL_ALREADY_IN_USE":
+                                                Toast.makeText(getActivity(), "Email already existed", Toast.LENGTH_SHORT).show();
+                                                break;
+
+                                            case "ERROR_WEAK_PASSWORD":
+                                                Toast.makeText(getActivity(), "Password is weak!", Toast.LENGTH_SHORT).show();
+                                                break;
+                                        }
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(getActivity(), "Account failed to create", Toast.LENGTH_SHORT).show();
+                                    }
+
+
                             }
                         });
 
