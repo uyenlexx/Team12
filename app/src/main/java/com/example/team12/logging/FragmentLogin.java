@@ -1,5 +1,6 @@
 package com.example.team12.logging;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,32 +60,33 @@ public class FragmentLogin extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
         reference = database.getReference();
-        NonEmailUsername = database.getReference().child("Users");
+//        NonEmailUsername = database.getReference().child("Users");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
-                DatabaseReference emailRef = NonEmailUsername.child(username).child("email");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                DatabaseReference emailRef = NonEmailUsername.child(username).child("email");
 //                if (!username.contains("@")) {
 //                    username = emailRef.getKey();
 //                    Log.d("FRAGMENTLOGIN", username);
 //                }
-//                if (!isValidUsername(username)) {
-//                    usernameEditText.setError("Invalid username");
-//                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                    usernameEditText.requestFocus();
-//                    return;
-//                }
-//                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//
-//                if (!isValidPassword(password)) {
-//                    passwordEditText.setError("Invalid password");
-//                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                    return;
-//                }
-//                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                if (!isValidUsername(username)) {
+                    usernameEditText.setError("Invalid username");
+                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    usernameEditText.requestFocus();
+                    return;
+                }
+                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidPassword(password)) {
+                    passwordEditText.setError("Invalid password");
+                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    return;
+                }
+                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
 
                 mAuth.signInWithEmailAndPassword(username, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -125,10 +127,10 @@ public class FragmentLogin extends Fragment {
     }
 
     private boolean isValidUsername(String username) {
-        return username.equals("admin");
+        return username.length() > 0;
     }
 
     private boolean isValidPassword(String password) {
-        return password.equals("admin");
+        return password.length() > 0;
     }
 }
