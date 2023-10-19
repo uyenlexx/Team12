@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FragmentLogin extends Fragment {
@@ -37,7 +38,7 @@ public class FragmentLogin extends Fragment {
     String username, password;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-
+    DatabaseReference reference, NonEmailUsername;
     @Override
     public void onAttach(Context context) {
         sharedPreferences = context.getSharedPreferences("userFile", Context.MODE_PRIVATE);
@@ -57,13 +58,19 @@ public class FragmentLogin extends Fragment {
         signupTextView = (TextView) loginView.findViewById(R.id.dont_have_account_2);
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
+        reference = database.getReference();
+        NonEmailUsername = database.getReference().child("Users");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
-
+                DatabaseReference emailRef = NonEmailUsername.child(username).child("email");
+//                if (!username.contains("@")) {
+//                    username = emailRef.getKey();
+//                    Log.d("FRAGMENTLOGIN", username);
+//                }
 //                if (!isValidUsername(username)) {
 //                    usernameEditText.setError("Invalid username");
 //                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
