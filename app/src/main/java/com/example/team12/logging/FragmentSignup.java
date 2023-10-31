@@ -1,5 +1,6 @@
 package com.example.team12.logging;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -46,6 +49,7 @@ public class FragmentSignup extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String name, dob, email, username, password;
+    DatePickerDialog datePickerDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -195,6 +199,26 @@ public class FragmentSignup extends Fragment {
 
                     }
                 });
+            }
+        });
+
+        dobEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("INFO", "Date of birth is clicked");
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(getActivity(), (view, year, monthOfYear, dayOfMonth) -> {
+                    // set day of month , month and year value in the edit text
+                    dobEditText.setText(dayOfMonth + "/"
+                            + (monthOfYear + 1) + "/" + year);
+
+                }, mDay, mMonth, mYear);
+                datePickerDialog.show();
             }
         });
 
