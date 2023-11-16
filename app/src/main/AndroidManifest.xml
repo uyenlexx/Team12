@@ -18,21 +18,23 @@
         <activity
             android:name=".components.MainScreenActivity"
             android:theme="@style/StatusBarTheme"
-            android:exported="false" />
-        <activity
-            android:name=".onboarding.NavigationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".onboarding.SplashScreenActivity"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:theme="@style/Theme.RemoveSplashScreenTheme">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".onboarding.NavigationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".onboarding.SplashScreenActivity"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:theme="@style/Theme.RemoveSplashScreenTheme">
         </activity>
         <activity
             android:name=".MainActivity"
