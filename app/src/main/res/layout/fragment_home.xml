@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".components.MainScreenActivity">
+    tools:context=".components.FragmentHome">
 
     <TextView
         android:id="@+id/hello_title"
@@ -35,6 +35,7 @@
         android:gravity="center_horizontal|top" />
 
     <RelativeLayout
+        android:id="@+id/calories_cal_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/calories_calculator_container"
@@ -42,7 +43,7 @@
         android:layout_marginTop="15dp"
         android:layout_below="@id/hello_desc_title">
         <TextView
-            android:id="@+id/calories_cal"
+            android:id="@+id/calories_cal_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -66,7 +67,7 @@
             android:lineSpacingExtra="3sp"
             android:translationY="-1.43sp"
             android:gravity="top"
-            android:layout_below="@id/calories_cal"/>
+            android:layout_below="@id/calories_cal_header"/>
         <Button
             android:id="@+id/calories_cal_btn"
             android:layout_width="120dp"
@@ -75,11 +76,57 @@
             android:layout_marginLeft="20dp"
             android:text="@string/meal_calories_start"
             android:textSize="11dp"
+            android:textColor="@color/white"
             android:fontFamily="@font/nunito_bold"
             android:drawableRight="@drawable/arrow_right"
             android:layout_below="@+id/calories_cal_desc"
             android:background="@drawable/start_now_container"
             app:backgroundTint="@null" />
+        <ImageView
+            android:id="@+id/calories_cal_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calories_cal_img"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/calories_cal_header"/>
+    </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/menu_builder_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hello_desc_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/menu_builder_container">
+        <TextView
+            android:id="@+id/menu_builder_header"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="25dp"
+            android:gravity="top"
+            android:letterSpacing="-0.02"
+            android:text="@string/menu_builder"
+            android:textSize="20dp"
+            android:fontFamily="@font/nunito_bold"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/menu_builder_btn"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/menu_builder_header"
+            android:background="@drawable/build_now_container"
+            android:drawableRight="@drawable/arrow_right"
+            android:drawableTint="@color/light_purple"
+            android:fontFamily="@font/nunito_bold"
+            android:text="@string/meal_calories_start"
+            android:textColor="@color/light_purple"
+            android:textSize="11dp"
+            app:backgroundTint="@null" />
     </RelativeLayout>
 </RelativeLayout>

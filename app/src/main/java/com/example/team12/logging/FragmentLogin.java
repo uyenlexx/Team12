@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 public class FragmentLogin extends Fragment {
     Button loginButton, loginGoogleButton;
     EditText usernameEditText, passwordEditText;
