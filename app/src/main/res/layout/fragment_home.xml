@@ -37,7 +37,7 @@
         android:id="@+id/calories_cal_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/calories_calculator_container"
+        android:background="@drawable/container_calories_calculator"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:layout_below="@id/hello_desc_title">
@@ -67,25 +67,24 @@
             android:translationY="-1.43sp"
             android:gravity="top"
             android:layout_below="@id/calories_cal_header"/>
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/calories_cal_btn"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:text="@string/meal_calories_start"
-            android:textSize="11dp"
+            android:textSize="14dp"
             android:textColor="@color/white"
             android:fontFamily="@font/nunito_bold"
-            android:drawableRight="@drawable/arrow_right"
+            android:textAllCaps="false"
             android:layout_below="@+id/calories_cal_desc"
-            android:background="@drawable/start_now_container"
-            app:backgroundTint="@null" />
+            android:background="@drawable/container_start_now" />
         <ImageView
             android:id="@+id/calories_cal_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/calories_cal_img"
+            android:src="@drawable/img_calories_cal"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/calories_cal_header"/>
@@ -99,7 +98,7 @@
         android:layout_below="@id/hello_desc_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
-        android:background="@drawable/menu_builder_container">
+        android:background="@drawable/container_menu_builder">
         <TextView
             android:id="@+id/menu_builder_header"
             android:layout_width="150dp"
@@ -113,19 +112,152 @@
             android:fontFamily="@font/nunito_bold"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/menu_builder_btn"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/menu_builder_header"
             android:background="@drawable/build_now_container"
-            android:drawableRight="@drawable/arrow_right"
-            android:drawableTint="@color/light_purple"
             android:fontFamily="@font/nunito_bold"
+            android:textAllCaps="false"
             android:text="@string/meal_calories_start"
             android:textColor="@color/light_purple"
-            android:textSize="11dp"
-            app:backgroundTint="@null" />
+            android:textSize="14dp" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/trending_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trending"
+        android:fontFamily="@font/nunito_bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="20dp"
+        android:layout_below="@id/menu_builder_container"/>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_below="@+id/trending_header"
+        android:fillViewport="true"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="48dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/trending_img_1"
+                    android:layout_width="400px"
+                    android:layout_height="450px"
+                    android:background="@drawable/border_img"
+                    android:clipToOutline="true"
+                    android:src="@drawable/trending_1" />
+                <TextView
+                    android:id="@+id/trending_title_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trending_img_1"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Homemade Pizza Recipe"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/trending_by_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="by Kaylous"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nunito_light"
+                    android:layout_below="@id/trending_title_1"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/trending_img_2"
+                    android:layout_width="400px"
+                    android:layout_height="450px"
+                    android:background="@drawable/border_img"
+                    android:clipToOutline="true"
+                    android:src="@drawable/trending_1" />
+                <TextView
+                    android:id="@+id/trending_title_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trending_img_2"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Homemade Pizza Recipe"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/trending_by_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="by Kaylous"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nunito_light"
+                    android:layout_below="@id/trending_title_2"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/trending_img_3"
+                    android:layout_width="400px"
+                    android:layout_height="450px"
+                    android:background="@drawable/border_img"
+                    android:clipToOutline="true"
+                    android:src="@drawable/trending_1" />
+                <TextView
+                    android:id="@+id/trending_title_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trending_img_3"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Homemade Pizza Recipe"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/trending_by_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="by Kaylous"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nunito_light"
+                    android:layout_below="@id/trending_title_3"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/trending_img_4"
+                    android:layout_width="400px"
+                    android:layout_height="450px"
+                    android:background="@drawable/border_img"
+                    android:clipToOutline="true"
+                    android:src="@drawable/trending_1" />
+                <TextView
+                    android:id="@+id/trending_title_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trending_img_4"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Homemade Pizza Recipe"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/trending_by_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="by Kaylous"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nunito_light"
+                    android:layout_below="@id/trending_title_4"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
 </RelativeLayout>

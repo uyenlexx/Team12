@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".components.FragmentProfile">
-
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/profile_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:text="User Profile"
+        android:gravity="center"
+        android:fontFamily="@font/nunito_black"
+        android:textSize="20dp"/>
+    <ImageView
+        android:id="@+id/profile_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/avatar"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/profile_header"/>
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Anemo Kazuha"
+        android:fontFamily="@font/nunito_semi_bold"
+        android:textSize="25dp"
+        android:layout_below="@id/profile_avatar"/>
+    <TextView
+        android:id="@+id/profile_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Valid User"
+        android:fontFamily="@font/nunito_light"
+        android:layout_below="@+id/profile_name"/>
+</RelativeLayout>
