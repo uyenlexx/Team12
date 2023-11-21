@@ -17,14 +17,50 @@
     <string name="description_3">With amazing inbuilt tools you can track your progress.</string>
 
     <string name="login">Log in</string>
-    <string name="google_login">Log in with Google Account</string>
+    <string name="google_logging">Continue with Google Account</string>
     <string name="signup">Sign up</string>
-    <string name="google_signup">Sign up with Google Account</string>
-    <string name="username">Username or Email</string>
+    <string name="or">Or</string>
+    <string name="username_or_email">Username or Email</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="dob">Date of birth</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="have_account">Have an account?</string>
 
+    <string name="hello">Hello {name}</string>
+    <string name="hello_desc">Find recipes, calculate calories</string>
+    <string name="meal_calories">Meal calories calculator</string>
+    <string name="meal_calories_desc">Get to know the calories of your meal</string>
+    <string name="meal_calories_start">Start Now</string>
+    <string name="menu_builder">Build your own menu plan</string>
+    <string name="build_now">Build Now</string>
+    <string name="trending">Trending Recipes</string>
+
+    <string name="search_hint">Search for recipes, ingredients, food,...</string>
+    <string name="ingredients_category">Ingredients Category</string>
+    <string name="recipes_category">Recipes Category</string>
+    <string name="fruits">Fruits</string>
+    <string name="vegetables">Vegetables</string>
+    <string name="meat">Meat</string>
+    <string name="seafood">Seafood</string>
+    <string name="dessert">Dessert</string>
+    <string name="drink">Drinks</string>
+    <string name="grilled">Grilled</string>
+    <string name="fried">Fried</string>
+    <string name="steamed">Steamed</string>
+
+    <string name="meal_cal">Meal calories</string>
+    <string name="bmi">BMI</string>
+    <string name="bmi_cal">BMI Calculator</string>
+    <string name="gender">Gender</string>
+    <string name="height">Height (in cm)</string>
+    <string name="weight">Weight (in kg)</string>
+    <string name="calculate">Calculate</string>
+
+    <string name="profile">Profile</string>
+    <string name="favorites">Favorites</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Log out</string>
 </resources>

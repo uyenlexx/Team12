@@ -6,8 +6,19 @@
     <color name="medium_green">#91C788</color>
     <color name="light_green">#EFF7EE</color>
     <color name="dark_green">#7CBC71</color>
-
     <color name="medium_peachy">#F7A9A0</color>
+    <color name="dark_peachy">#FF806E</color>
+    <color name="light_grey">#7B7B7B</color>
+    <color name="red_brown">#330600</color>
+    <color name="light_red">#FF0505</color>
+    <color name="light_purple">#9E9BC7</color>
+    <color name="white_grey">#F4F4F4</color>
+
+    <color name="fade_red">#FFF2F0</color>
+    <color name="fade_green">#EFF7EE</color>
+    <color name="fade_yellow">#FFF8EB</color>
+    <color name="fade_blue">#EAF4FF</color>
+    <color name="fade_purple">#EDE7F8</color>
 
     //gradient background
     <color name="gradient_start">#F3ECDD</color>
