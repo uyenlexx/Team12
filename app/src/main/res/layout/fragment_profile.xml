@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".components.FragmentProfile">
     <TextView
-        android:id="@+id/profile_header"
+        android:id="@+id/user_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="User Profile"
@@ -13,28 +13,174 @@
         android:fontFamily="@font/nunito_black"
         android:textSize="20dp"/>
     <ImageView
-        android:id="@+id/profile_avatar"
+        android:id="@+id/user_avatar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/avatar"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/profile_header"/>
+        android:layout_below="@id/user_header"/>
     <TextView
-        android:id="@+id/profile_name"
+        android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:text="Anemo Kazuha"
         android:fontFamily="@font/nunito_semi_bold"
-        android:textSize="25dp"
-        android:layout_below="@id/profile_avatar"/>
+        android:textSize="30dp"
+        android:layout_below="@id/user_avatar"/>
     <TextView
-        android:id="@+id/profile_subtitle"
+        android:id="@+id/user_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Valid User"
         android:fontFamily="@font/nunito_light"
-        android:layout_below="@+id/profile_name"/>
+        android:layout_below="@+id/user_name"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/profile_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+
+        android:layout_below="@+id/user_subtitle">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_profile_view"
+                android:layout_marginLeft="30dp"/>
+            <TextView
+                android:id="@+id/profile_text"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/profile"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="20dp"
+                android:fontFamily="@font/nunito_light"
+                android:layout_toRightOf="@id/profile_icon"/>
+
+            <ImageView
+                android:id="@+id/profile_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/profile_text"
+                android:src="@drawable/img_arrow_light" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/favorite_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/profile_card">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/favorite_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_favorite_view"
+                android:layout_marginLeft="30dp"/>
+            <TextView
+                android:id="@+id/favorite_text"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/favorites"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="20dp"
+                android:fontFamily="@font/nunito_light"
+                android:layout_toRightOf="@id/favorite_icon"/>
+
+            <ImageView
+                android:id="@+id/favorite_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/favorite_text"
+                android:src="@drawable/img_arrow_light" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/settings_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/favorite_card">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/settings_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_setting_view"
+                android:layout_marginLeft="30dp"/>
+            <TextView
+                android:id="@+id/settings_text"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="20dp"
+                android:fontFamily="@font/nunito_light"
+                android:layout_toRightOf="@id/settings_icon"/>
+
+            <ImageView
+                android:id="@+id/settings_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/settings_text"
+                android:src="@drawable/img_arrow_light" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logout_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/settings_card">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/logout_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_logout_view"
+                android:layout_marginLeft="30dp"/>
+            <TextView
+                android:id="@+id/logout_text"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="20dp"
+                android:fontFamily="@font/nunito_light"
+                android:layout_toRightOf="@id/logout_icon"/>
+
+            <ImageView
+                android:id="@+id/logout_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/logout_text"
+                android:src="@drawable/img_arrow_light" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
