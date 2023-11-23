@@ -83,7 +83,7 @@ public class FragmentHome extends Fragment {
 
         MyAdapter myAdapter = new MyAdapter(this.getContext(), items);
         recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         myAdapter.notifyDataSetChanged();
     }
 }

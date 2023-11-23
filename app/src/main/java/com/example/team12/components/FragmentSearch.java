@@ -4,15 +4,20 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.team12.R;
+import com.example.team12.components.calculator.FragmentMealCalculator;
 import com.example.team12.components.search.ChildModelClass;
+import com.example.team12.components.search.FragmentSearchNotFound;
 import com.example.team12.components.search.ParentAdapter;
 import com.example.team12.components.search.ParentModelClass;
 
@@ -25,6 +30,11 @@ public class FragmentSearch extends Fragment {
     ArrayList<ChildModelClass> childModelClasses;
     ArrayList<ChildModelClass> ingredientsArrayList;
     ArrayList<ChildModelClass> recipeArrayList;
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
+    FrameLayout frameLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,10 +45,18 @@ public class FragmentSearch extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        frameLayout = view.findViewById(R.id.frame_layout_search);
         searchBar = view.findViewById(R.id.search_input);
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //go to fragment search result
+                frameLayout.removeAllViews();
+                FragmentSearchNotFound fragment = new FragmentSearchNotFound();
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout_search, fragment);
+                fragmentTransaction.commit();
                 return true;
             }
             @Override

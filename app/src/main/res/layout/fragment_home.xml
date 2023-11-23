@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:text="@string/trending"
         android:fontFamily="@font/nunito_bold"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="45dp"
         android:textSize="20dp"
         android:layout_below="@id/menu_builder_container"/>
@@ -141,10 +141,10 @@
         android:id="@+id/trending_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_below="@id/trending_header">
     </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>
