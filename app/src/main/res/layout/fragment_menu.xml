@@ -5,5 +5,43 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".components.FragmentMenu">
+    <TextView
+        android:id="@+id/menu_plan_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/menu_plan"
+        android:fontFamily="@font/nunito_extra_bold"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:textColor="@color/dark_peachy"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"
+        app:tabIndicatorGravity="stretch"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/dark_peachy"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicator="@drawable/edit_text_border"
+        app:tabIndicatorColor="@color/dark_peachy"
+        app:tabBackground="@color/fade_yellow"
+        app:tabTextAppearance="@style/CustomTabTextAppearance"
+        android:layout_below="@id/menu_plan_header">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/daily" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/weekly"/>
+    </com.google.android.material.tabs.TabLayout>
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tab_layout"/>
 </RelativeLayout>

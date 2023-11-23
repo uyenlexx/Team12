@@ -61,6 +61,6 @@ public class FragmentMealCalculator extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_meal_calculator, container, false);
+        return inflater.inflate(R.layout.fragment_calculator_meal, container, false);
     }
 }

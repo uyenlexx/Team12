@@ -7,7 +7,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fade_green"
         app:title="Back"
         app:navigationIcon="@drawable/img_arrow_left" />
 

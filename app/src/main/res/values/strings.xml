@@ -65,6 +65,10 @@
     <string name="calculate">Calculate</string>
     <string name="bmi_result">Your BMI is {bmi}</string>
 
+    <string name="menu_plan">Menu plan</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>
     <string name="settings">Settings</string>

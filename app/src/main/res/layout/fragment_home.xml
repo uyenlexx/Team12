@@ -118,7 +118,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/menu_builder_header"
-            android:background="@drawable/build_now_container"
+            android:background="@drawable/container_build_now"
             android:fontFamily="@font/nunito_bold"
             android:textAllCaps="false"
             android:text="@string/meal_calories_start"

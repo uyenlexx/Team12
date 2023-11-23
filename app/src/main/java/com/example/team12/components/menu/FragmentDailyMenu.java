@@ -1,21 +1,20 @@
-package com.example.team12.components.calculator;
+package com.example.team12.components.menu;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.team12.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentBmiCalculator#newInstance} factory method to
+ * Use the {@link FragmentDailyMenu#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentBmiCalculator extends Fragment {
+public class FragmentDailyMenu extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +25,7 @@ public class FragmentBmiCalculator extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentBmiCalculator() {
+    public FragmentDailyMenu() {
         // Required empty public constructor
     }
 
@@ -39,8 +38,8 @@ public class FragmentBmiCalculator extends Fragment {
      * @return A new instance of fragment FragmentBmiCalculator.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentBmiCalculator newInstance(String param1, String param2) {
-        FragmentBmiCalculator fragment = new FragmentBmiCalculator();
+    public static FragmentDailyMenu newInstance(String param1, String param2) {
+        FragmentDailyMenu fragment = new FragmentDailyMenu();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
