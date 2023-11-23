@@ -4,62 +4,54 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+import com.example.team12.components.search.ParentAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentDailyMenu#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class FragmentDailyMenu extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FragmentDailyMenu() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentBmiCalculator.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentDailyMenu newInstance(String param1, String param2) {
-        FragmentDailyMenu fragment = new FragmentDailyMenu();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    FrameLayout frameLayout;
+    RecyclerView recyclerView;
+    ArrayList<SectionClass> sectionArrayList;
+    ArrayList<RecipeClass> recipeArrayList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calculator_bmi, container, false);
+        View dailyMenuView = inflater.inflate(R.layout.fragment_menu_daily, container, false);
+        return dailyMenuView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        frameLayout = view.findViewById(R.id.frame_layout_menu);
+        recyclerView = view.findViewById(R.id.menu_daily_rv);
+        sectionArrayList = new ArrayList<>();
+        recipeArrayList = new ArrayList<>();
+
+        recipeArrayList.add(new RecipeClass(R.drawable.img_example_1, "Recipe 1", "500kcal"));
+        recipeArrayList.add(new RecipeClass(R.drawable.img_example_2, "Recipe 2", "200kcal"));
+        recipeArrayList.add(new RecipeClass(R.drawable.img_example_3, "Recipe 3", "347kcal"));
+
+        sectionArrayList.add(new SectionClass("Daily Menu 1", recipeArrayList));
+
+        recipeArrayList.clear();
+        recipeArrayList.add(new RecipeClass(R.drawable.img_example_1, "Recipe 1", "500kcal"));
+        recipeArrayList.add(new RecipeClass(R.drawable.img_example_2, "Recipe 2", "200kcal"));
+        recipeArrayList.add(new RecipeClass(R.drawable.img_example_3, "Recipe 3", "347kcal"));
+
+        sectionArrayList.add(new SectionClass("Daily Menu 2", recipeArrayList));
+
+        SectionAdapter sectionAdapter = new SectionAdapter(sectionArrayList, getContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(sectionAdapter);
+        sectionAdapter.notifyDataSetChanged();
     }
 }

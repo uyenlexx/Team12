@@ -50,13 +50,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profile_icon"
+                android:id="@+id/section_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/img_profile_view"
                 android:layout_marginLeft="30dp"/>
             <TextView
-                android:id="@+id/profile_text"
+                android:id="@+id/section_text"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/profile"
@@ -64,14 +64,14 @@
                 android:layout_centerVertical="true"
                 android:textSize="20dp"
                 android:fontFamily="@font/nunito_light"
-                android:layout_toRightOf="@id/profile_icon"/>
+                android:layout_toRightOf="@id/section_icon"/>
             <ImageView
-                android:id="@+id/profile_arrow"
+                android:id="@+id/section_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
-                android:layout_toRightOf="@id/profile_text"
+                android:layout_toRightOf="@id/section_text"
                 android:src="@drawable/img_arrow_light" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

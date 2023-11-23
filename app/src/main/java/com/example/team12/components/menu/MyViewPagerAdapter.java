@@ -15,11 +15,11 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new FragmentWeeklyMenu();
-            case 1:
                 return new FragmentDailyMenu();
+            case 1:
+                return new FragmentWeeklyMenu();
         }
-        return new FragmentWeeklyMenu();
+        return new FragmentDailyMenu();
     }
 
     @Override

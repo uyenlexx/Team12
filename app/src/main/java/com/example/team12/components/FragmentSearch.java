@@ -27,7 +27,6 @@ public class FragmentSearch extends Fragment {
     SearchView searchBar;
     RecyclerView recyclerView;
     ArrayList<ParentModelClass> parentModelClasses;
-    ArrayList<ChildModelClass> childModelClasses;
     ArrayList<ChildModelClass> ingredientsArrayList;
     ArrayList<ChildModelClass> recipeArrayList;
 
@@ -66,7 +65,6 @@ public class FragmentSearch extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.search_recycler_view);
-        childModelClasses = new ArrayList<>();
         ingredientsArrayList = new ArrayList<>();
         recipeArrayList = new ArrayList<>();
         parentModelClasses = new ArrayList<>();

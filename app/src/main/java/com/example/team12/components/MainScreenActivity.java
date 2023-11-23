@@ -21,8 +21,6 @@ public class MainScreenActivity extends AppCompatActivity {
     FragmentCalculate fragmentCalculate;
     FragmentMenu fragmentMenu;
     FragmentProfile fragmentProfile;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
