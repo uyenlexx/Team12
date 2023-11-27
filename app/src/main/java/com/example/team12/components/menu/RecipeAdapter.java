@@ -1,56 +1,72 @@
 package com.example.team12.components.menu;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
-    Context context;
-    List<RecipeClass> recipes;
-
-    public RecipeAdapter(Context context, List<RecipeClass> recipes) {
-        this.context = context;
-        this.recipes = recipes;
+    private List<RecipeModelClass> recipesList;
+    public RecipeAdapter(List<RecipeModelClass> recipesList) {
+        this.recipesList = recipesList;
     }
 
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fragment_menu_recipe_item, parent, false);
-        return new RecipeViewHolder(view);
+        View recipeView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_menu_recipe_item, parent, false);
+        return new RecipeViewHolder(recipeView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        holder.recipe_image.setImageResource(recipes.get(position).image);
-        holder.recipe_name.setText(recipes.get(position).recipeName);
-        holder.recipe_calories.setText(recipes.get(position).recipeCalories);
+        holder.recipeImage.setImageResource(recipesList.get(position).image);
+        holder.header.setText(recipesList.get(position).header);
+        holder.recipeName.setText(recipesList.get(position).recipeName);
+        holder.recipeCalories.setText(recipesList.get(position).recipeCalories);
+
+        holder.recipeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
-    public int getItemCount() {
-        return recipes.size();
+    public int getItemCount()  {
+        Log.d("RecipeAdapter", "getItemCount: " + recipesList.size());
+        return recipesList.size();
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
-        ImageView recipe_image;
-        TextView recipe_name;
-        TextView recipe_calories;
+        CardView recipeCard;
+        ImageView recipeImage;
+
+        TextView header;
+        TextView recipeName;
+        TextView recipeCalories;
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            recipe_image = itemView.findViewById(R.id.item_img);
-            recipe_name = itemView.findViewById(R.id.item_name);
-            recipe_calories = itemView.findViewById(R.id.item_calories);
+            recipeCard = itemView.findViewById(R.id.item_cv);
+            recipeImage = itemView.findViewById(R.id.item_img);
+            header = itemView.findViewById(R.id.item_header);
+            recipeName = itemView.findViewById(R.id.item_name);
+            recipeCalories = itemView.findViewById(R.id.item_calories);
         }
     }
 }

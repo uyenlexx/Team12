@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/item_cv"
@@ -25,22 +25,31 @@
                 android:layout_centerVertical="true"
                 android:scaleX="0.9"
                 android:scaleY="0.9"/>
-
+            <TextView
+                android:id="@+id/item_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nunito_bold"
+                android:textSize="15dp"
+                android:text="{header}"
+                android:layout_toRightOf="@id/item_img" />
             <TextView
                 android:id="@+id/item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/item_img"
-                android:fontFamily="@font/nunito_bold"
+                android:fontFamily="@font/nunito_medium"
                 android:text="{Recipe Name}"
-                android:textSize="17dp" />
+                android:textSize="17dp"
+                android:layout_toRightOf="@id/item_img"
+                android:layout_below="@+id/item_header"/>
             <TextView
                 android:id="@+id/item_calories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/nunito_medium"
+                android:fontFamily="@font/nunito_light"
                 android:text="{Recipe Calories}"
                 android:textSize="15dp"
                 android:textColor="@color/dark_green"

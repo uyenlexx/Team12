@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 
 import com.example.team12.R;
 import com.example.team12.components.calculator.FragmentMealCalculator;
+import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.search.ChildModelClass;
 import com.example.team12.components.search.FragmentSearchNotFound;
 import com.example.team12.components.search.ParentAdapter;
@@ -51,7 +52,8 @@ public class FragmentSearch extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 //go to fragment search result
                 frameLayout.removeAllViews();
-                FragmentSearchNotFound fragment = new FragmentSearchNotFound();
+//                FragmentSearchNotFound fragment = new FragmentSearchNotFound();
+                FragmentRecipeDetailed fragment = new FragmentRecipeDetailed();
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_search, fragment);
