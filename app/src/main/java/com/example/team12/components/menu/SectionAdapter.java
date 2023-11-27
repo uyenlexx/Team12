@@ -4,56 +4,76 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
-import com.example.team12.components.search.FragmentSearchNotFound;
+import com.google.android.gms.common.data.DataHolder;
 
 import java.util.List;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> {
-    List<SectionClass> sectionList;
-    Context context;
+    List<SectionModelClass> mList;
+    List<RecipeModelClass> recipeList;
 
-    public SectionAdapter(List<SectionClass> sectionList, Context context) {
-        this.sectionList = sectionList;
-        this.context = context;
+    public SectionAdapter(List<SectionModelClass> mList) {
+        this.mList = mList;
     }
-
+    @NonNull
     @Override
-    public SectionAdapter.SectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fragment_menu_section_item, parent, false);
+    public SectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_menu_section_item, parent, false);
         return new SectionViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(SectionViewHolder holder, int position) {
-        holder.sectionName.setText(sectionList.get(position).sectionName);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
+        SectionModelClass sectionList = mList.get(position);
+        holder.sectionTitle.setText(mList.get(position).itemText);
+
+        boolean isExpandable = mList.get(position).isExpandable;
+        holder.sectionExpandableList.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+        if (isExpandable)
+            holder.expandArrow.setRotation(90);
+
+        RecipeAdapter recipeAdapter = new RecipeAdapter(mList.get(position).recipeList);
+        holder.sectionExpandableList.setLayoutManager(new LinearLayoutManager(
+                holder.itemView.getContext(), RecyclerView.VERTICAL, false));
+        holder.sectionExpandableList.setAdapter(recipeAdapter);
+        holder.sectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // go to fragment daily section menu
-                Toast.makeText(context, sectionList.get(position).sectionName, Toast.LENGTH_SHORT).show();
+                sectionList.isExpandable = !(sectionList.isExpandable);
+                mList.get(position).recipeList = sectionList.recipeList;
+                notifyItemChanged(holder.getAdapterPosition());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return sectionList.size();
+        return mList.size();
     }
 
     public class SectionViewHolder extends RecyclerView.ViewHolder {
-        TextView sectionName;
-        CardView cardView;
-        public SectionViewHolder(View itemView) {
+        RelativeLayout sectionLayout;
+        TextView sectionTitle;
+        ImageView expandArrow;
+        RecyclerView sectionExpandableList;
+        public SectionViewHolder(@NonNull View itemView) {
             super(itemView);
-            sectionName = itemView.findViewById(R.id.section_text);
-            cardView = itemView.findViewById(R.id.section_cv);
+            sectionLayout = itemView.findViewById(R.id.relative_layout);
+            sectionTitle = itemView.findViewById(R.id.section_text);
+            expandArrow = itemView.findViewById(R.id.section_arrow);
+            sectionExpandableList = itemView.findViewById(R.id.expanded_rv);
         }
     }
 }

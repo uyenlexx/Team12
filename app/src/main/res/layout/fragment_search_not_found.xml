@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="Back"
+        app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/img_arrow_left" />
 
     <ImageView
