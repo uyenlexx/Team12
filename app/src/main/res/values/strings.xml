@@ -65,6 +65,17 @@
     <string name="calculate">Calculate</string>
     <string name="bmi_result">Your BMI is {bmi}</string>
 
+    <string-array name="food_type">
+        <item>Pork</item>
+        <item>Beef</item>
+        <item>Fish</item>
+        <item>Chicken</item>
+        <item>Bird</item>
+        <item>Paimon</item>
+        <item>Milk</item>
+        <item>Egg</item>
+    </string-array>
+
     <string name="menu_plan">Menu plan</string>
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
