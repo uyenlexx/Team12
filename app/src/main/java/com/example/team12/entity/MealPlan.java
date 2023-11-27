@@ -68,24 +68,34 @@ public class MealPlan {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public static void setUpFirebase() {
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                totalMealPlans = (int) snapshot.getChildrenCount();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    MealPlan mealPlan = dataSnapshot.getValue(MealPlan.class);
-                    if (mealPlan != null) {
-                        if (mealPlan.getMealPlanId() > maxMealPlanId) {
-                            maxMealPlanId = mealPlan.getMealPlanId();
-                        }
-                    }
-                }
-            }
+//    public static void setUpFirebase() {
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                totalMealPlans = (int) snapshot.getChildrenCount();
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    MealPlan mealPlan = dataSnapshot.getValue(MealPlan.class);
+//                    if (mealPlan != null) {
+//                        if (mealPlan.getMealPlanId() > maxMealPlanId) {
+//                            maxMealPlanId = mealPlan.getMealPlanId();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("MealPlan setUpFirebase", error.getMessage());
+//            }
+//        });
+//    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("MealPlan setUpFirebase", error.getMessage());
+    public void getTotalMealPlan() {
+        reference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                totalMealPlans = (int) task.getResult().getChildrenCount();
+            } else {
+                Log.e("MealPlan getTotalMealPlan", task.getException().getMessage());
             }
         });
     }

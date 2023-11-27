@@ -46,6 +46,6 @@ public class LoggingActivity extends AppCompatActivity {
     }
 
     public void addSetUp() {
-        Recipe.setUpFirebase();
+//        Recipe.setUpFirebase();
     }
 }

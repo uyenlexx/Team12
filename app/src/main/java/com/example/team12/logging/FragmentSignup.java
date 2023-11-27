@@ -207,8 +207,8 @@ public class FragmentSignup extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Recipe recipe = new Recipe(1, "name1", "imageURL", "categoryId", "calories", "description", "steps", "adminId");
-                recipe.saveRecipeToFirebase();
+                Recipe recipe = new Recipe(1, "name1", "imageURL", "categoryId", "calories", "description", "steps", "adminId", new String[]{"A", "b", "c"});
+                recipe.getAllRecipeIngredient();
             }
         });
 
