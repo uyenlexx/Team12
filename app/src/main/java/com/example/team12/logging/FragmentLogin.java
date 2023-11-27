@@ -22,13 +22,21 @@ import androidx.fragment.app.Fragment;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 
 public class FragmentLogin extends Fragment {
@@ -41,6 +49,9 @@ public class FragmentLogin extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference reference, NonEmailUsername;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    private static final int RC_SIGN_IN = 1000;
     @Override
     public void onAttach(Context context) {
         sharedPreferences = context.getSharedPreferences("userFile", Context.MODE_PRIVATE);
@@ -61,6 +72,9 @@ public class FragmentLogin extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
         reference = database.getReference();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        gsc = GoogleSignIn.getClient(getActivity(), gso);
+
 //        NonEmailUsername = database.getReference().child("Users");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +127,8 @@ public class FragmentLogin extends Fragment {
         loginGoogleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent signInIntent = gsc.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
 
@@ -125,6 +140,44 @@ public class FragmentLogin extends Fragment {
         });
 
         return loginView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = com.google.android.gms.auth.api.signin.GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuth(account.getIdToken());
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Sign in failed.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void firebaseAuth(String idToken) {
+        AuthCredential credential = com.google.firebase.auth.GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("Date of birth", "1231");
+                    hashMap.put("email", user.getEmail());
+                    hashMap.put("name", user.getDisplayName());
+                    hashMap.put("uid", user.getUid());
+                    database.getReference().child("Users").child(user.getUid()).setValue(hashMap);
+
+                    Toast.makeText(getActivity(), "Authentication success.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), MainScreenActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+    });
     }
 
     private boolean isValidUsername(String username) {
