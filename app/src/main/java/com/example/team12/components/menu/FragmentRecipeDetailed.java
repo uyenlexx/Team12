@@ -29,7 +29,7 @@ public class FragmentRecipeDetailed extends Fragment {
         View recipeDetailedView = inflater.inflate(R.layout.fragment_recipe_detailed, container, false);
 //        step = recipeDetailedView.findViewById(R.id.recipe_steps);
 //        step.setText(Html.fromHtml());
-        String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipepho.html?alt=media&token=0089c46e-7900-4e39-91c5-5927c213a681";
+        String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipefriedegg.html?alt=media&token=16b42617-ff71-4af8-b115-38b083aa3ece";
         webView = recipeDetailedView.findViewById(R.id.recipe_steps);
         webView.loadUrl(url);
         return recipeDetailedView;
