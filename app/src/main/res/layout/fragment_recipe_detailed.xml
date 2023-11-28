@@ -211,7 +211,7 @@
             android:fontFamily="@font/nunito_bold"
             android:textSize="20dp"
             android:layout_below="@id/recipe_ingredients"/>
-        <TextView
+        <WebView
             android:id="@+id/recipe_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -221,7 +221,21 @@
             android:fontFamily="@font/nunito_light"
             android:textSize="15dp"
             android:text="{steps of recipe}"
-            android:layout_below="@+id/recipe_steps_title"/>
+            android:layout_below="@+id/recipe_steps_title">
+
+        </WebView>
+<!--        -->
+<!--        <TextView-->
+<!--            android:id="@+id/recipe_steps"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_marginRight="20dp"-->
+<!--            android:justificationMode="inter_word"-->
+<!--            android:fontFamily="@font/nunito_light"-->
+<!--            android:textSize="15dp"-->
+<!--            android:text="{steps of recipe}"-->
+<!--            android:layout_below="@+id/recipe_steps_title"/>-->
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add_to_favorite_btn"

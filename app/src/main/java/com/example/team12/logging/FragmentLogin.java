@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
