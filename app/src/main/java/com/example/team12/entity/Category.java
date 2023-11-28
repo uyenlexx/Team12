@@ -14,15 +14,18 @@ public class Category {
     public static int maxCategoryId = 0;
     private int categoryId;
     private String categoryName;
+    private String categoryImageURL;
 
-    public Category(int categoryId, String categoryName) {
+    public Category(String categoryName, String categoryImageURL) {
         this.categoryId = maxCategoryId + 1;
         this.categoryName = categoryName;
+        this.categoryImageURL = categoryImageURL;
     }
 
     public Category() {
         this.categoryId = maxCategoryId + 1;
         this.categoryName = "Temp Category";
+        this.categoryImageURL = "imageURL";
     }
 
     // Getters
@@ -43,6 +46,10 @@ public class Category {
         return maxCategoryId;
     }
 
+    public String getCategoryImageURL() {
+        return categoryImageURL;
+    }
+
     // Setters
 
     public void setCategoryId(int categoryId) {
@@ -61,21 +68,23 @@ public class Category {
         Category.maxCategoryId = maxCategoryId;
     }
 
+    public void setCategoryImageURL(String categoryImageURL) {
+        this.categoryImageURL = categoryImageURL;
+    }
+
     public static void setUpFirebase() {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 totalCategories = (int) dataSnapshot.getChildrenCount();
                 maxCategoryId = 0;
-                int i = 0;
-                ListVariable.categoryList = new Category[totalCategories];
+                ListVariable.categoryList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Category category = snapshot.getValue(Category.class);
-                    ListVariable.categoryList[i] = category;
+                    ListVariable.categoryList.add(category);
                     if (category.getCategoryId() > maxCategoryId) {
                         maxCategoryId = category.getCategoryId();
                     }
-                    i++;
                 }
             }
 
