@@ -2,15 +2,11 @@ package com.example.team12.components;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.team12.R;
-import com.example.team12.databinding.ActivityMainScreenBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -20,7 +16,7 @@ public class MainScreenActivity extends AppCompatActivity {
     FragmentSearch fragmentSearch;
     FragmentCalculate fragmentCalculate;
     FragmentMenu fragmentMenu;
-    FragmentProfile fragmentProfile;
+    FragmentUser fragmentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +28,7 @@ public class MainScreenActivity extends AppCompatActivity {
         fragmentSearch = new FragmentSearch();
         fragmentCalculate = new FragmentCalculate();
         fragmentMenu = new FragmentMenu();
-        fragmentProfile = new FragmentProfile();
+        fragmentUser = new FragmentUser();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main, fragmentHome).commit();
 
@@ -52,8 +48,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 } else if (itemId == R.id.menu_tab) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main, fragmentMenu).commit();
                     return true;
-                } else if (itemId == R.id.profile_tab) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main, fragmentProfile).commit();
+                } else if (itemId == R.id.user_tab) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main, fragmentUser).commit();
                     return true;
                 }
                 return false;

@@ -108,7 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/nunito_black"
@@ -121,7 +121,7 @@
     <TextView
         android:id="@+id/bmi_result"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_below="@id/bmi_result_text"
         android:layout_centerInParent="true"
         android:layout_marginTop="2dp"
@@ -132,5 +132,5 @@
         android:text="{result}"
         android:textColor="@color/light_blue"
         android:textSize="25dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 </RelativeLayout>

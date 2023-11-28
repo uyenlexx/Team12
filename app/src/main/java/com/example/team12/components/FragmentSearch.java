@@ -50,14 +50,17 @@ public class FragmentSearch extends Fragment {
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchBar.clearFocus();
                 //go to fragment search result
-                frameLayout.removeAllViews();
-//                FragmentSearchNotFound fragment = new FragmentSearchNotFound();
+//              frameLayout.removeAllViews();
+//              FragmentSearchNotFound fragment = new FragmentSearchNotFound();
                 FragmentRecipeDetailed fragment = new FragmentRecipeDetailed();
                 fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout_search, fragment);
-                fragmentTransaction.commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout_search, fragment)
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
                 return true;
             }
             @Override

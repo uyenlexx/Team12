@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.team12.R;
 import com.example.team12.components.FragmentSearch;
@@ -42,12 +43,8 @@ public class FragmentRecipeDetailed extends Fragment {
         toolbar2.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //go back to fragment search
-                FragmentSearch fragment = new FragmentSearch();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_search, fragment)
-                        .commit();
-                webView.destroy();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
             }
         });
     }
