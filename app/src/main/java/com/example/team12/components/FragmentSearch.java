@@ -53,7 +53,7 @@ public class FragmentSearch extends Fragment {
                 //go to fragment search result
                 frameLayout.removeAllViews();
 //                FragmentSearchNotFound fragment = new FragmentSearchNotFound();
-                FragmentRecipeDetailed fragment = new FragmentRecipeDetailed();
+                FragmentRecipeDetailed fragment = new FragmentRecipeDetailed(R.id.frame_layout_search);
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_search, fragment);

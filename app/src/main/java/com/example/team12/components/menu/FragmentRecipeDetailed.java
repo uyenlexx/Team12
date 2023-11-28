@@ -9,10 +9,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.team12.R;
+import com.example.team12.components.FragmentHome;
 import com.example.team12.components.FragmentSearch;
 
 public class FragmentRecipeDetailed extends Fragment {
     Toolbar toolbar2;
+    int backFrame;
+
+    public FragmentRecipeDetailed(int backFrame) {
+        this.backFrame = backFrame;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,10 +36,18 @@ public class FragmentRecipeDetailed extends Fragment {
             @Override
             public void onClick(View v) {
                 //go back to fragment search
-                FragmentSearch fragment = new FragmentSearch();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_search, fragment)
-                        .commit();
+                if (backFrame == R.id.frame_layout_search) {
+                    FragmentSearch fragment = new FragmentSearch();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(backFrame, fragment)
+                            .commit();
+                }
+                else if (backFrame == R.id.frame_layout_main) {
+                    FragmentHome fragment = new FragmentHome();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(backFrame, fragment)
+                            .commit();
+                }
             }
         });
     }

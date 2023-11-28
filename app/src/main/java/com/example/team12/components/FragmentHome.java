@@ -1,9 +1,11 @@
 package com.example.team12.components;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.team12.R;
 import com.example.team12.components.calculator.FragmentMealCalculator;
 import com.example.team12.components.home.ItemClass;
+import com.example.team12.components.home.ItemInterface;
 import com.example.team12.components.home.MyAdapter;
+import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.search.ChildModelClass;
 import com.example.team12.components.search.ParentModelClass;
 
@@ -41,8 +45,24 @@ public class FragmentHome extends Fragment {
         return homeView;
     }
 
+    private void addItems(int image, String description) {
+        ItemClass itemClass = new ItemClass(image, description);
+        itemClass.ItemInterfaceClick(new ItemInterface() {
+            @Override
+            public void onClick(View view, boolean isLongPressed) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, itemClass.fragmentRecipeDetailed)
+                        .commit();
+//                System.out.println("clicked");
+            }
+        });
+        items.add(itemClass);
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+//        System.out.println("fuck");
+
         helloTitle = view.findViewById(R.id.hello_title);
         helloTitleDesc = view.findViewById(R.id.hello_desc_title);
         caloriesCalculatorContainer = view.findViewById(R.id.calories_cal_container);
@@ -74,15 +94,26 @@ public class FragmentHome extends Fragment {
 
         recyclerView = view.findViewById(R.id.trending_recycler_view);
         items = new ArrayList<>();
+        addItems(R.drawable.img_trending_1, getText(R.string.trending_1).toString());
+        addItems(R.drawable.img_trending_2, getText(R.string.trending_2).toString());
+        addItems(R.drawable.img_trending_3, getText(R.string.trending_3).toString());
+        addItems(R.drawable.img_trending_4, getText(R.string.trending_4).toString());
+        addItems(R.drawable.img_trending_5, getText(R.string.trending_5).toString());
 
-        items.add(new ItemClass(R.drawable.img_trending_1, getText(R.string.trending_1).toString()));
-        items.add(new ItemClass(R.drawable.img_trending_2, getText(R.string.trending_2).toString()));
-        items.add(new ItemClass(R.drawable.img_trending_3, getText(R.string.trending_3).toString()));
-        items.add(new ItemClass(R.drawable.img_trending_4, getText(R.string.trending_4).toString()));
-        items.add(new ItemClass(R.drawable.img_trending_5, getText(R.string.trending_5).toString()));
+//        items.add(new ItemClass(R.drawable.img_trending_1, getText(R.string.trending_1).toString()));
+//        items.add(new ItemClass(R.drawable.img_trending_2, getText(R.string.trending_2).toString()));
+//        items.add(new ItemClass(R.drawable.img_trending_3, getText(R.string.trending_3).toString()));
+//        items.add(new ItemClass(R.drawable.img_trending_4, getText(R.string.trending_4).toString()));
+//        items.add(new ItemClass(R.drawable.img_trending_5, getText(R.string.trending_5).toString()));
 
         MyAdapter myAdapter = new MyAdapter(this.getContext(), items);
         recyclerView.setAdapter(myAdapter);
+//        recyclerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         myAdapter.notifyDataSetChanged();
     }
