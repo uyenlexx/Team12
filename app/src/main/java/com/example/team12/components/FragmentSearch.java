@@ -93,35 +93,21 @@ public class FragmentSearch extends Fragment {
             }
         });
         searchList.setAdapter(searchItemAdapter);
+//        searchList.setVisibility(view.INVISIBLE);
+
 
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchBar.clearFocus();
 
-                //go to fragment search result
-//              frameLayout.removeAllViews();
-//              FragmentSearchNotFound fragment = new FragmentSearchNotFound();
-//                FragmentRecipeDetailed fragment = new FragmentRecipeDetailed();
-//                fragmentManager = getActivity().getSupportFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.frame_layout_search, fragment)
-//                        .addToBackStack(null)
-//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                        .commit();
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 0) {
-                    searchList.setVisibility(view.VISIBLE);
-                    recyclerView.setVisibility(view.INVISIBLE);
-                } else {
-//                    searchList.setVisibility(view.INVISIBLE);
-                    recyclerView.setVisibility(view.VISIBLE);
-                }
-                return true;
+            
+                return false;
             }
+
         });
 
         recyclerView = view.findViewById(R.id.search_recycler_view);
