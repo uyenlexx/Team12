@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+import com.example.team12.entity.IngredientList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -21,6 +23,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyAdapter(Context context, List<ItemClass> items) {
         this.context = context;
         this.items = items;
+    }
+
+    public MyAdapter(ArrayList<IngredientList> searchListItem, Context context) {
     }
 
     @NonNull
