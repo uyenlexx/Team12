@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
+import com.example.team12.components.listener.OnGetDataListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +17,7 @@ import com.google.firebase.database.annotations.Nullable;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +25,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class Recipe {
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Recipes");
-    private static int totalRecipes = 0;
-    private static int maxRecipeId = 0;
+    public static int totalRecipes = 0;
+    public static int maxRecipeId = 0;
     private int recipeId;
     private String recipeName;
     private String imageURL;
@@ -126,6 +128,9 @@ public class Recipe {
                         maxRecipeId = recipe.getRecipeId();
                     }
                 }
+                //Sort recipe list by view count in descending order
+                Collections.sort(ListVariable.recipeList, (o1, o2) -> o2.getViewCount() - o1.getViewCount());
+                Log.i("Recipe setUpFirebase", "Total recipe: " + totalRecipes + " - Max recipe id: " + maxRecipeId);
             }
 
             @Override
@@ -179,6 +184,7 @@ public class Recipe {
             Log.i("Recipe getRecipeByViewCount", recipe.toString());
         }
         Log.i("Recipe getRecipeByViewCount", "Total trending recipe: " + ListVariable.trendingRecipeList.size());
+        Log.i("Recipe getRecipeByViewCount", "Total recipe: " + ListVariable.recipeList.size());
     }
 
     public static List<Recipe> getRecipeByCategory(int _categoryId) {
@@ -265,4 +271,39 @@ public class Recipe {
                 ", userId=" + userId +
                 '}';
     }
+
+    public static void getRecipeFromFirebase() {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ListVariable.recipeList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Recipe recipe = dataSnapshot.getValue(Recipe.class);
+                    ListVariable.recipeList.add(recipe);
+                }
+                Collections.sort(ListVariable.recipeList, (o1, o2) -> o2.getViewCount() - o1.getViewCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Recipe getRecipeFromFirebase", error.getMessage());
+            }
+        });
+    }
+
+    public static void mReadRecipe(final OnGetDataListener listener) {
+        listener.onStart();
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listener.onSuccess(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onFailure(error);
+            }
+        });
+    }
 }
+
