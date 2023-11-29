@@ -116,10 +116,12 @@ public class FragmentSearch extends Fragment {
         recipeReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+//                searchListItem.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                         IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
-                        searchListItem.add(ingredientList);
+//                        searchListItem.add(ingredientList);
+                        addIngredientList(ingredientList);
                         Log.d("searchRecipeItem", searchListItem.toString());
 
                     }
