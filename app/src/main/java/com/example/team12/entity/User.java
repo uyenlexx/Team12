@@ -274,4 +274,15 @@ public class User {
             Log.e("User updatePasswordToFirebase", e.getMessage());
         });
     }
+
+    public static void forgetPassword(String email) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i("User forgetPassword", "Email sent");
+            } else {
+                Log.e("User forgetPassword", task.getException().getMessage());
+            }
+        });
+    }
 }

@@ -81,26 +81,10 @@ public class FragmentLogin extends Fragment {
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                DatabaseReference emailRef = NonEmailUsername.child(username).child("email");
-//                if (!username.contains("@")) {
-//                    username = emailRef.getKey();
-//                    Log.d("FRAGMENTLOGIN", username);
-//                }
-                if (!isValidUsername(username)) {
-                    usernameEditText.setError("Invalid username");
-                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                    usernameEditText.requestFocus();
+                boolean isValid = checkValidLogin(username, password);
+                if (!isValid) {
                     return;
                 }
-                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-
-                if (!isValidPassword(password)) {
-                    passwordEditText.setError("Invalid password");
-                    passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-                    return;
-                }
-                passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
 
                 mAuth.signInWithEmailAndPassword(username, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -178,6 +162,29 @@ public class FragmentLogin extends Fragment {
                 }
             }
     });
+    }
+
+    public boolean checkValidLogin(String username, String password) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                DatabaseReference emailRef = NonEmailUsername.child(username).child("email");
+//                if (!username.contains("@")) {
+//                    username = emailRef.getKey();
+//                    Log.d("FRAGMENTLOGIN", username);
+//                }
+        if (!isValidUsername(username)) {
+            usernameEditText.setError("Invalid username");
+            usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+            usernameEditText.requestFocus();
+            return false;
+        }
+        usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+        if (!isValidPassword(password)) {
+            passwordEditText.setError("Invalid password");
+            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+            return false;
+        }
+        passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
     }
 
     private boolean isValidUsername(String username) {
