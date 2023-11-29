@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
 
 public class FragmentSearch extends Fragment {
     SearchView searchBar;
@@ -78,18 +79,21 @@ public class FragmentSearch extends Fragment {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 searchListItem.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
-                    searchListItem.add(ingredientList);
-                    Log.d("searchListItemA", searchListItem.toString());
+                if (snapshot.exists()) {
+                    for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                        IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
+                        searchListItem.add(ingredientList);
+                        Log.d("searchListItemA", searchListItem.toString());
 
+                    }
                 }
+
 
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("SearchError", databaseError.getMessage());
             }
         });
         searchList.setAdapter(searchItemAdapter);
@@ -100,12 +104,14 @@ public class FragmentSearch extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
+
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-            
-                return false;
+                final List<IngredientList> filteredModeList = filter(searchListItem, newText);
+                searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
+                return true;
             }
 
         });
@@ -137,5 +143,19 @@ public class FragmentSearch extends Fragment {
         recyclerView.setAdapter(parentAdapter);
         parentAdapter.notifyDataSetChanged();
 
+    }
+
+    private List<IngredientList> filter(List<IngredientList> p1, String query) {
+        query = query.toLowerCase();
+        final List<IngredientList> filteredModeList = new ArrayList<>();
+        for (IngredientList model : p1) {
+            if (model != null && model.getName() != null) {
+                final String text = model.getName().toLowerCase();
+                if (text.contains(query)) {
+                    filteredModeList.add(model);
+                }
+            }
+        }
+        return filteredModeList;
     }
 }
