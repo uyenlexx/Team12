@@ -90,7 +90,7 @@ public class FragmentWeeklyMenu extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        frameLayout = view.findViewById(R.id.frame_layout_menu);
+        frameLayout = view.findViewById(R.id.frame_layout_menu_weekly);
         recyclerView = view.findViewById(R.id.menu_weekly_rv);
 
         recipeList = new ArrayList<>();
@@ -112,7 +112,40 @@ public class FragmentWeeklyMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu_weekly, container, false);
+        View weeklyMenuView = inflater.inflate(R.layout.fragment_menu_weekly, container, false);
+        return weeklyMenuView;
     }
+//    @Override
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        frameLayout = view.findViewById(R.id.frame_layout_menu_weekly);
+//        recyclerView = view.findViewById(R.id.menu_weekly_rv);
+//        sectionList = new ArrayList<>();
+//        recipesList = new ArrayList<>();
+//
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_1), "Monday", "Recipe 1", "500kcal"));
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_2), "Tuesday", "Recipe 2", "500kcal"));
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_3), "Wednesday", "Recipe 3", "500kcal"));
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_1), "Thursday", "Recipe 1", "500kcal"));
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_2), "Friday", "Recipe 2", "500kcal"));
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_3), "Saturday", "Recipe 3", "500kcal"));
+//        recipesList.add(new RecipeModelClass((R.drawable.img_example_3), "Sunday", "Recipe 3", "500kcal"));
+//
+//        sectionList.add(new SectionModelClass(recipesList, "Weekly Menu 1"));
+//
+//        SectionAdapter sectionAdapter = new SectionAdapter(sectionList);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setAdapter(sectionAdapter);
+//        sectionAdapter.notifyDataSetChanged();
+//    }
+
+//    @Override
+//    public void onRecipeClick(RecipeModelClass recipeModelClass) {
+//        FragmentRecipeDetailed fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_menu_weekly);
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.frame_layout_menu_daily, fragmentRecipeDetailed)
+//                .addToBackStack(null)
+//                .commit();
+//    }
 }

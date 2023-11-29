@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class FragmentDailyMenu extends Fragment {
+public class FragmentDailyMenu extends Fragment implements RecipeAdapter.RecycleViewInterface {
     FrameLayout frameLayout;
     RecyclerView recyclerView;
     ArrayList<SectionModelClass> sectionList;
@@ -49,7 +48,7 @@ public class FragmentDailyMenu extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        frameLayout = view.findViewById(R.id.frame_layout_menu);
+        frameLayout = view.findViewById(R.id.frame_layout_menu_daily);
         recyclerView = view.findViewById(R.id.menu_daily_rv);
         sectionList = new ArrayList<>();
         recipesList = new ArrayList<>();
@@ -67,5 +66,14 @@ public class FragmentDailyMenu extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(sectionAdapter);
         sectionAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRecipeClick(RecipeModelClass recipeModelClass) {
+        FragmentRecipeDetailed fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_menu_daily, this);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout_menu_daily, fragmentRecipeDetailed)
+                .addToBackStack(null)
+                .commit();
     }
 }

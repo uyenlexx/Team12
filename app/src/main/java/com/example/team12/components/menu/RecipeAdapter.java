@@ -20,8 +20,10 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<RecipeModelClass> recipesList;
+//    RecycleViewInterface recycleViewInterface;
     public RecipeAdapter(List<RecipeModelClass> recipesList) {
         this.recipesList = recipesList;
+//        this.recycleViewInterface = recycleViewInterface;
     }
 
     @NonNull
@@ -43,6 +45,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             @Override
             public void onClick(View view) {
                 recipesList.get(position).onClick(view);
+//        holder.recipeCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                recycleViewInterface.onRecipeClick(recipesList.get(position));
             }
         });
     }
@@ -56,10 +62,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
         CardView recipeCard;
         ImageView recipeImage;
-
         TextView header;
         TextView recipeName;
         TextView recipeCalories;
+
         public RecipeViewHolder(View itemView) {
             super(itemView);
             recipeCard = itemView.findViewById(R.id.item_cv);
@@ -68,5 +74,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             recipeName = itemView.findViewById(R.id.item_name);
             recipeCalories = itemView.findViewById(R.id.item_calories);
         }
+    }
+
+    public interface RecycleViewInterface {
+        void onRecipeClick(RecipeModelClass recipe);
     }
 }
