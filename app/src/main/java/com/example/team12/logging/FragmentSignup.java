@@ -144,7 +144,7 @@ public class FragmentSignup extends Fragment {
                                                 if (task.isSuccessful()) {
 
                                                     // Sign in success, update UI with the signed-in user's information
-                                                    User user = new User(name, dob, email, username, password);
+                                                    User user = new User(name, dob, email, username);
                                                     user.addUserToFirebase();
                                                     builder.setMessage("Account created successfully")
                                                             .setTitle("Welcome to Calo4U");

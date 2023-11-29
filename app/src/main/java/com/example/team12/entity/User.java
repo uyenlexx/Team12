@@ -2,6 +2,8 @@ package com.example.team12.entity;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -11,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -25,32 +28,29 @@ public class User {
     private String dateOfBirth;
     private String email;
     private String name;
-    private String uid;
 
     private List<Integer> favoriteRecipes;
     private List<Integer> favoriteIngredients;
 
     //Init
-    public User(String username, String dateOfBirth, String email, String name, String uid, List<Integer> favoriteRecipes, List<Integer> favoriteIngredients) {
+    public User(String username, String dateOfBirth, String email, String name, List<Integer> favoriteRecipes, List<Integer> favoriteIngredients) {
         this.userId = maxUserId + 1;
         this.username = username;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.name = name;
-        this.uid = uid;
         this.favoriteRecipes = favoriteRecipes;
         this.favoriteIngredients = favoriteIngredients;
     }
 
-    public User(String username, String dateOfBirth, String email, String name, String uid) {
+    public User(String username, String dateOfBirth, String email, String name) {
         this.userId = maxUserId + 1;
         this.username = username;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.name = name;
-        this.uid = uid;
-        this.favoriteRecipes = null;
-        this.favoriteIngredients = null;
+        this.favoriteRecipes = new ArrayList<>();
+        this.favoriteIngredients = new ArrayList<>();
     }
 
     public User() {
@@ -59,9 +59,8 @@ public class User {
         this.dateOfBirth = "dateOfBirth";
         this.email = "email";
         this.name = "name";
-        this.uid = "uid";
-        this.favoriteRecipes = null;
-        this.favoriteIngredients = null;
+        this.favoriteRecipes = new ArrayList<>();
+        this.favoriteIngredients = new ArrayList<>();
     }
 
     // Getters
@@ -84,10 +83,6 @@ public class User {
 
     public String getName() {
         return name;
-    }
-
-    public String getUid() {
-        return uid;
     }
 
     public List<Integer> getFavoriteRecipes() {
@@ -128,10 +123,6 @@ public class User {
         this.name = name;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public void setFavoriteRecipes(List<Integer> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
     }
@@ -153,7 +144,9 @@ public class User {
         reference.orderByChild("userId").limitToLast(1).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot child : task.getResult().getChildren()) {
-                    maxUserId = Integer.parseInt(child.child("userId").getValue().toString());
+                    if (child.child("userId").getValue() != null)
+                        maxUserId = -1;
+                    else maxUserId = Integer.parseInt(child.child("userId").getValue().toString());
                 }
                 future.complete(null);
             } else {
@@ -166,29 +159,37 @@ public class User {
     public void addUserToFirebase() {
         CompletableFuture<Void> future = getMaxUserIdFromFirebase();
         future.thenAcceptAsync(aVoid -> {
-            HashMap<String, String> userMap = new HashMap<>();
-            userMap.put("userId", String.valueOf(maxUserId + 1));
+            HashMap<String, Object> userMap = new HashMap<>();
+            userMap.put("userId", maxUserId + 1);
             userMap.put("username", this.username);
             userMap.put("dateOfBirth", this.dateOfBirth);
             userMap.put("email", this.email);
             userMap.put("name", this.name);
-            userMap.put("uid", this.uid);
-            reference.child(username).setValue(userMap);
-            if (this.favoriteRecipes != null) {
+            reference.child(username).setValue(userMap).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.i("User addUserToFirebase", "User added successfully");
+                } else {
+                    Log.e("User addUserToFirebase", task.getException().getMessage());
+                }
+            });
+            if (this.favoriteRecipes != null || this.favoriteIngredients != null) {
+                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
                 for (Integer recipeId : this.favoriteRecipes) {
-                    reference.child(username).child("favoriteRecipes").child(String.valueOf(recipeId)).setValue(true);
+                    reference1.child("UserRecipe").child("" + userId).child(String.valueOf(recipeId)).setValue(true);
                 }
                 for (Integer ingredientId : this.favoriteIngredients) {
-                    reference.child(username).child("favoriteIngredients").child(String.valueOf(ingredientId)).setValue(true);
+                    reference.child("UserIngredient").child("" + userId).child(String.valueOf(ingredientId)).setValue(true);
                 }
             }
+
         });
     }
 
     public void addFavoriteRecipeToFirebase(int recipeId) {
         //Check if recipeId already exists on Firebase
         AtomicBoolean exists = new AtomicBoolean(false);
-        reference.child(username).child("favoriteRecipes").child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
+        reference1.child("" + userId).child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() != null) {
                     exists.set(true);
@@ -198,14 +199,15 @@ public class User {
             }
         });
         if (!exists.get()) {
-            reference.child(username).child("favoriteRecipes").child(String.valueOf(recipeId)).setValue(true);
+            reference.child("" + userId).child(String.valueOf(recipeId)).setValue(true);
         }
     }
 
     public void addFavoriteIngredientToFirebase(int ingredientId) {
         //Check if ingredientId already exists on Firebase
         AtomicBoolean exists = new AtomicBoolean(false);
-        reference.child(username).child("favoriteIngredients").child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserIngredient");
+        reference1.child("" + userId).child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() != null) {
                     exists.set(true);
@@ -215,14 +217,15 @@ public class User {
             }
         });
         if (!exists.get()) {
-            reference.child(username).child("favoriteIngredients").child(String.valueOf(ingredientId)).setValue(true);
+            reference.child("" + userId).child(String.valueOf(ingredientId)).setValue(true);
         }
     }
 
     public void removeFavoriteRecipeFromFirebase(int recipeId) {
         //Check if recipeId already exists on Firebase
         AtomicBoolean exists = new AtomicBoolean(false);
-        reference.child(username).child("favoriteRecipes").child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
+        reference1.child("" + userId).child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() != null) {
                     exists.set(true);
@@ -232,14 +235,15 @@ public class User {
             }
         });
         if (exists.get()) {
-            reference.child(username).child("favoriteRecipes").child(String.valueOf(recipeId)).removeValue();
+            reference.child("" + userId).child(String.valueOf(recipeId)).removeValue();
         }
     }
 
     public void removeFavoriteIngredientFromFirebase(int ingredientId) {
         //Check if ingredientId already exists on Firebase
         AtomicBoolean exists = new AtomicBoolean(false);
-        reference.child(username).child("favoriteIngredients").child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserIngredient");
+        reference1.child("" + userId).child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() != null) {
                     exists.set(true);
@@ -249,7 +253,7 @@ public class User {
             }
         });
         if (exists.get()) {
-            reference.child(username).child("favoriteIngredients").child(String.valueOf(ingredientId)).removeValue();
+            reference.child("" + userId).child(String.valueOf(ingredientId)).removeValue();
         }
     }
 
@@ -284,5 +288,57 @@ public class User {
                 Log.e("User forgetPassword", task.getException().getMessage());
             }
         });
+    }
+
+    public void getFavoriteRecipesFromFirebase() {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
+        reference1.child("" + userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    for (DataSnapshot child : task.getResult().getChildren()) {
+                        if (child.getValue() != null) {
+                            favoriteRecipes.add(Integer.parseInt(child.getKey()));
+                        }
+                    }
+                } else {
+                    Log.i("User getFavoriteRecipesFromFirebase", "No favorite recipes");
+                }
+            } else {
+                System.out.println("User getFavoriteRecipesFromFirebase: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    public void getFavoriteIngredientsFromFirebase() {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserIngredient");
+        reference1.child("" + userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    for (DataSnapshot child : task.getResult().getChildren()) {
+                        if (child.getValue() != null) {
+                            favoriteIngredients.add(Integer.parseInt(child.getKey()));
+                        }
+                    }
+                } else {
+                    Log.i("User getFavoriteIngredientsFromFirebase", "No favorite ingredients");
+                }
+            } else {
+                System.out.println("User getFavoriteIngredientsFromFirebase: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", favoriteRecipes=" + favoriteRecipes +
+                ", favoriteIngredients=" + favoriteIngredients +
+                '}';
     }
 }
