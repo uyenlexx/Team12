@@ -6,8 +6,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class MyViewPagerAdapter extends FragmentStateAdapter {
-    public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    private Fragment menuFragment;
+    public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, Fragment fragment) {
         super(fragmentActivity);
+        this.menuFragment = fragment;
     }
 
     @NonNull
@@ -15,11 +17,11 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new FragmentDailyMenu();
+                return new FragmentDailyMenu(menuFragment);
             case 1:
-                return new FragmentWeeklyMenu();
+                return new FragmentWeeklyMenu(menuFragment);
         }
-        return new FragmentDailyMenu();
+        return new FragmentDailyMenu(menuFragment);
     }
 
     @Override

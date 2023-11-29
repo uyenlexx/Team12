@@ -83,6 +83,20 @@ public class FragmentMealCalculator extends Fragment {
                         });
             }
         });
+        captureImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImagePicker.Companion.with(FragmentMealCalculator.this)
+                        .saveDir(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+                        .crop()
+                        .compress(1024)
+                        .maxResultSize(1080, 1080)
+                        .createIntent(intent -> {
+                            displayCaptureResult.launch(intent);
+                            return null;
+                        });
+            }
+        });
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

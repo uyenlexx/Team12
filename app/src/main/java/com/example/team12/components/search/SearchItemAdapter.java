@@ -47,12 +47,23 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
                 .apply(new RequestOptions().override(300, 300))
                 .error(R.drawable.img_trending_1)
                 .into(holder.itemImg);
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchListItem.get(position).onClick(view);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return searchListItem.size();
+    }
+
+    public void setFilter(ArrayList<IngredientList> searchItem) {
+        searchListItem = new ArrayList<>();
+        searchListItem.addAll(searchItem);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
