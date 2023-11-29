@@ -1,5 +1,6 @@
 package com.example.team12.components.user;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,9 @@ import com.example.team12.R;
 import com.example.team12.components.FragmentUser;
 import com.example.team12.entity.ListVariable;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class FragmentUserEditProfile extends Fragment {
     Toolbar toolbar;
     EditText name;
@@ -27,6 +31,7 @@ public class FragmentUserEditProfile extends Fragment {
     Button saveButton;
     Button cancelButton;
     FragmentUserProfile userProfile;
+    Calendar calendar = Calendar.getInstance();
 
     public FragmentUserEditProfile(FragmentUserProfile userProfile) {
         this.userProfile = userProfile;
@@ -55,6 +60,24 @@ public class FragmentUserEditProfile extends Fragment {
 
         saveButton = view.findViewById(R.id.profile_save_btn);
         cancelButton = view.findViewById(R.id.profile_cancel_btn);
+
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DATE, day);
+                updateLabel();
+            }
+        };
+
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), date, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE)).show();
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,5 +116,11 @@ public class FragmentUserEditProfile extends Fragment {
                         .commit();
             }
         });
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+        dob.setText(sdf.format(calendar.getTime()));
     }
 }
