@@ -1,5 +1,6 @@
 package com.example.team12.components.user;
 
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,15 @@ import androidx.fragment.app.Fragment;
 import com.example.team12.R;
 import com.example.team12.components.FragmentSearch;
 import com.example.team12.components.FragmentUser;
+import com.google.android.material.slider.Slider;
 
 public class FragmentUserSettings extends Fragment {
     Toolbar toolbar3;
+    Slider screenSlider;
+    Slider volumeSlider;
+
+    AudioManager audioManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -26,6 +33,8 @@ public class FragmentUserSettings extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         toolbar3 = view.findViewById(R.id.settings_toolbar);
+        screenSlider = view.findViewById(R.id.setting1_slider);
+        volumeSlider = view.findViewById(R.id.setting2_slider);
 
         toolbar3.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

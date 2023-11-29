@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+
 public class Ingredient {
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
     private static int totalIngredients = 0;
@@ -123,10 +125,10 @@ public class Ingredient {
                 totalIngredients = (int) dataSnapshot.getChildrenCount();
                 maxIngredientId = 0;
                 int i = 0;
-                ListVariable.ingredientList = new Ingredient[totalIngredients];
+                ListVariable.ingredientList = Arrays.asList(new Ingredient[totalIngredients]);
                 for (DataSnapshot ingredientSnapshot : dataSnapshot.getChildren()) {
                     Ingredient ingredient = ingredientSnapshot.getValue(Ingredient.class);
-                    ListVariable.ingredientList[i] = ingredient;
+                    ListVariable.ingredientList.set(i, ingredient);
                     i++;
                     if (ingredient.getIngredientId() > maxIngredientId) {
                         maxIngredientId = ingredient.getIngredientId();

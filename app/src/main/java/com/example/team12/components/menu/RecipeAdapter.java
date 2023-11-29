@@ -20,8 +20,10 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<RecipeModelClass> recipesList;
-    public RecipeAdapter(List<RecipeModelClass> recipesList) {
+    RecycleViewInterface recycleViewInterface;
+    public RecipeAdapter(List<RecipeModelClass> recipesList, RecycleViewInterface recycleViewInterface) {
         this.recipesList = recipesList;
+        this.recycleViewInterface = recycleViewInterface;
     }
 
     @NonNull
@@ -38,6 +40,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.header.setText(recipesList.get(position).header);
         holder.recipeName.setText(recipesList.get(position).recipeName);
         holder.recipeCalories.setText(recipesList.get(position).recipeCalories);
+
+        holder.recipeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recycleViewInterface.onRecipeClick(recipesList.get(position));
+            }
+        });
     }
 
     @Override
@@ -49,10 +58,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
         CardView recipeCard;
         ImageView recipeImage;
-
         TextView header;
         TextView recipeName;
         TextView recipeCalories;
+
         public RecipeViewHolder(View itemView) {
             super(itemView);
             recipeCard = itemView.findViewById(R.id.item_cv);
@@ -61,5 +70,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             recipeName = itemView.findViewById(R.id.item_name);
             recipeCalories = itemView.findViewById(R.id.item_calories);
         }
+    }
+
+    public interface RecycleViewInterface {
+        void onRecipeClick(RecipeModelClass recipe);
     }
 }

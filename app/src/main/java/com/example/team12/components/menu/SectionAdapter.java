@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
-import com.example.team12.components.recycleview.RecycleViewInterface;
 import com.google.android.gms.common.data.DataHolder;
 
 import java.util.List;
 
-public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> implements RecycleViewInterface {
+public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> {
     List<SectionModelClass> mList;
 
     public SectionAdapter(List<SectionModelClass> mList) {
@@ -44,7 +43,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
         if (isExpandable)
             holder.expandArrow.setRotation(90);
 
-        RecipeAdapter recipeAdapter = new RecipeAdapter(mList.get(position).recipeList);
+        RecipeAdapter recipeAdapter = new RecipeAdapter(sectionList.recipeList, null);
         holder.sectionExpandableList.setLayoutManager(new LinearLayoutManager(
                 holder.itemView.getContext(), RecyclerView.VERTICAL, false));
         holder.sectionExpandableList.setAdapter(recipeAdapter);
@@ -77,10 +76,5 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
             expandArrow = itemView.findViewById(R.id.section_arrow);
             sectionExpandableList = itemView.findViewById(R.id.expanded_rv);
         }
-    }
-
-    @Override
-    public void onRecipeClick(int position) {
-
     }
 }

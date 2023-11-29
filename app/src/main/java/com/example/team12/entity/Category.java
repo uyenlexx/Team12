@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+
 public class Category {
     public static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Categories");
     public static int totalCategories = 0;
@@ -68,10 +70,10 @@ public class Category {
                 totalCategories = (int) dataSnapshot.getChildrenCount();
                 maxCategoryId = 0;
                 int i = 0;
-                ListVariable.categoryList = new Category[totalCategories];
+                ListVariable.categoryList = Arrays.asList(new Category[totalCategories]);
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Category category = snapshot.getValue(Category.class);
-                    ListVariable.categoryList[i] = category;
+                    ListVariable.categoryList.set(i, category);
                     if (category.getCategoryId() > maxCategoryId) {
                         maxCategoryId = category.getCategoryId();
                     }

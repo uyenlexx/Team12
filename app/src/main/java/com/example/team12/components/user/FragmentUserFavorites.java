@@ -37,11 +37,11 @@ public class FragmentUserFavorites extends Fragment {
         favoriteList = view.findViewById(R.id.favorite_list_rv);
         favoriteRecipesList = new ArrayList<>();
 
-        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_1), "Breakfast", "Recipe 1", "500kcal"));
-        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_2), "Lunch", "Recipe 2", "500kcal"));
-        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_3), "Dinner", "Recipe 3", "500kcal"));
+        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_1), "", "Recipe 1", "500kcal"));
+        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_2), "", "Recipe 2", "500kcal"));
+        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_3), "", "Recipe 3", "500kcal"));
 
-        RecipeAdapter adapter = new RecipeAdapter(favoriteRecipesList);
+        RecipeAdapter adapter = new RecipeAdapter(favoriteRecipesList, null);
         favoriteList.setLayoutManager(new LinearLayoutManager(getContext()));
         favoriteList.setAdapter(adapter);
         adapter.notifyDataSetChanged();

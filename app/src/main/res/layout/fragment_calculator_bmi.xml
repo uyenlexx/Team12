@@ -132,5 +132,5 @@
         android:text="{result}"
         android:textColor="@color/light_blue"
         android:textSize="25dp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 </RelativeLayout>
