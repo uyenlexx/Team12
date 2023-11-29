@@ -144,7 +144,7 @@ public class FragmentSignup extends Fragment {
                                                 if (task.isSuccessful()) {
 
                                                     // Sign in success, update UI with the signed-in user's information
-                                                    User user = new User(name, dob, email, username, password);
+                                                    User user = new User(name, dob, email, username);
                                                     user.addUserToFirebase();
                                                     builder.setMessage("Account created successfully")
                                                             .setTitle("Welcome to Calo4U");
@@ -202,8 +202,7 @@ public class FragmentSignup extends Fragment {
 //        signupButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-////                Recipe recipe = new Recipe(1, "name1", "imageURL", "categoryId", "calories", "description", "steps", "adminId", new String[]{"A", "b", "c"});
-////                recipe.getAllRecipeIngredient();
+//                User.forgetPassword("tranngocanhquan04@gmail.com");
 //            }
 //        });
 

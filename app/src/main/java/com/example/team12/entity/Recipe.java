@@ -41,6 +41,7 @@ public class Recipe {
         this.categoryId = categoryId;
         this.description = description;
         this.userId = userId;
+        this.viewCount = 0;
     }
 
     public Recipe() {
@@ -50,6 +51,7 @@ public class Recipe {
         this.categoryId = 0;
         this.description = "description";
         this.userId = 0;
+        this.viewCount = 0;
     }
 
     // Getters
@@ -155,24 +157,28 @@ public class Recipe {
 //        future.thenRun(this::saveRecipe);
 //    }
 
-    public void onUserClicked() {
+    public void increaseViewCount() {
         Map<String, Object> updates = new HashMap<>();
         updates.put("" + this.recipeId + "/viewCount", ServerValue.increment(1));
         reference.updateChildren(updates);
     }
 
-    public void getRecipeByViewCount() {
-        reference.orderByChild("viewCount").limitToLast(10).get().addOnCompleteListener(task -> {
+    public static void getRecipeByViewCount() {
+        reference.orderByChild("viewCount").limitToLast(5).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ListVariable.trendingRecipeList.clear();
                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                     Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                    ListVariable.recipeList.add(recipe);
+                    ListVariable.trendingRecipeList.add(recipe);
                 }
             } else {
                 Log.e("Recipe getRecipeByViewCount", task.getException().getMessage());
             }
         });
+        for (Recipe recipe : ListVariable.trendingRecipeList) {
+            Log.i("Recipe getRecipeByViewCount", recipe.toString());
+        }
+        Log.i("Recipe getRecipeByViewCount", "Total trending recipe: " + ListVariable.trendingRecipeList.size());
     }
 
     public static List<Recipe> getRecipeByCategory(int _categoryId) {
@@ -245,5 +251,18 @@ public class Recipe {
             }
         });
         RecipeDetail.removeRecipeDetailFromFirebase(recipeId);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "recipeId=" + recipeId +
+                ", recipeName='" + recipeName + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                ", categoryId=" + categoryId +
+                ", description='" + description + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 }

@@ -16,4 +16,5 @@ public class ListVariable {
     public static User currentUser = null;
 
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
 }
