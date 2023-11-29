@@ -1,27 +1,22 @@
 package com.example.team12.entity;
 
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
-import com.example.team12.components.listener.OnGetDataListener;
-import com.google.firebase.database.ChildEventListener;
+import com.example.team12.components.listener.RecipeDetailCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.Nullable;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public class Recipe {
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Recipes");
@@ -147,7 +142,7 @@ public class Recipe {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() == null) {
                     Log.i("Recipe saveRecipeToFirebase", "Recipe does not exist");
-                    reference.child(String.valueOf(this.recipeName) + " - " + this.recipeId).setValue(this);
+                    reference.child("" + this.recipeId).setValue(this);
                 } else {
                     Log.i("Recipe saveRecipeToFirebase", "Recipe exists");
                 }
@@ -287,21 +282,6 @@ public class Recipe {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("Recipe getRecipeFromFirebase", error.getMessage());
-            }
-        });
-    }
-
-    public static void mReadRecipe(final OnGetDataListener listener) {
-        listener.onStart();
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listener.onSuccess(snapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                listener.onFailure(error);
             }
         });
     }

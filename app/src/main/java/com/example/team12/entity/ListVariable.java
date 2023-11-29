@@ -15,6 +15,9 @@ public class ListVariable {
     public static List<Recipe> trendingRecipeList = new ArrayList<>();
     public static User currentUser = null;
 
+    public static Recipe currentRecipe = null;
+    public static Ingredient currentIngredient = null;
+
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 }
