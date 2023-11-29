@@ -58,7 +58,7 @@ public class FragmentUser extends Fragment {
                 FragmentUserFavorites fragment = new FragmentUserFavorites();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_user, fragment)
-                        .addToBackStack(null)
+//                        .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }

@@ -38,6 +38,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.header.setText(recipesList.get(position).header);
         holder.recipeName.setText(recipesList.get(position).recipeName);
         holder.recipeCalories.setText(recipesList.get(position).recipeCalories);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recipesList.get(position).onClick(view);
+            }
+        });
     }
 
     @Override

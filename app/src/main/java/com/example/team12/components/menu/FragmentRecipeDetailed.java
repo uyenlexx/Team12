@@ -22,9 +22,10 @@ import java.util.Objects;
 public class FragmentRecipeDetailed extends Fragment {
     Toolbar toolbar2;
     int backFrame;
-
-    public FragmentRecipeDetailed(int backFrame) {
+    Fragment backFragment;
+    public FragmentRecipeDetailed(int backFrame, Fragment backFragment) {
         this.backFrame = backFrame;
+        this.backFragment = backFragment;
     }
 
 //    TextView step;
@@ -51,18 +52,19 @@ public class FragmentRecipeDetailed extends Fragment {
             @Override
             public void onClick(View v) {
                 //go back to fragment search
-                if (backFrame == R.id.frame_layout_search) {
-                    FragmentSearch fragment = new FragmentSearch();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(backFrame, fragment)
-                            .commit();
-                }
-                else if (backFrame == R.id.frame_layout_main) {
-                    FragmentHome fragment = new FragmentHome();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(backFrame, fragment)
-                            .commit();
-                }
+//                if (backFrame == R.id.frame_layout_search) {
+//                    FragmentSearch fragment = new FragmentSearch();
+//                    getActivity().getSupportFragmentManager().beginTransaction()
+//                            .replace(backFrame, fragment)
+//                            .commit();
+//                }
+//                else if (backFrame == R.id.frame_layout_main) {
+//                    FragmentHome fragment = new FragmentHome();
+//
+//                }
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(backFrame, backFragment)
+                        .commit();
                 // ---------------------------------------------------------
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.popBackStack();

@@ -31,7 +31,7 @@ public class FragmentMenu extends Fragment {
 
         tabLayout = menuView.findViewById(R.id.tab_layout);
         viewPager2 = menuView.findViewById(R.id.view_pager);
-        myViewPagerAdapter = new MyViewPagerAdapter(getActivity());
+        myViewPagerAdapter = new MyViewPagerAdapter(getActivity(), this);
         viewPager2.setAdapter(myViewPagerAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

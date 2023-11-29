@@ -15,7 +15,6 @@ public class ItemClass implements View.OnClickListener {
     public ItemClass(int image, String description) {
         this.image = image;
         this.description = description;
-        this.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main);
     }
 
     @Override

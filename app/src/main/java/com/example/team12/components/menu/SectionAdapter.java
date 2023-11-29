@@ -36,6 +36,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
 
     @Override
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
+//        position = holder.getBindingAdapterPosition();
         SectionModelClass sectionList = mList.get(position);
         holder.sectionTitle.setText(mList.get(position).itemText);
 
@@ -44,7 +45,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
         if (isExpandable)
             holder.expandArrow.setRotation(90);
 
-        RecipeAdapter recipeAdapter = new RecipeAdapter(mList.get(position).recipeList);
+//        RecipeAdapter recipeAdapter = new RecipeAdapter(mList.get(position).recipeList);
+        RecipeAdapter recipeAdapter = mList.get(position).recipeList;
         holder.sectionExpandableList.setLayoutManager(new LinearLayoutManager(
                 holder.itemView.getContext(), RecyclerView.VERTICAL, false));
         holder.sectionExpandableList.setAdapter(recipeAdapter);
@@ -53,11 +55,15 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
             public void onClick(View v) {
                 sectionList.isExpandable = !(sectionList.isExpandable);
                 mList.get(position).recipeList = sectionList.recipeList;
-                notifyItemChanged(holder.getAdapterPosition());
+                notifyItemChanged(holder.getBindingAdapterPosition());
             }
         });
-
-
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     @Override

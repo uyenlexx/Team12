@@ -56,4 +56,8 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void screenTransaction() {
+
+    }
 }

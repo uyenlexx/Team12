@@ -47,6 +47,7 @@ public class FragmentHome extends Fragment {
 
     private void addItems(int image, String description) {
         ItemClass itemClass = new ItemClass(image, description);
+        itemClass.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, this);
         itemClass.ItemInterfaceClick(new ItemInterface() {
             @Override
             public void onClick(View view, boolean isLongPressed) {
