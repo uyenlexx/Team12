@@ -1,5 +1,7 @@
 package com.example.team12.entity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class ListVariable {
     public static List<MealPlan> mealPlanList = new ArrayList<>();
     public static List<Category> categoryList = new ArrayList<>();
     public static List<Recipe> trendingRecipeList = new ArrayList<>();
-    public static RecipeIngredient[] recipeIngredientList = new RecipeIngredient[100];
-    public static UserFavoriteIngredient[] userFavoriteIngredientList = new UserFavoriteIngredient[100];
-    public static UserFavoriteRecipe[] userFavoriteRecipeList = new UserFavoriteRecipe[100];
+    public static User currentUser = null;
+
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 }

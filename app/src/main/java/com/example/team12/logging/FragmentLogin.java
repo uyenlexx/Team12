@@ -148,6 +148,7 @@ public class FragmentLogin extends Fragment {
             Task<GoogleSignInAccount> task = com.google.android.gms.auth.api.signin.GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d("FRAGMENTLOGIN", "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuth(account.getIdToken());
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Sign in failed.", Toast.LENGTH_SHORT).show();

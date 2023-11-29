@@ -16,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
 
+import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
+import com.example.team12.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -42,7 +44,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class FragmentSignup extends Fragment {
-    FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference reference, existedUsername;
     Button signupButton, signupGoogleButton;
@@ -74,143 +75,137 @@ public class FragmentSignup extends Fragment {
         signupGoogleButton = (Button) signUpView.findViewById(R.id.signup_button_2);
 
         loginTextView = (TextView) signUpView.findViewById(R.id.have_account_2);
-        mAuth = FirebaseAuth.getInstance();
+        ListVariable.firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/");
         reference = database.getReference();
         existedUsername = database.getReference().child("Users");
 
 
-//        signupButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                name = nameEditText.getText().toString();
-//                dob = dobEditText.getText().toString();
-//                email = emailEditText.getText().toString();
-//                username = usernameEditText.getText().toString();
-//                password = passwordEditText.getText().toString();
-//
-//                if (!isValidName(name)) {
-//                    nameEditText.setError("Invalid name");
-//                    nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                    nameEditText.requestFocus();
-//                    return;
-//                }
-//                nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//
-//                if (!isValidDOB(dob)) {
-//                    dobEditText.setError("Invalid date of birth");
-//                    dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                    dobEditText.requestFocus();
-//                    return;
-//                }
-//                dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//
-//                if (!isValidUsername(username)) {
-//                    usernameEditText.setError("Invalid username");
-//                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                    usernameEditText.requestFocus();
-//                    return;
-//                }
-//                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//
-//                editor.putString("name", name);
-//                editor.putString("dob", dob);
-//                editor.putString("email", email);
-//                editor.putString("username", username);
-//                editor.putString("password", password);
-//                editor.apply();
-//
-//                DatabaseReference userNameRef = existedUsername.child(username);
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                userNameRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DataSnapshot> task1) {
-//                        if (task1.isSuccessful()) {
-//                            DataSnapshot snapshot = task1.getResult();
-//                            if (snapshot.exists()) {
-//                                usernameEditText.setError("Username already existed");
-//                                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                                usernameEditText.requestFocus();
-//                                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//                                Log.d("EXISTEDNAME", username);
-//                            } else {
-//                                mAuth.createUserWithEmailAndPassword(email, password)
-//                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                                                if (task.isSuccessful()) {
-//
-//                                                    // Sign in success, update UI with the signed-in user's information
-//                                                    HashMap<String, String> user = new HashMap<>();
-//                                                    user.put("uid", Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-//                                                    user.put("name", name);
-//                                                    user.put("email", email);
-//                                                    user.put("Date of birth", dob);
-//                                                    reference.child("Users")
-//                                                            .child(username)
-//                                                            .setValue(user);
-//                                                    builder.setMessage("Account created successfully")
-//                                                            .setTitle("Welcome to Calo4U");
-//
-//                                                    AlertDialog dialog = builder.create();
-//                                                    dialog.show();
-//
-//                                                    ((LoggingActivity) getActivity()).replaceFragment(true);
-//                                                    Log.d("NAMEOFTHEUSER", String.valueOf(existedUsername));
-//
-//                                                } else {
-//                                                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
-//
-//                                                    switch (errorCode) {
-//
-//                                                        case "ERROR_INVALID_EMAIL":
-//                                                            emailEditText.setError("Invalid Email");
-//                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                                                            emailEditText.requestFocus();
-//                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//                                                            break;
-//
-//                                                        case "ERROR_EMAIL_ALREADY_IN_USE":
-//                                                            emailEditText.setError("Email already existed!");
-//                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                                                            emailEditText.requestFocus();
-//                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//                                                            break;
-//
-//                                                        case "ERROR_WEAK_PASSWORD":
-//                                                            passwordEditText.setError("Password must be at least 6 characters long");
-//                                                            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
-//                                                            passwordEditText.requestFocus();
-//                                                            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
-//                                                            break;
-//                                                    }
-//                                                    // If sign in fails, display a message to the user.
-//                                                    Toast.makeText(getActivity(), "Account failed to create", Toast.LENGTH_SHORT).show();
-//                                                }
-//
-//
-//                                            }
-//                                        });
-//                                Log.d("FragmentSignup Tag", "Usable");
-//                            }
-//                        } else {
-//                            Log.d("SIGNUPERROR", task1.getException().getMessage());
-//                        }
-//
-//                    }
-//                });
-//            }
-//        });
-
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Recipe recipe = new Recipe(1, "name1", "imageURL", "categoryId", "calories", "description", "steps", "adminId", new String[]{"A", "b", "c"});
-                recipe.getAllRecipeIngredient();
+                name = nameEditText.getText().toString();
+                dob = dobEditText.getText().toString();
+                email = emailEditText.getText().toString();
+                username = usernameEditText.getText().toString();
+                password = passwordEditText.getText().toString();
+
+                if (!isValidName(name)) {
+                    nameEditText.setError("Invalid name");
+                    nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    nameEditText.requestFocus();
+                    return;
+                }
+                nameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidDOB(dob)) {
+                    dobEditText.setError("Invalid date of birth");
+                    dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    dobEditText.requestFocus();
+                    return;
+                }
+                dobEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                if (!isValidUsername(username)) {
+                    usernameEditText.setError("Invalid username");
+                    usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                    usernameEditText.requestFocus();
+                    return;
+                }
+                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+
+                editor.putString("name", name);
+                editor.putString("dob", dob);
+                editor.putString("email", email);
+                editor.putString("username", username);
+                editor.putString("password", password);
+                editor.apply();
+
+                DatabaseReference userNameRef = existedUsername.child(username);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                userNameRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task1) {
+                        if (task1.isSuccessful()) {
+                            DataSnapshot snapshot = task1.getResult();
+                            if (snapshot.exists()) {
+                                usernameEditText.setError("Username already existed");
+                                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                usernameEditText.requestFocus();
+                                usernameEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                Log.d("EXISTEDNAME", username);
+                            } else {
+                                ListVariable.firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                                if (task.isSuccessful()) {
+
+                                                    // Sign in success, update UI with the signed-in user's information
+                                                    User user = new User(name, dob, email, username, password);
+                                                    user.addUserToFirebase();
+                                                    builder.setMessage("Account created successfully")
+                                                            .setTitle("Welcome to Calo4U");
+
+                                                    AlertDialog dialog = builder.create();
+                                                    dialog.show();
+
+                                                    ((LoggingActivity) getActivity()).replaceFragment(true);
+                                                    Log.d("NAMEOFTHEUSER", String.valueOf(existedUsername));
+
+                                                } else {
+                                                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+
+                                                    switch (errorCode) {
+
+                                                        case "ERROR_INVALID_EMAIL":
+                                                            emailEditText.setError("Invalid Email");
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                            emailEditText.requestFocus();
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                                            break;
+
+                                                        case "ERROR_EMAIL_ALREADY_IN_USE":
+                                                            emailEditText.setError("Email already existed!");
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                            emailEditText.requestFocus();
+                                                            emailEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                                            break;
+
+                                                        case "ERROR_WEAK_PASSWORD":
+                                                            passwordEditText.setError("Password must be at least 6 characters long");
+                                                            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border_red, null));
+                                                            passwordEditText.requestFocus();
+                                                            passwordEditText.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.edit_text_border, null));
+                                                            break;
+                                                    }
+                                                    // If sign in fails, display a message to the user.
+                                                    Toast.makeText(getActivity(), "Account failed to create", Toast.LENGTH_SHORT).show();
+                                                }
+
+
+                                            }
+                                        });
+                                Log.d("FragmentSignup Tag", "Usable");
+                            }
+                        } else {
+                            Log.d("SIGNUPERROR", task1.getException().getMessage());
+                        }
+
+                    }
+                });
             }
         });
+
+//        signupButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Recipe recipe = new Recipe(1, "name1", "imageURL", "categoryId", "calories", "description", "steps", "adminId", new String[]{"A", "b", "c"});
+////                recipe.getAllRecipeIngredient();
+//            }
+//        });
 
         dobEditText.setOnClickListener(new View.OnClickListener() {
             @Override

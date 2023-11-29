@@ -1,5 +1,6 @@
 package com.example.team12.entity;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.google.firebase.database.DataSnapshot;
@@ -7,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RecipeDetail {
@@ -145,9 +147,71 @@ public class RecipeDetail {
         reference.child(String.valueOf(this.recipeDetailId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() == null) {
-                    reference.child(String.valueOf(this.recipeDetailId)).setValue(this);
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("recipeDetailId", this.recipeDetailId);
+                    hashMap.put("protein", this.protein);
+                    hashMap.put("calories", this.calories);
+                    hashMap.put("fat", this.fat);
+                    hashMap.put("carbs", this.carbs);
+                    hashMap.put("steps", this.steps);
+                    if (this.ingredientList != null) {
+                        for (Pair<Integer, Integer> ingredient : this.ingredientList) {
+                            hashMap.put("Ingredient/" + ingredient.first, ingredient.second);
+                        }
+                    }
+                    reference.child(String.valueOf(this.recipeDetailId)).setValue(hashMap);
                 }
             }
         });
+    }
+
+    public void updateRecipeDetailToFirebase() {
+        reference.child(String.valueOf(this.recipeDetailId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("protein", this.protein);
+                    hashMap.put("calories", this.calories);
+                    hashMap.put("fat", this.fat);
+                    hashMap.put("carbs", this.carbs);
+                    hashMap.put("steps", this.steps);
+                    reference.child(String.valueOf(this.recipeDetailId)).updateChildren(hashMap);
+                }
+            }
+        });
+    }
+
+    public static void removeRecipeDetailFromFirebase(int recipeDetailId) {
+        reference.child(String.valueOf(recipeDetailId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    reference.child(String.valueOf(recipeDetailId)).removeValue().addOnSuccessListener(aVoid -> {
+                        Log.i("RecipeDetail removeRecipeDetailFromFirebase", "RecipeDetail removed successfully");
+                    }).addOnFailureListener(e -> {
+                        Log.e("RecipeDetail removeRecipeDetailFromFirebase", e.getMessage());
+                    });
+                }
+            }
+        });
+    }
+
+    public void calculateNutrition() {
+        if (this.ingredientList != null) {
+            this.protein = 0;
+            this.calories = 0;
+            this.fat = 0;
+            this.carbs = 0;
+            for (Pair<Integer, Integer> ingredient : this.ingredientList) {
+                IngredientDetail tempIngredientDetail = new IngredientDetail();
+                tempIngredientDetail.getIngredientDetail(ingredient.first);
+                this.protein += tempIngredientDetail.getProtein() * ingredient.second;
+                this.calories += tempIngredientDetail.getCalories() * ingredient.second;
+                this.fat += tempIngredientDetail.getFat() * ingredient.second;
+                this.carbs += tempIngredientDetail.getCarbs() * ingredient.second;
+            }
+            updateRecipeDetailToFirebase();
+        } else {
+            Log.e("RecipeDetail calculateNutrition", "Ingredient list is null");
+        }
     }
 }

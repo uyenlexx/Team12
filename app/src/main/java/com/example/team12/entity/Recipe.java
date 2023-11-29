@@ -133,77 +133,10 @@ public class Recipe {
         });
     }
 
-//    public CompletableFuture<Void> getTotalRecipe() {
-//        CompletableFuture<Void> future = new CompletableFuture<>();
-//        reference.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                maxRecipeId = 0;
-//                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-//                    Recipe recipe = new Recipe();
-//                    recipe.setRecipeName(dataSnapshot.child("recipeName").getValue(String.class));
-//                    recipe.setRecipeId(dataSnapshot.child("recipeId").getValue(Integer.class));
-//                    recipe.setImageURL(dataSnapshot.child("imageURL").getValue(String.class));
-//                    recipe.setCategoryId(dataSnapshot.child("categoryId").getValue(Integer.class));
-//                    recipe.setProtein(dataSnapshot.child("protein").getValue(Integer.class));
-//                    recipe.setCalories(dataSnapshot.child("calories").getValue(Integer.class));
-//                    recipe.setFat(dataSnapshot.child("fat").getValue(Integer.class));
-//                    recipe.setCarbs(dataSnapshot.child("carbs").getValue(Integer.class));
-//                    recipe.setDescription(dataSnapshot.child("description").getValue(String.class));
-//                    recipe.setSteps(dataSnapshot.child("steps").getValue(String.class));
-//                    recipe.setUserId(dataSnapshot.child("userId").getValue(Integer.class));
-//                    recipe.setViewCount(dataSnapshot.child("viewCount").getValue(Integer.class));
-//                    List<Pair<Integer, Integer>> tempingredientList = new ArrayList<>();
-//                    for (DataSnapshot ingredientSnapshot : dataSnapshot.child("Ingredient").getChildren()) {
-//                        Pair<Integer, Integer> ingredient = new Pair<>(Integer.parseInt(ingredientSnapshot.getKey()), ingredientSnapshot.getValue(Integer.class));
-//                        tempingredientList.add(ingredient);
-//                    }
-//                    recipe.setIngredientList(tempingredientList);
-//                    ListVariable.recipeList.add(recipe);
-//                    if (recipe.getRecipeId() > maxRecipeId) {
-//                        maxRecipeId = recipe.getRecipeId();
-//                    }
-//                }
-//                totalRecipes = (int) task.getResult().getChildrenCount();
-//                Log.i("Recipe getTotalRecipe", "Total recipe: " + totalRecipes);
-//                future.complete(null);
-//            } else {
-//                Log.e("Recipe getTotalRecipe", task.getException().getMessage());
-//                future.completeExceptionally(task.getException());
-//            }
-//        });
-//        return future;
-//    }
-
-    public void getAllRecipeIngredient() {
-        reference.child("name1 - 0").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                //Get all ingredient, ingredient is a list
-                task.getResult().child("Ingredient").getChildren().forEach(ingredient -> {
-                    Log.i("Recipe getAllRecipeIngredient", ingredient.getKey());
-                });
-
-            } else {
-                Log.e("Recipe getAllRecipeIngredient", task.getException().getMessage());
-            }
-        });
-        reference.orderByChild("recipeId").equalTo(3).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                task.getResult().getChildren().forEach(recipe -> {
-                    Log.i("Recipe getAllRecipeIngredient", recipe.child("recipeName").getValue(String.class));
-                    recipe.child("Ingredient").getChildren().forEach(ingredient -> {
-                        Log.i("Recipe getAllRecipeIngredient", ingredient.getKey());
-                    });
-                });
-            } else {
-                Log.e("Recipe getAllRecipeIngredient", task.getException().getMessage());
-            }
-        });
-    }
-
     public void saveRecipe() {
         Log.i("Recipe saveRecipeToFirebase", "Total recipe: " + totalRecipes + " - Max recipe id: " + maxRecipeId);
         this.recipeId = maxRecipeId + 1;
-        reference.child(String.valueOf(this.recipeName) + " - " + this.recipeId).get().addOnCompleteListener(task -> {
+        reference.child("" + this.recipeId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() == null) {
                     Log.i("Recipe saveRecipeToFirebase", "Recipe does not exist");
@@ -224,7 +157,7 @@ public class Recipe {
 
     public void onUserClicked() {
         Map<String, Object> updates = new HashMap<>();
-        updates.put(this.recipeName + " - " + this.recipeId + "/viewCount", ServerValue.increment(1));
+        updates.put("" + this.recipeId + "/viewCount", ServerValue.increment(1));
         reference.updateChildren(updates);
     }
 
@@ -240,5 +173,77 @@ public class Recipe {
                 Log.e("Recipe getRecipeByViewCount", task.getException().getMessage());
             }
         });
+    }
+
+    public static List<Recipe> getRecipeByCategory(int _categoryId) {
+        List<Recipe> recipeList = new ArrayList<>();
+        reference.orderByChild("categoryId").equalTo(_categoryId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                    Recipe recipe = dataSnapshot.getValue(Recipe.class);
+                    recipeList.add(recipe);
+                }
+            } else {
+                Log.e("Recipe getRecipeByCategory", task.getException().getMessage());
+            }
+        });
+        return recipeList;
+    }
+
+    public static List<Recipe> getRecipeByUserId(int _userId) {
+        List<Recipe> recipeList = new ArrayList<>();
+        reference.orderByChild("userId").equalTo(_userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                    Recipe recipe = dataSnapshot.getValue(Recipe.class);
+                    recipeList.add(recipe);
+                }
+            } else {
+                Log.e("Recipe getRecipeByUserId", task.getException().getMessage());
+            }
+        });
+        return recipeList;
+    }
+
+    public void updateRecipeToFirebase() {
+        reference.child("" + this.recipeId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("recipeName", this.recipeName);
+                    hashMap.put("imageURL", this.imageURL);
+                    hashMap.put("categoryId", this.categoryId);
+                    hashMap.put("description", this.description);
+                    reference.child("" + this.recipeId).updateChildren(hashMap).addOnSuccessListener(aVoid -> {
+                        Log.i("Recipe updateRecipeToFirebase", "Recipe updated");
+                    }).addOnFailureListener(e -> {
+                        Log.e("Recipe updateRecipeToFirebase", e.getMessage());
+                    });
+                } else {
+                    Log.i("Recipe updateRecipeToFirebase", "Recipe does not exist");
+                }
+            } else {
+                Log.e("Recipe updateRecipeToFirebase", task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void removeRecipeFromFirebase(int recipeId) {
+        reference.child("" + recipeId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    reference.child("" + recipeId).removeValue().addOnSuccessListener(aVoid -> {
+                        Log.i("Recipe removeRecipeFromFirebase", "Recipe removed successfully");
+                    }).addOnFailureListener(e -> {
+                        Log.e("Recipe removeRecipeFromFirebase", e.getMessage());
+                    });
+                } else {
+                    Log.i("Recipe removeRecipeFromFirebase", "Recipe does not exist");
+                }
+            } else {
+                Log.e("Recipe removeRecipeFromFirebase", task.getException().getMessage());
+            }
+        });
+        RecipeDetail.removeRecipeDetailFromFirebase(recipeId);
     }
 }

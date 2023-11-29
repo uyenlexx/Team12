@@ -10,6 +10,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Ingredient {
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
     private static int totalIngredients = 0;
@@ -133,46 +137,42 @@ public class Ingredient {
         });
     }
 
-//    public static void getIngredientByCategory(int _categoryId) {
-//        reference.orderByChild("categoryId").equalTo(_categoryId).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-//                    Ingredient ingredient = dataSnapshot.getValue(Ingredient.class);
-//                    if (ingredient != null) {
-//                        //Check if Value already exists
-//                        boolean exists = false;
-//                        for (Ingredient ingredient1 : ListVariable.ingredientList) {
-//                            if (ingredient1.getIngredientId() == ingredient.getIngredientId()) {
-//                                if (ingredient1 == ingredient) {
-//                                    exists = true;
-//                                    break;
-//                                }
-//                                else {
-//                                    ListVariable.ingredientList.remove(ingredient1);
-//                                    ListVariable.ingredientList.add(ingredient);
-//                                    exists = true;
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        if (!exists) {
-//                            ListVariable.ingredientList.add(ingredient);
-//                        }
-//                    }
-//                }
-//            }
-//            else {
-//                Log.e("Ingredient getIngredientByCategory", task.getException().getMessage());
-//            }
-//        });
-//    }
+    public static List<Ingredient> getIngredientByCategory(int _categoryId) {
+        List<Ingredient> ingredientList = new ArrayList<>();
+        reference.orderByChild("categoryId").equalTo(_categoryId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                    Ingredient ingredient = dataSnapshot.getValue(Ingredient.class);
+                    ingredientList.add(ingredient);
+                }
+            } else {
+                Log.e("Ingredient getIngredientByCategory", task.getException().getMessage());
+            }
+        });
+        return ingredientList;
+    }
+
+    public static List<Ingredient> getIngredientByUserId(int _userId) {
+        List<Ingredient> ingredientList = new ArrayList<>();
+        reference.orderByChild("userId").equalTo(_userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                    Ingredient ingredient = dataSnapshot.getValue(Ingredient.class);
+                    ingredientList.add(ingredient);
+                }
+            } else {
+                Log.e("Ingredient getIngredientByUserId", task.getException().getMessage());
+            }
+        });
+        return ingredientList;
+    }
 
     public void saveIngredientToFirebase() {
-        reference.child(String.valueOf(this.ingredientName) + " - " + this.ingredientId).get().addOnCompleteListener(task -> {
+        reference.child("" + this.ingredientId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() == null) {
                     Log.i("Ingredient saveIngredientToFirebase", "Ingredient does not exist");
-                    reference.child(String.valueOf(this.ingredientName) + " - " + this.ingredientId).setValue(this);
+                    reference.child("" + this.ingredientId).setValue(this);
                 } else {
                     Log.i("Ingredient saveIngredientToFirebase", "Ingredient already exists");
                 }
@@ -180,5 +180,47 @@ public class Ingredient {
                 Log.e("Ingredient saveIngredientToFirebase", task.getException().getMessage());
             }
         });
+    }
+
+    public void updateIngredientToFirebase() {
+        reference.child("" + this.ingredientId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("ingredientName", this.ingredientName);
+                    hashMap.put("categoryId", this.categoryId);
+                    hashMap.put("imageURL", this.imageURL);
+                    hashMap.put("description", this.description);
+                    reference.child("" + this.ingredientId).updateChildren(hashMap).addOnSuccessListener(aVoid -> {
+                        Log.i("Ingredient updateIngredientToFirebase", "Ingredient updated");
+                    }).addOnFailureListener(e -> {
+                        Log.e("Ingredient updateIngredientToFirebase", e.getMessage());
+                    });
+                } else {
+                    Log.i("Ingredient updateIngredientToFirebase", "Ingredient does not exist");
+                }
+            } else {
+                Log.e("Ingredient updateIngredientToFirebase", task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void removeIngredientFromFirebase(int ingredientId) {
+        reference.child("" + ingredientId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    reference.child("" + ingredientId).removeValue().addOnSuccessListener(aVoid -> {
+                        Log.i("Ingredient removeIngredientFromFirebase", "Ingredient removed successfully");
+                    }).addOnFailureListener(e -> {
+                        Log.e("Ingredient removeIngredientFromFirebase", e.getMessage());
+                    });
+                } else {
+                    Log.i("Ingredient removeIngredientFromFirebase", "Ingredient does not exist");
+                }
+            } else {
+                Log.e("Ingredient removeIngredientFromFirebase", task.getException().getMessage());
+            }
+        });
+        IngredientDetail.removeIngredientDetailFromFirebase(ingredientId);
     }
 }

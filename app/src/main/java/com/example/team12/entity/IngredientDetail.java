@@ -1,8 +1,12 @@
 package com.example.team12.entity;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class IngredientDetail {
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("IngredientDetails");
@@ -11,13 +15,17 @@ public class IngredientDetail {
     private float protein;
     private float calories;
     private float fat;
+    private float carbs;
+    private String description;
 
-    public IngredientDetail(int ingredientDetailId, int unit, float protein, float calories, float fat) {
+    public IngredientDetail(int ingredientDetailId, int unit, float protein, float calories, float fat, float carbs, String description) {
         this.ingredientDetailId = ingredientDetailId;
         this.unit = unit;
         this.protein = protein;
         this.calories = calories;
         this.fat = fat;
+        this.carbs = carbs;
+        this.description = description;
     }
 
     public IngredientDetail() {
@@ -26,6 +34,8 @@ public class IngredientDetail {
         this.protein = 0;
         this.calories = 0;
         this.fat = 0;
+        this.carbs = 0;
+        this.description = "";
     }
 
     // Getters
@@ -47,6 +57,14 @@ public class IngredientDetail {
 
     public float getFat() {
         return fat;
+    }
+
+    public float getCarbs() {
+        return carbs;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     // Setters
@@ -71,7 +89,15 @@ public class IngredientDetail {
         this.fat = fat;
     }
 
-    public static void getIngredientDetail(int ingredientId) {
+    public void setCarbs(float carbs) {
+        this.carbs = carbs;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void getIngredientDetail(int ingredientId) {
         reference.orderByChild("ingredientDetailId").equalTo(ingredientId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot snapshot : task.getResult().getChildren()) {
@@ -107,6 +133,41 @@ public class IngredientDetail {
             if (task.isSuccessful()) {
                 if (task.getResult().getValue() == null) {
                     reference.child(String.valueOf(this.ingredientDetailId)).setValue(this);
+                }
+            }
+        });
+    }
+
+    public void updateIngredientDetailToFirebase() {
+        reference.child(String.valueOf(this.ingredientDetailId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    HashMap<String, Object> updateMap = new HashMap<>();
+                    updateMap.put("unit", this.unit);
+                    updateMap.put("protein", this.protein);
+                    updateMap.put("calories", this.calories);
+                    updateMap.put("fat", this.fat);
+                    updateMap.put("carbs", this.carbs);
+                    updateMap.put("description", this.description);
+                    reference.child(String.valueOf(this.ingredientDetailId)).updateChildren(updateMap).addOnSuccessListener(aVoid -> {
+                        Log.i("IngredientDetail updateIngredientDetailToFirebase", "IngredientDetail updated");
+                    }).addOnFailureListener(e -> {
+                        Log.e("IngredientDetail updateIngredientDetailToFirebase", e.getMessage());
+                    });
+                }
+            }
+        });
+    }
+
+    public static void removeIngredientDetailFromFirebase(int ingredientDetailId) {
+        reference.child(String.valueOf(ingredientDetailId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    reference.child(String.valueOf(ingredientDetailId)).removeValue().addOnSuccessListener(aVoid -> {
+                        Log.i("IngredientDetail removeIngredientDetailFromFirebase", "IngredientDetail removed successfully");
+                    }).addOnFailureListener(e -> {
+                        Log.e("IngredientDetail removeIngredientDetailFromFirebase", e.getMessage());
+                    });
                 }
             }
         });
