@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -93,6 +94,11 @@ public class Category {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 totalCategories = (int) dataSnapshot.getChildrenCount();
                 maxCategoryId = 0;
+//                int i = 0;
+//                ListVariable.categoryList = Arrays.asList(new Category[totalCategories]);
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Category category = snapshot.getValue(Category.class);
+//                    ListVariable.categoryList.set(i, category);
                 ListVariable.categoryList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Category category = snapshot.getValue(Category.class);

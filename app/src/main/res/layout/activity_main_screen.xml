@@ -6,16 +6,16 @@
 
     <FrameLayout
         android:id="@+id/frame_layout_main"
-        android:layout_width="0dp"
-        android:layout_height="0dp">
-
-    </FrameLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation_view" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@color/medium_green"
+        app:backgroundTint="@color/white"/>
 </RelativeLayout>

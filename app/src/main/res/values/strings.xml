@@ -34,6 +34,71 @@
     <string name="meal_calories">Meal calories calculator</string>
     <string name="meal_calories_desc">Get to know the calories of your meal</string>
     <string name="meal_calories_start">Start Now</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_builder">Build your own menu plan</string>
+    <string name="build_now">Build Now</string>
+    <string name="trending">Trending Recipes</string>
+    <string name="trending_1">Bún đậu mắm tôm</string>
+    <string name="trending_2">Phở</string>
+    <string name="trending_3">Bún bò Huế</string>
+    <string name="trending_4">Cơm tấm</string>
+    <string name="trending_5">Bún chả</string>
+
+    <string name="search_hint">Search for recipes, ingredients, food,...</string>
+    <string name="ingredients_category">Ingredients Category</string>
+    <string name="recipes_category">Recipes Category</string>
+    <string name="fruits">Fruits</string>
+    <string name="vegetables">Vegetables</string>
+    <string name="meat">Meat</string>
+    <string name="seafood">Seafood</string>
+    <string name="dessert">Dessert</string>
+    <string name="drink">Drinks</string>
+    <string name="grilled">Grilled</string>
+    <string name="fried">Fried</string>
+    <string name="steamed">Steamed</string>
+
+    <string name="meal_cal">Meal calories Calculator</string>
+    <string name="bmi">BMI</string>
+    <string name="bmi_cal">BMI Calculator</string>
+    <string name="gender">Gender</string>
+    <string name="height">Height (in cm)</string>
+    <string name="weight">Weight (in kg)</string>
+    <string name="calculate">Calculate</string>
+    <string name="bmi_result">Your BMI is</string>
+
+    <string-array name="food_type">
+        <item>Pork</item>
+        <item>Beef</item>
+        <item>Fish</item>
+        <item>Chicken</item>
+        <item>Bird</item>
+        <item>Paimon</item>
+        <item>Milk</item>
+        <item>Egg</item>
+    </string-array>
+
+    <string name="menu_plan">Menu plan</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+
+    <string name="calories">Calories</string>
+    <string name="protein">Protein</string>
+    <string name="carbs">Carbs</string>
+    <string name="fat">Fat</string>
+    <string name="details">Details</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="steps">Steps</string>
+    <string name="add_to_favorite">Add to Favorite</string>
+
+    <string name="profile">Profile</string>
+    <string name="favorites">Favorites</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Log out</string>
+
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+
+    <string name="setting1">Screen brightness</string>
+    <string name="setting2">Volume adjustment</string>
+
+    <string name="find">Find recipes</string>
 </resources>

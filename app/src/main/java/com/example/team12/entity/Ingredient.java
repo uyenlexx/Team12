@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,6 +121,12 @@ public class Ingredient {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 totalIngredients = (int) dataSnapshot.getChildrenCount();
                 maxIngredientId = 0;
+//                int i = 0;
+//                ListVariable.ingredientList = Arrays.asList(new Ingredient[totalIngredients]);
+//                for (DataSnapshot ingredientSnapshot : dataSnapshot.getChildren()) {
+//                    Ingredient ingredient = ingredientSnapshot.getValue(Ingredient.class);
+//                    ListVariable.ingredientList.set(i, ingredient);
+//                    i++;
                 ListVariable.ingredientList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Ingredient ingredient = snapshot.getValue(Ingredient.class);

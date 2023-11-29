@@ -70,7 +70,7 @@
         android:fontFamily="@font/nunito_black"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:background="@drawable/log_button"/>
+        android:background="@drawable/button_log"/>
 
     <TextView
         android:id="@+id/or"
@@ -97,7 +97,7 @@
         android:padding="10dp"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/ic_google"
-        android:background="@drawable/log_button"/>
+        android:background="@drawable/button_log"/>
 
     <TextView
         android:id="@+id/dont_have_account_1"
