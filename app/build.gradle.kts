@@ -64,4 +64,7 @@ dependencies {
 
     testImplementation("com.google.truth:truth:1.1.3")
     androidTestImplementation("com.google.truth:truth:1.1.3")
+
+    // for API usage
+    implementation("com.squareup.okhttp3:okhttp")
 }
