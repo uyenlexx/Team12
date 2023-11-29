@@ -35,7 +35,7 @@
                 <RelativeLayout
                     android:id="@+id/meal_cal_capture_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="270dp"
+                    android:layout_height="300dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/border_dashed">
 
@@ -53,8 +53,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/meal_cal_image"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="15dp"
                         android:fontFamily="@font/nunito_light"
+                        android:textSize="20sp"
                         android:text="@string/capture" />
                 </RelativeLayout>
             </LinearLayout>
