@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.team12.R;
 import com.example.team12.components.FragmentUser;
+import com.example.team12.entity.ListVariable;
 
 public class FragmentUserProfile extends Fragment {
     Toolbar toolbar4;
@@ -29,12 +30,11 @@ public class FragmentUserProfile extends Fragment {
         return userProfileView;
     }
 
-    public void setUserInfo(String textName, String textdob, String textEmail, String textUsername) {
-        name.setText(textName);
-        dateOfBirth.setText(textdob);
-        email.setText(textEmail);
-        username.setText(textUsername);
-        System.out.println("set text");
+    public void setUserInfo() {
+        name.setText(ListVariable.currentUser.getName());
+        dateOfBirth.setText(ListVariable.currentUser.getDateOfBirth());
+        email.setText(ListVariable.currentUser.getEmail());
+        username.setText(ListVariable.currentUser.getUsername());
     }
 
     private FragmentUserProfile getThis() {
@@ -50,7 +50,7 @@ public class FragmentUserProfile extends Fragment {
         username = view.findViewById(R.id.user_username);
         editButton = view.findViewById(R.id.profile_edit_btn);
 
-        setUserInfo("Anemo Kazuha", "29/10/2021", "ilovekazuha123@hotmail.com", "Kazuma");
+        setUserInfo();
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +72,7 @@ public class FragmentUserProfile extends Fragment {
                 FragmentUser fragment = new FragmentUser();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_user, fragment)
+                        .addToBackStack(null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }

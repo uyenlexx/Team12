@@ -28,6 +28,7 @@ public class User {
     private String dateOfBirth;
     private String email;
     private String name;
+    private String password;
 
     private List<Integer> favoriteRecipes;
     private List<Integer> favoriteIngredients;
@@ -84,6 +85,7 @@ public class User {
     public String getName() {
         return name;
     }
+    public String getPassword() { return password; }
 
     public List<Integer> getFavoriteRecipes() {
         return favoriteRecipes;
@@ -122,6 +124,7 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+    public void setPassword(String password) { this.password = password; }
 
     public void setFavoriteRecipes(List<Integer> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;

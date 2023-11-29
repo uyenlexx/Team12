@@ -10,15 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.team12.R;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.user.FragmentUserFavorites;
 import com.example.team12.components.user.FragmentUserProfile;
 import com.example.team12.components.user.FragmentUserSettings;
+import com.example.team12.entity.ListVariable;
 
 public class FragmentUser extends Fragment {
     FrameLayout frameLayout;
+    TextView username;
     CardView profileCardView;
     CardView favoritesCardView;
     CardView settingsCardView;
@@ -33,6 +36,9 @@ public class FragmentUser extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        username = view.findViewById(R.id.user_name);
+        username.setText(ListVariable.currentUser.getUsername());
 
         frameLayout = view.findViewById(R.id.frame_layout_user);
         profileCardView = view.findViewById(R.id.profile_card);

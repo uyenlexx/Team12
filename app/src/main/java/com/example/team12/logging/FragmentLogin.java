@@ -111,6 +111,7 @@ public class FragmentLogin extends Fragment {
                                                     ListVariable.currentUser.setEmail(ds.child("email").getValue().toString());
                                                     ListVariable.currentUser.setName(ds.child("name").getValue().toString());
                                                     ListVariable.currentUser.setUsername(ds.child("username").getValue().toString());
+//                                                    ListVariable.currentUser.setPassword(ds.child("pa"));
                                                 }
                                                 Log.i("FragmentLogin", "User: " + ListVariable.currentUser.toString());
                                                 future.complete(null);

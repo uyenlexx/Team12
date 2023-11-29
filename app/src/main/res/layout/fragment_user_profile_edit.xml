@@ -31,17 +31,31 @@
             android:layout_marginTop="20dp"
             android:layout_below="@id/user_header"/>
 
+        <TextView
+            android:id="@+id/user_username"
+            android:layout_width="380dp"
+            android:layout_height="55dp"
+            android:layout_below="@id/user_avatar"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_border"
+            android:padding="15dp"
+            android:paddingTop="20dp"
+            android:text="{username}"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="20sp" />
         <EditText
             android:id="@+id/user_name"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_marginTop="15dp"
+            android:layout_below="@id/user_username"
             android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
             android:background="@drawable/edit_text_border"
             android:inputType="text"
             android:padding="15dp"
-            android:text="{name}"
-            android:layout_below="@id/user_avatar"/>
+            android:text="{name}" />
         <EditText
             android:id="@+id/user_dob"
             android:layout_width="380dp"
@@ -66,29 +80,19 @@
             android:inputType="textEmailAddress"
             android:padding="15dp"
             android:paddingTop="20dp" />
-        <EditText
-            android:id="@+id/user_username"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_border"
-            android:text="{username}"
-            android:padding="15dp"
-            android:paddingTop="20dp"
-            android:layout_below="@id/user_email"/>
-        <EditText
-            android:id="@+id/user_password"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/user_username"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_border"
-            android:text="{password}"
-            android:inputType="textPassword"
-            android:padding="15dp"
-            android:paddingTop="20dp" />
+
+<!--        <EditText-->
+<!--            android:id="@+id/user_password"-->
+<!--            android:layout_width="380dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_below="@id/user_email"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:background="@drawable/edit_text_border"-->
+<!--            android:inputType="textPassword"-->
+<!--            android:padding="15dp"-->
+<!--            android:paddingTop="20dp"-->
+<!--            android:text="{password}" />-->
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/profile_cancel_btn"
@@ -103,7 +107,7 @@
             android:fontFamily="@font/nunito_bold"
             android:textAllCaps="false"
             android:textSize="20dp"
-            android:layout_below="@+id/user_password"/>
+            android:layout_below="@+id/user_email"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/profile_save_btn"
             android:layout_width="120dp"
@@ -117,7 +121,7 @@
             android:fontFamily="@font/nunito_bold"
             android:textAllCaps="false"
             android:textSize="20dp"
-            android:layout_below="@+id/user_password"
+            android:layout_below="@+id/user_email"
             android:layout_toRightOf="@id/profile_cancel_btn"/>
     </RelativeLayout>
 </ScrollView>

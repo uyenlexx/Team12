@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,14 +16,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.team12.R;
 import com.example.team12.components.FragmentUser;
+import com.example.team12.entity.ListVariable;
 
 public class FragmentUserEditProfile extends Fragment {
     Toolbar toolbar;
     EditText name;
     EditText dob;
     EditText email;
-    EditText username;
-    EditText password;
+    TextView username;
     Button saveButton;
     Button cancelButton;
     FragmentUserProfile userProfile;
@@ -45,13 +46,12 @@ public class FragmentUserEditProfile extends Fragment {
         dob = view.findViewById(R.id.user_dob);
         email = view.findViewById(R.id.user_email);
         username = view.findViewById(R.id.user_username);
-        password = view.findViewById(R.id.user_password);
 
-        name.setText(userProfile.getName().getText());
-        dob.setText(userProfile.getDateOfBirth().getText());
-        email.setText(userProfile.getEmail().getText());
-        username.setText(userProfile.getUsername().getText());
-        password.setText("password");
+        name.setText(ListVariable.currentUser.getName());
+        dob.setText(ListVariable.currentUser.getDateOfBirth());
+        email.setText(ListVariable.currentUser.getEmail());
+        username.setText(ListVariable.currentUser.getUsername());
+//        password.setText("password");
 
         saveButton = view.findViewById(R.id.profile_save_btn);
         cancelButton = view.findViewById(R.id.profile_cancel_btn);
@@ -59,13 +59,10 @@ public class FragmentUserEditProfile extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userProfile.setUserInfo(
-                        name.getText().toString(),
-                        dob.getText().toString(),
-                        email.getText().toString(),
-                        username.getText().toString()
-                        );
-                System.out.println(name.getText().toString());
+                ListVariable.currentUser.setName(name.getText().toString());
+                ListVariable.currentUser.setDateOfBirth(dob.getText().toString());
+                ListVariable.currentUser.setEmail(email.getText().toString());
+                ListVariable.currentUser.updateUserInfoToFirebase();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_user, userProfile)
                         .addToBackStack(null)
