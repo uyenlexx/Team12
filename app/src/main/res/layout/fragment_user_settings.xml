@@ -44,14 +44,11 @@
             android:layout_marginLeft="20dp"
             android:src="@drawable/ic_brightness_down"
             app:tint="@color/medium_peachy"/>
-        <com.google.android.material.slider.Slider
+        <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/setting1_slider"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:valueFrom="0"
-            android:valueTo="100"
-            android:stepSize="10"
-            android:value="50"
+            android:layout_marginTop="5dp"
             android:theme="@style/MyMaterialTheme"
             app:haloColor="@color/fade_green"
             app:thumbColor="@color/dark_green"
@@ -88,14 +85,11 @@
             android:layout_marginLeft="20dp"
             android:src="@drawable/ic_volume_down"
             app:tint="@color/medium_peachy"/>
-        <com.google.android.material.slider.Slider
+        <SeekBar
             android:id="@+id/setting2_slider"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:valueFrom="0"
-            android:valueTo="100"
-            android:stepSize="10"
-            android:value="50"
+            android:layout_marginTop="5dp"
             android:theme="@style/MyMaterialTheme"
             app:haloColor="@color/fade_green"
             app:thumbColor="@color/dark_green"
