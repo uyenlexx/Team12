@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.team12.components.listener.UserFavoriteRecipeCallback;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -189,75 +190,47 @@ public class User {
     }
 
     public void addFavoriteRecipeToFirebase(int recipeId) {
-        //Check if recipeId already exists on Firebase
-        AtomicBoolean exists = new AtomicBoolean(false);
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
-        reference1.child("" + userId).child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().getValue() != null) {
-                    exists.set(true);
+            reference1.child("" + userId).child(String.valueOf(recipeId)).setValue(true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.i("User addFavoriteRecipeToFirebase", "Recipe added successfully");
+                } else {
+                    Log.e("User addFavoriteRecipeToFirebase", task.getException().getMessage());
                 }
-            } else {
-                System.out.println("User addFavoriteRecipeToFirebase: " + task.getException().getMessage());
-            }
-        });
-        if (!exists.get()) {
-            reference.child("" + userId).child(String.valueOf(recipeId)).setValue(true);
-        }
+            });
     }
 
     public void addFavoriteIngredientToFirebase(int ingredientId) {
-        //Check if ingredientId already exists on Firebase
-        AtomicBoolean exists = new AtomicBoolean(false);
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserIngredient");
-        reference1.child("" + userId).child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().getValue() != null) {
-                    exists.set(true);
+            reference1.child("" + userId).child(String.valueOf(ingredientId)).setValue(true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.i("User addFavoriteIngredientToFirebase", "Ingredient added successfully");
+                } else {
+                    Log.e("User addFavoriteIngredientToFirebase", task.getException().getMessage());
                 }
-            } else {
-                System.out.println("User addFavoriteIngredientToFirebase: " + task.getException().getMessage());
-            }
-        });
-        if (!exists.get()) {
-            reference.child("" + userId).child(String.valueOf(ingredientId)).setValue(true);
-        }
+            });
     }
 
     public void removeFavoriteRecipeFromFirebase(int recipeId) {
-        //Check if recipeId already exists on Firebase
-        AtomicBoolean exists = new AtomicBoolean(false);
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
-        reference1.child("" + userId).child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().getValue() != null) {
-                    exists.set(true);
+            reference1.child("" + userId).child(String.valueOf(recipeId)).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.i("User removeFavoriteRecipeFromFirebase", "Recipe removed successfully");
+                } else {
+                    Log.e("User removeFavoriteRecipeFromFirebase", task.getException().getMessage());
                 }
-            } else {
-                System.out.println("User removeFavoriteRecipeFromFirebase: " + task.getException().getMessage());
-            }
-        });
-        if (exists.get()) {
-            reference.child("" + userId).child(String.valueOf(recipeId)).removeValue();
-        }
+            });
     }
 
     public void removeFavoriteIngredientFromFirebase(int ingredientId) {
-        //Check if ingredientId already exists on Firebase
-        AtomicBoolean exists = new AtomicBoolean(false);
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserIngredient");
-        reference1.child("" + userId).child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().getValue() != null) {
-                    exists.set(true);
+            reference1.child("" + userId).child(String.valueOf(ingredientId)).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.i("User removeFavoriteIngredientFromFirebase", "Ingredient removed successfully");
+                } else {
+                    Log.e("User removeFavoriteIngredientFromFirebase", task.getException().getMessage());
                 }
-            } else {
-                System.out.println("User removeFavoriteIngredientFromFirebase: " + task.getException().getMessage());
-            }
-        });
-        if (exists.get()) {
-            reference.child("" + userId).child(String.valueOf(ingredientId)).removeValue();
-        }
+            });
     }
 
     public void updateUserInfoToFirebase() {
@@ -327,6 +300,21 @@ public class User {
                 }
             } else {
                 System.out.println("User getFavoriteIngredientsFromFirebase: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void checkFavoriteRecipe(int userId, int recipeId, UserFavoriteRecipeCallback callback) {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
+        reference1.child("" + userId).child(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    callback.onCallback(true);
+                } else {
+                    callback.onCallback(false);
+                }
+            } else {
+                System.out.println("User checkFavoriteRecipe: " + task.getException().getMessage());
             }
         });
     }

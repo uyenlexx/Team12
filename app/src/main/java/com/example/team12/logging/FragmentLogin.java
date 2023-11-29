@@ -22,7 +22,9 @@ import androidx.fragment.app.Fragment;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
+import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
+import com.example.team12.entity.Recipe;
 import com.example.team12.entity.User;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -98,6 +100,8 @@ public class FragmentLogin extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     CompletableFuture<Void> future = new CompletableFuture<>();
+                                    Recipe.setUpFirebase();
+                                    Ingredient.setUpFirebase();
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = mAuth.getCurrentUser();
 

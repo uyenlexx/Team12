@@ -3,6 +3,7 @@ package com.example.team12.entity;
 import android.util.Log;
 import android.util.Pair;
 
+import com.example.team12.components.listener.RecipeDetailCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -101,9 +102,11 @@ public class RecipeDetail {
         this.ingredientList = ingredientList;
     }
 
-    public static void getRecipeDetailById(int recipeId) {
+    public static void getRecipeDetailById(int recipeId, RecipeDetailCallback myCallback) {
+        Log.i("RecipeDetail getRecipeDetailById", "Loading RecipeDetail");
         reference.orderByChild("recipeDetailId").equalTo(recipeId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully 1");
                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                     RecipeDetail recipeDetail = new RecipeDetail();
                     recipeDetail.setRecipeDetailId(dataSnapshot.child("recipeDetailId").getValue(Integer.class));
@@ -113,7 +116,7 @@ public class RecipeDetail {
                     recipeDetail.setCarbs(dataSnapshot.child("carbs").getValue(Integer.class));
                     recipeDetail.setSteps(dataSnapshot.child("steps").getValue(String.class));
                     List<Pair<Integer, Integer>> tempIngredientList = new ArrayList<>();
-                    for (DataSnapshot ingredientSnapshot : dataSnapshot.child("Ingredient").getChildren()) {
+                    for (DataSnapshot ingredientSnapshot : dataSnapshot.child("ingredientList").getChildren()) {
                         Pair<Integer, Integer> ingredient = new Pair<>(Integer.parseInt(ingredientSnapshot.getKey()), ingredientSnapshot.getValue(Integer.class));
                         tempIngredientList.add(ingredient);
                     }
@@ -136,7 +139,9 @@ public class RecipeDetail {
                     if (!exists) {
                         ListVariable.recipeDetailList.add(recipeDetail);
                     }
+                    myCallback.onCallback(recipeDetail);
                 }
+                Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully");
             } else {
                 System.out.println("RecipeDetail: " + task.getException());
             }
