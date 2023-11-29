@@ -22,6 +22,7 @@ import com.example.team12.components.home.MyAdapter;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.search.ChildModelClass;
 import com.example.team12.components.search.FragmentSearchNotFound;
+import com.example.team12.components.search.IngredientListRedirectInterface;
 import com.example.team12.components.search.ParentAdapter;
 import com.example.team12.components.search.ParentModelClass;
 import com.example.team12.components.search.SearchItemAdapter;
@@ -66,6 +67,20 @@ public class FragmentSearch extends Fragment {
         return searchView;
     }
 
+    private void addIngredientList(IngredientList ingredientList) {
+        ingredientList.recipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, this);
+        ingredientList.setIngredientListRedirectInterface(new IngredientListRedirectInterface() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, ingredientList.recipeDetailed)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
+        searchListItem.add(ingredientList);
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -87,7 +102,7 @@ public class FragmentSearch extends Fragment {
                 if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                         IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
-                        searchListItem.add(ingredientList);
+                        addIngredientList(ingredientList);
                         Log.d("searchInredientItem", searchListItem.toString());
 
                     }
