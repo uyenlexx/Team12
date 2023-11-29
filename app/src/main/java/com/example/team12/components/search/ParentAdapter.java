@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+import com.example.team12.entity.IngredientList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ViewHolder> {
     List<ParentModelClass> parentModelClassList;
     Context context;
+//    ArrayList<IngredientList> searchListItem;
 
     public ParentAdapter(List<ParentModelClass> parentModelClassList, Context context) {
         this.parentModelClassList = parentModelClassList;

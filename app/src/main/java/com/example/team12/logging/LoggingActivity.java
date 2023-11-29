@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.team12.R;
+import com.example.team12.entity.Recipe;
 
 public class LoggingActivity extends AppCompatActivity {
     Fragment fragment;
@@ -20,6 +21,7 @@ public class LoggingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
         addFragment();
+        addSetUp();
     }
 
     public void addFragment() {
@@ -41,5 +43,9 @@ public class LoggingActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.logging_fragment_container, fragment);
         fragmentTransaction.commit();
+    }
+
+    public void addSetUp() {
+//        Recipe.setUpFirebase();
     }
 }

@@ -8,6 +8,18 @@ public class ChildModelClass {
     int icon;
     String category_item;
     int category_bg_color;
+    public String url;
+    public String description;
+    public String name;
+    public ChildModelClass(String name, String description, String url) {
+        this.description = description;
+        this.name = name;
+        this.url = url;
+    }
+
+    public ChildModelClass() {
+
+    }
 
     public ChildModelClass(int icon, String category_item, int category_bg_color) {
         this.icon = icon;
