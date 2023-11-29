@@ -121,7 +121,7 @@ public class FragmentSearch extends Fragment {
                 Log.d("SearchError", databaseError.getMessage());
             }
         });
-        searchList.setAdapter(searchItemAdapter);
+
 //        searchList.setVisibility(view.INVISIBLE);
 
 
@@ -134,8 +134,14 @@ public class FragmentSearch extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                final List<IngredientList> filteredModeList = filter(searchListItem, newText);
-                searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
+                if (newText.isEmpty()) {
+                    searchList.setAdapter(null);
+                } else {
+                    final List<IngredientList> filteredModeList = filter(searchListItem, newText);
+                    searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
+                    searchList.setAdapter(searchItemAdapter);
+
+                }
                 return true;
             }
 
