@@ -110,12 +110,11 @@ public class FragmentLogin extends Fragment {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(getActivity(), "Authentication success.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getActivity(), MainScreenActivity.class);
                                     startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
 
                                 }
                             }

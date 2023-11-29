@@ -70,7 +70,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:hint="@string/height"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:fontFamily="@font/nunito_italic"
         android:padding="15dp"
         android:layout_below="@id/age_input"/>
@@ -83,7 +83,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:hint="@string/weight"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:fontFamily="@font/nunito_italic"
         android:padding="15dp"
         android:layout_below="@id/height_input" />

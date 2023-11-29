@@ -53,7 +53,7 @@ public class FragmentWeeklyMenu extends Fragment implements RecipeAdapter.Recycl
 
     @Override
     public void onRecipeClick(RecipeModelClass recipeModelClass) {
-        FragmentRecipeDetailed fragmentRecipeDetailed = new FragmentRecipeDetailed();
+        FragmentRecipeDetailed fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_menu_weekly);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout_menu_daily, fragmentRecipeDetailed)
                 .addToBackStack(null)

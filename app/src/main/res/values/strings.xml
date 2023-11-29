@@ -60,21 +60,10 @@
     <string name="bmi">BMI</string>
     <string name="bmi_cal">BMI Calculator</string>
     <string name="gender">Gender</string>
-    <string name="height">Height (in cm)</string>
+    <string name="height">Height (in m)</string>
     <string name="weight">Weight (in kg)</string>
     <string name="calculate">Calculate</string>
     <string name="bmi_result">Your BMI is</string>
-
-    <string-array name="food_type">
-        <item>Pork</item>
-        <item>Beef</item>
-        <item>Fish</item>
-        <item>Chicken</item>
-        <item>Bird</item>
-        <item>Paimon</item>
-        <item>Milk</item>
-        <item>Egg</item>
-    </string-array>
 
     <string name="menu_plan">Menu plan</string>
     <string name="daily">Daily</string>
@@ -88,6 +77,9 @@
     <string name="ingredients">Ingredients</string>
     <string name="steps">Steps</string>
     <string name="add_to_favorite">Add to Favorite</string>
+
+    <string name="capture">Capture</string>
+    <string name="submit">Submit</string>
 
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>

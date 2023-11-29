@@ -27,9 +27,6 @@ import com.example.team12.components.search.ParentModelClass;
 import com.example.team12.components.search.SearchItemAdapter;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.IngredientList;
-import com.example.team12.entity.Recipe;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -130,7 +127,7 @@ public class FragmentSearch extends Fragment {
         recipeArrayList = new ArrayList<>();
         parentModelClasses = new ArrayList<>();
 
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, searchListItem.toString(), R.color.fade_red));
+        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));

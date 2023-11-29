@@ -49,7 +49,7 @@ public class FragmentDailyMenu extends Fragment implements RecipeAdapter.Recycle
 
     @Override
     public void onRecipeClick(RecipeModelClass recipeModelClass) {
-        FragmentRecipeDetailed fragmentRecipeDetailed = new FragmentRecipeDetailed();
+        FragmentRecipeDetailed fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_menu_daily);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout_menu_daily, fragmentRecipeDetailed)
                 .addToBackStack(null)
