@@ -52,7 +52,10 @@ public class FragmentSearch extends Fragment {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     private DatabaseReference databaseReference;
-//    FirebaseRecyclerOptions<Recipe, Ingredient>
+    private DatabaseReference recipeReference;
+
+
+    private DatabaseReference ingredientReference;
 
     FrameLayout frameLayout;
     @Override
@@ -69,13 +72,15 @@ public class FragmentSearch extends Fragment {
         frameLayout = view.findViewById(R.id.frame_layout_search);
         searchBar = view.findViewById(R.id.search_input);
         searchListItem = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/").getReference().child("Ingredient");
+        databaseReference = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/").getReference();
+        ingredientReference = databaseReference.child("Ingredient");
+        recipeReference = databaseReference.child("Recipe");
         searchList = view.findViewById(R.id.search_recycler_view2);
         searchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         SearchItemAdapter searchItemAdapter = new SearchItemAdapter(searchListItem, getContext());
         searchItemAdapter.notifyDataSetChanged();
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        ingredientReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 searchListItem.clear();
@@ -83,7 +88,27 @@ public class FragmentSearch extends Fragment {
                     for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                         IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
                         searchListItem.add(ingredientList);
-                        Log.d("searchListItemA", searchListItem.toString());
+                        Log.d("searchInredientItem", searchListItem.toString());
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("SearchError", databaseError.getMessage());
+            }
+        });
+        recipeReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                        IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
+                        searchListItem.add(ingredientList);
+                        Log.d("searchRecipeItem", searchListItem.toString());
 
                     }
                 }
