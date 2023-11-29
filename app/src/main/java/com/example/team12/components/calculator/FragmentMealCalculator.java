@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.example.team12.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -40,6 +42,9 @@ public class FragmentMealCalculator extends Fragment {
     ImageView captureImage;
     TextView captureText;
     Button saveBtn;
+    Button submitBtn;
+    TextView resultText;
+    TextView resultCalories;
     OutputStream outputStream;
 
     private final ActivityResultLauncher<Intent> displayCaptureResult = registerForActivityResult(
@@ -68,6 +73,9 @@ public class FragmentMealCalculator extends Fragment {
         captureImage = view.findViewById(R.id.meal_cal_image);
         captureText = view.findViewById(R.id.meal_cal_capture);
         saveBtn = view.findViewById(R.id.meal_cal_save_btn);
+        submitBtn = view.findViewById(R.id.meal_cal_btn);
+        resultText = view.findViewById(R.id.meal_cal_name);
+        resultCalories = view.findViewById(R.id.meal_cal_calories);
 
         captureText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +118,14 @@ public class FragmentMealCalculator extends Fragment {
                     ActivityCompat.requestPermissions(FragmentMealCalculator.this.requireActivity(),
                             new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
                 }
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultText.setVisibility(View.VISIBLE);
+                resultCalories.setVisibility(View.VISIBLE);
             }
         });
     }

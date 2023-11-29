@@ -80,6 +80,9 @@
 
     <string name="capture">Capture</string>
     <string name="submit">Submit</string>
+    <string name="recipe_name">Name: </string>
+    <string name="recipe_calories">Calories: </string>
+
 
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>
