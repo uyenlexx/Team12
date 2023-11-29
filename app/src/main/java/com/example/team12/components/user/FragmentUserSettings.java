@@ -68,7 +68,7 @@ public class FragmentUserSettings extends Fragment {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             if (Settings.System.canWrite(this.getActivity())) {
-                Toast.makeText(this.getActivity(), "Write allowed", Toast.LENGTH_SHORT).show();
+                // Do stuff here
             } else {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(android.net.Uri.parse("package:" + this.getActivity().getPackageName()));
@@ -109,15 +109,16 @@ public class FragmentUserSettings extends Fragment {
             }
         });
 
-        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        audioManager = (AudioManager) this.getActivity().getSystemService(this.getActivity().AUDIO_SERVICE);
+        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+        currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
         audioManager = (AudioManager) this.getActivity().getSystemService(this.getActivity().AUDIO_SERVICE);
         volumeSlider.setMax(maxVolume);
         volumeSlider.setProgress(currentVolume);
         volumeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b){
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, AudioManager.FLAG_PLAY_SOUND);
             }
 
             @Override
