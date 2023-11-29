@@ -1,5 +1,6 @@
 package com.example.team12.components;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -18,6 +19,7 @@ import com.example.team12.components.user.FragmentUserFavorites;
 import com.example.team12.components.user.FragmentUserProfile;
 import com.example.team12.components.user.FragmentUserSettings;
 import com.example.team12.entity.ListVariable;
+import com.example.team12.logging.LoggingActivity;
 
 public class FragmentUser extends Fragment {
     FrameLayout frameLayout;
@@ -85,7 +87,8 @@ public class FragmentUser extends Fragment {
         logoutCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), LoggingActivity.class);
+                startActivity(intent);
             }
         });
     }
