@@ -29,6 +29,7 @@ import com.example.team12.components.search.ParentModelClass;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -44,6 +45,7 @@ public class FragmentHome extends Fragment {
     ArrayList<ItemClass> items;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    BottomNavigationView bottomNavigationView;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -89,6 +91,8 @@ public class FragmentHome extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_main, fragment);
                 fragmentTransaction.commit();
+
+                bottomNavigationView.setSelectedItemId(R.id.calculate_tab);
             }
         });
 
@@ -100,6 +104,8 @@ public class FragmentHome extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_main, fragment);
                 fragmentTransaction.commit();
+
+                bottomNavigationView.setSelectedItemId(R.id.menu_tab);
             }
         });
         future.thenRun(() -> {
@@ -127,5 +133,9 @@ public class FragmentHome extends Fragment {
         myAdapter.notifyDataSetChanged();
     });
 
+    }
+
+    public void setBottomNavigationView(BottomNavigationView bottomNavigationView) {
+        this.bottomNavigationView = bottomNavigationView;
     }
 }
