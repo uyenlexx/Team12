@@ -4,10 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +32,18 @@ public class FragmentWeeklyMenu extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    FrameLayout frameLayout;
+    RecyclerView recyclerView;
+    ArrayList<SectionModelClass> sectionList;
+    ArrayList<RecipeModelClass> recipeList;
+    private Fragment menuFragment;
+
     public FragmentWeeklyMenu() {
         // Required empty public constructor
+    }
+
+    public FragmentWeeklyMenu(Fragment menuFragment) {
+        this.menuFragment = menuFragment;
     }
 
     /**
@@ -54,6 +71,42 @@ public class FragmentWeeklyMenu extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    private void addRecipe(int img, String header, String recipeName, String recipeCalories) {
+        RecipeModelClass newRecipe = new RecipeModelClass(img, header, recipeName, recipeCalories);
+        newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, menuFragment);
+        newRecipe.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
+                        .commit();
+            }
+        });
+        recipeList.add(newRecipe);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        frameLayout = view.findViewById(R.id.frame_layout_menu);
+        recyclerView = view.findViewById(R.id.menu_weekly_rv);
+
+        recipeList = new ArrayList<>();
+        addRecipe(R.drawable.img_example_1, "Breakfast", "Recipe 1", "500kcal");
+        addRecipe(R.drawable.img_example_2, "Lunch", "Recipe 2", "500kcal");
+        addRecipe(R.drawable.img_example_3, "Dinner", "Recipe 3", "500kcal");
+
+        sectionList = new ArrayList<>();
+        String days[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        for (int i = 0; i < 7; i++) {
+            sectionList.add(new SectionModelClass(new RecipeAdapter(recipeList), days[i]));
+        }
+        SectionAdapter sectionAdapter = new SectionAdapter(sectionList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(sectionAdapter);
+        sectionAdapter.notifyDataSetChanged();
     }
 
     @Override

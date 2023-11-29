@@ -19,7 +19,7 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new FragmentDailyMenu(menuFragment);
             case 1:
-                return new FragmentWeeklyMenu();
+                return new FragmentWeeklyMenu(menuFragment);
         }
         return new FragmentDailyMenu(menuFragment);
     }

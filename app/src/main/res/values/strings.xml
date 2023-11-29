@@ -94,11 +94,12 @@
     <string name="settings">Settings</string>
     <string name="logout">Log out</string>
 
-    <string name="edit">Edit</string>
+    <string name="edit">Edit profile</string>
     <string name="save">Save</string>
 
     <string name="setting1">Screen brightness</string>
     <string name="setting2">Volume adjustment</string>
 
     <string name="find">Find recipes</string>
+    <string name="cancel">Cancel</string>
 </resources>
