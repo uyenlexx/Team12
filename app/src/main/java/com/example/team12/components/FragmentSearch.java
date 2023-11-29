@@ -119,10 +119,12 @@ public class FragmentSearch extends Fragment {
         recipeReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+//                searchListItem.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                         IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
-                        searchListItem.add(ingredientList);
+//                        searchListItem.add(ingredientList);
+                        addIngredientList(ingredientList);
                         Log.d("searchRecipeItem", searchListItem.toString());
 
                     }
@@ -177,7 +179,7 @@ public class FragmentSearch extends Fragment {
         recipeArrayList = new ArrayList<>();
         parentModelClasses = new ArrayList<>();
 
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, searchListItem.toString(), R.color.fade_red));
+        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));
