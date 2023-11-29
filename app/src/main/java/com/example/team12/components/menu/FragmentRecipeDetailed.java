@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -18,16 +19,21 @@ import com.example.team12.R;
 import com.example.team12.components.FragmentHome;
 import com.example.team12.components.FragmentSearch;
 import com.example.team12.components.listener.RecipeDetailCallback;
+import com.example.team12.components.listener.UserFavoriteRecipeCallback;
 import com.example.team12.entity.IngredientDetail;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.RecipeDetail;
+import com.example.team12.entity.User;
 
+import java.util.List;
 import java.util.Objects;
 
 public class FragmentRecipeDetailed extends Fragment {
     TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvRecipeName;
+    Button btnAddToFavorite;
     Toolbar toolbar2;
     int backFrame;
+    boolean isFavorite = false;
     Fragment backFragment;
     public FragmentRecipeDetailed(int backFrame, Fragment backFragment) {
         this.backFrame = backFrame;
@@ -53,6 +59,7 @@ public class FragmentRecipeDetailed extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i("Check Recipe", "Current status: " + (ListVariable.currentRecipe == null));
+        btnAddToFavorite = view.findViewById(R.id.add_to_favorite_btn);
         tvRecipeName = view.findViewById(R.id.recipe_title);
         tvCaloriesValue = view.findViewById(R.id.recipe_calories_number);
         tvCarbsValue = view.findViewById(R.id.recipe_carbs_number);
@@ -70,7 +77,32 @@ public class FragmentRecipeDetailed extends Fragment {
                     tvProteinValue.setText(String.valueOf(value.getProtein()));
                 }
             });
+            User.checkFavoriteRecipe(ListVariable.currentUser.getUserId(), ListVariable.currentRecipe.getRecipeId(), new UserFavoriteRecipeCallback() {
+                @Override
+                public void onCallback(boolean value) {
+                    if (value) {
+                        btnAddToFavorite.setText("Remove from favorite");
+                        isFavorite = true;
+                    }
+                }
+            });
         }
+
+        btnAddToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFavorite) {
+                    ListVariable.currentUser.removeFavoriteRecipeFromFirebase(ListVariable.currentRecipe.getRecipeId());
+                    btnAddToFavorite.setText("Add to favorite");
+                    isFavorite = false;
+                }
+                else {
+                    ListVariable.currentUser.addFavoriteRecipeToFirebase(ListVariable.currentRecipe.getRecipeId());
+                    btnAddToFavorite.setText("Remove from favorite");
+                    isFavorite = true;
+                }
+            }
+        });
 
 
 
