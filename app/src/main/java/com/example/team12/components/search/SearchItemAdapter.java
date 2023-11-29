@@ -55,6 +55,12 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
         return searchListItem.size();
     }
 
+    public void setFilter(ArrayList<IngredientList> searchItem) {
+        searchListItem = new ArrayList<>();
+        searchListItem.addAll(searchItem);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView itemImg;
         TextView itemName, itemDescription;
