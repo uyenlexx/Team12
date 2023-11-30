@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.team12.components.listener.RecipeDetailCallback;
+import com.example.team12.components.listener.RecipeFavoriteCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -282,6 +283,28 @@ public class Recipe {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("Recipe getRecipeFromFirebase", error.getMessage());
+            }
+        });
+    }
+
+    public static void getRecipeFromFavorite(int userId, RecipeFavoriteCallback callback) {
+        List<Recipe> recipeList = new ArrayList<>();
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
+        reference1.orderByChild(String.valueOf(userId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                    int recipeId = Integer.parseInt(dataSnapshot.getKey());
+
+                    for (Recipe recipe : ListVariable.recipeList) {
+                        if (recipe.getRecipeId() == recipeId) {
+                            recipeList.add(recipe);
+                            break;
+                        }
+                    }
+                }
+                callback.onCallback(recipeList);
+            } else {
+                Log.e("Recipe getRecipeFromFavorite", task.getException().getMessage());
             }
         });
     }

@@ -36,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -60,6 +62,8 @@ public class FragmentMealCalculator extends Fragment {
     TextView captureText;
     Button saveBtn;
     Button submitBtn;
+    TextView resultText;
+    TextView resultCalories;
     OutputStream outputStream;
 
     private final ActivityResultLauncher<Intent> displayCaptureResult = registerForActivityResult(
@@ -89,6 +93,8 @@ public class FragmentMealCalculator extends Fragment {
         captureText = view.findViewById(R.id.meal_cal_capture);
         saveBtn = view.findViewById(R.id.meal_cal_save_btn);
         submitBtn = view.findViewById(R.id.meal_cal_btn);
+        resultText = view.findViewById(R.id.meal_cal_name);
+        resultCalories = view.findViewById(R.id.meal_cal_calories);
 
         captureText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +143,10 @@ public class FragmentMealCalculator extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onGetFoodName();
+//                onGetFoodName();
+//            public void onClick(View v) {
+                resultText.setVisibility(View.VISIBLE);
+                resultCalories.setVisibility(View.VISIBLE);
             }
         });
     }
