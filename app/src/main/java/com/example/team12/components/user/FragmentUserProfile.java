@@ -50,7 +50,6 @@ public class FragmentUserProfile extends Fragment {
         tvDob = view.findViewById(R.id.user_dob);
         tvEmail = view.findViewById(R.id.user_email);
         tvUsername = view.findViewById(R.id.user_username);
-        tvPassword = view.findViewById(R.id.user_password);
         btnEdit = view.findViewById(R.id.profile_edit_btn);
         btnSave = view.findViewById(R.id.profile_save_btn);
         //Set text so they can't be edited
