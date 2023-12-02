@@ -48,7 +48,13 @@ dependencies {
     implementation ("com.github.dhaval2404:imagepicker:2.1")
     implementation ("androidx.activity:activity-ktx:1.2.3")
     implementation ("androidx.fragment:fragment-ktx:1.3.3")
+    implementation ("androidx.test:rules:1.5.0")
 
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    //define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
 
