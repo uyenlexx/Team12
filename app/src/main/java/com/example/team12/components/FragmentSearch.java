@@ -45,8 +45,6 @@ import java.util.List;
 public class FragmentSearch extends Fragment {
     SearchView searchBar;
     RecyclerView recyclerView;
-    RecyclerView searchList;
-    RecyclerView searchResult;
     ArrayList<ParentModelClass> parentModelClasses;
     ArrayList<ChildModelClass> ingredientsArrayList;
     ArrayList<ChildModelClass> recipeArrayList;
@@ -88,18 +86,40 @@ public class FragmentSearch extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         frameLayout = view.findViewById(R.id.frame_layout_search);
         searchBar = view.findViewById(R.id.search_input);
-        searchResult = view.findViewById(R.id.search_recycler_view3);
-        searchResult.setLayoutManager(new LinearLayoutManager(this.getContext()));
         searchListItem = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/").getReference();
         ingredientReference = databaseReference.child("Ingredient");
         recipeReference = databaseReference.child("Recipe");
-        searchList = view.findViewById(R.id.search_recycler_view2);
-        searchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         SearchItemAdapter searchItemAdapter = new SearchItemAdapter(searchListItem, getContext());
         SearchResultAdapter searchAdapter = new SearchResultAdapter(new ArrayList<>(), getContext());
         searchItemAdapter.notifyDataSetChanged();
+
+        recyclerView = view.findViewById(R.id.search_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        ingredientsArrayList = new ArrayList<>();
+        recipeArrayList = new ArrayList<>();
+        parentModelClasses = new ArrayList<>();
+        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red));
+        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
+        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
+        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));
+
+        parentModelClasses.add(new ParentModelClass(getText(R.string.ingredients_category).toString(), ingredientsArrayList));
+
+        recipeArrayList.add(new ChildModelClass(R.drawable.img_dessert, getText(R.string.dessert).toString(), R.color.fade_red));
+        recipeArrayList.add(new ChildModelClass(R.drawable.img_drinks, getText(R.string.drink).toString(), R.color.fade_green));
+        recipeArrayList.add(new ChildModelClass(R.drawable.img_fried, getText(R.string.fried).toString(), R.color.fade_yellow));
+        recipeArrayList.add(new ChildModelClass(R.drawable.img_grilled, getText(R.string.grilled).toString(), R.color.fade_blue));
+        recipeArrayList.add(new ChildModelClass(R.drawable.img_steamed, getText(R.string.steamed).toString(), R.color.fade_purple));
+
+        parentModelClasses.add(new ParentModelClass(getText(R.string.recipes_category).toString(), recipeArrayList));
+//        parentModelClasses.add(new ParentModelClass(getText(R.string.recipes_category).toString(), searchListItem));
+
+        ParentAdapter parentAdapter = new ParentAdapter(parentModelClasses, getContext());
+        parentAdapter.notifyDataSetChanged();
+
         ingredientReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -112,7 +132,6 @@ public class FragmentSearch extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("SearchError", databaseError.getMessage());
@@ -137,90 +156,34 @@ public class FragmentSearch extends Fragment {
                 Log.d("SearchError", databaseError.getMessage());
             }
         });
-
-//        searchList.setVisibility(view.INVISIBLE);
-
-
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                //go to fragment search result
-//              frameLayout.removeAllViews();
-//              FragmentSearchNotFound fragment = new FragmentSearchNotFound(); // !
-//                FragmentRecipeDetailed fragment = new FragmentRecipeDetailed(R.id.frame_layout_search);
-//                fragmentManager = getActivity().getSupportFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.frame_layout_search, fragment)
-//                        .addToBackStack(null)
-//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                        .commit();
                 if (query.isEmpty()) {
-                    searchList.setVisibility(View.INVISIBLE);
-                    searchResult.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
                 } else {
-                    recyclerView.setVisibility(View.INVISIBLE);
-//                    searchList.setVisibility(View.INVISIBLE);
-//                    recyclerView.setAdapter(null);
-                    searchList.setAdapter(null);
-                    searchResult.setVisibility(View.VISIBLE);
                     final List<IngredientList> filteredModeList = filter(searchListItem, query);
                     final List<SearchResult> searchResultList = changeAdapter(filteredModeList);
-//                    SearchResultAdapter searchAdapter = new SearchResultAdapter(searchResultList, getContext());
                     searchAdapter.setSearchResultList(searchResultList);
                     searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
-                    searchResult.setAdapter(searchAdapter);
+                    recyclerView.setAdapter(searchAdapter);
                 }
-                System.out.println("query submitted: " + query);
+//                System.out.println("query submitted: " + query);
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
-                    searchList.setAdapter(null);
-                    searchResult.setAdapter(null);
-                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerView.setAdapter(parentAdapter);
                 } else {
                     final List<IngredientList> filteredModeList = filter(searchListItem, newText);
                     searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
-                    searchList.setAdapter(searchItemAdapter);
-                    recyclerView.setVisibility(View.INVISIBLE);
-                    searchResult.setAdapter(null);
-                    searchList.setVisibility(View.VISIBLE);
+                    recyclerView.setAdapter(searchItemAdapter);
                 }
                 return true;
             }
-
         });
-
-        recyclerView = view.findViewById(R.id.search_recycler_view);
-
-        ingredientsArrayList = new ArrayList<>();
-        recipeArrayList = new ArrayList<>();
-        parentModelClasses = new ArrayList<>();
-
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red));
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));
-
-        parentModelClasses.add(new ParentModelClass(getText(R.string.ingredients_category).toString(), ingredientsArrayList));
-
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_dessert, getText(R.string.dessert).toString(), R.color.fade_red));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_drinks, getText(R.string.drink).toString(), R.color.fade_green));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_fried, getText(R.string.fried).toString(), R.color.fade_yellow));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_grilled, getText(R.string.grilled).toString(), R.color.fade_blue));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_steamed, getText(R.string.steamed).toString(), R.color.fade_purple));
-
-        parentModelClasses.add(new ParentModelClass(getText(R.string.recipes_category).toString(), recipeArrayList));
-//        parentModelClasses.add(new ParentModelClass(getText(R.string.recipes_category).toString(), searchListItem));
-
-        ParentAdapter parentAdapter = new ParentAdapter(parentModelClasses, getContext());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(parentAdapter);
-        parentAdapter.notifyDataSetChanged();
-
     }
 
     private List<SearchResult> changeAdapter(List<IngredientList> ingredientLists) {
