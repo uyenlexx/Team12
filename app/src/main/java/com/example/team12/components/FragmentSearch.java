@@ -20,12 +20,16 @@ import com.example.team12.R;
 import com.example.team12.components.calculator.FragmentMealCalculator;
 import com.example.team12.components.home.MyAdapter;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
+import com.example.team12.components.menu.RecipeAdapter;
+import com.example.team12.components.menu.RecipeModelClass;
 import com.example.team12.components.search.ChildModelClass;
 import com.example.team12.components.search.FragmentSearchNotFound;
 import com.example.team12.components.search.IngredientListRedirectInterface;
 import com.example.team12.components.search.ParentAdapter;
 import com.example.team12.components.search.ParentModelClass;
 import com.example.team12.components.search.SearchItemAdapter;
+import com.example.team12.components.search.SearchResult;
+import com.example.team12.components.search.SearchResultAdapter;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.IngredientList;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +46,7 @@ public class FragmentSearch extends Fragment {
     SearchView searchBar;
     RecyclerView recyclerView;
     RecyclerView searchList;
+    RecyclerView searchResult;
     ArrayList<ParentModelClass> parentModelClasses;
     ArrayList<ChildModelClass> ingredientsArrayList;
     ArrayList<ChildModelClass> recipeArrayList;
@@ -83,6 +88,8 @@ public class FragmentSearch extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         frameLayout = view.findViewById(R.id.frame_layout_search);
         searchBar = view.findViewById(R.id.search_input);
+        searchResult = view.findViewById(R.id.search_recycler_view3);
+        searchResult.setLayoutManager(new LinearLayoutManager(this.getContext()));
         searchListItem = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance("https://calo-a7a97-default-rtdb.firebaseio.com/").getReference();
         ingredientReference = databaseReference.child("Ingredient");
@@ -91,6 +98,7 @@ public class FragmentSearch extends Fragment {
         searchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         SearchItemAdapter searchItemAdapter = new SearchItemAdapter(searchListItem, getContext());
+        SearchResultAdapter searchAdapter = new SearchResultAdapter(new ArrayList<>(), getContext());
         searchItemAdapter.notifyDataSetChanged();
         ingredientReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,11 +109,8 @@ public class FragmentSearch extends Fragment {
                         IngredientList ingredientList = postSnapshot.getValue(IngredientList.class);
                         addIngredientList(ingredientList);
                         Log.d("searchInredientItem", searchListItem.toString());
-
                     }
                 }
-
-
             }
 
             @Override
@@ -126,10 +131,7 @@ public class FragmentSearch extends Fragment {
 
                     }
                 }
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("SearchError", databaseError.getMessage());
@@ -153,17 +155,39 @@ public class FragmentSearch extends Fragment {
 //                        .addToBackStack(null)
 //                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 //                        .commit();
+                if (query.isEmpty()) {
+                    searchList.setVisibility(View.INVISIBLE);
+                    searchResult.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.INVISIBLE);
+//                    searchList.setVisibility(View.INVISIBLE);
+//                    recyclerView.setAdapter(null);
+                    searchList.setAdapter(null);
+                    searchResult.setVisibility(View.VISIBLE);
+                    final List<IngredientList> filteredModeList = filter(searchListItem, query);
+                    final List<SearchResult> searchResultList = changeAdapter(filteredModeList);
+//                    SearchResultAdapter searchAdapter = new SearchResultAdapter(searchResultList, getContext());
+                    searchAdapter.setSearchResultList(searchResultList);
+                    searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
+                    searchResult.setAdapter(searchAdapter);
+                }
+                System.out.println("query submitted: " + query);
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     searchList.setAdapter(null);
+                    searchResult.setAdapter(null);
+                    recyclerView.setVisibility(View.VISIBLE);
                 } else {
                     final List<IngredientList> filteredModeList = filter(searchListItem, newText);
                     searchItemAdapter.setFilter((ArrayList<IngredientList>) filteredModeList);
                     searchList.setAdapter(searchItemAdapter);
-
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    searchResult.setAdapter(null);
+                    searchList.setVisibility(View.VISIBLE);
                 }
                 return true;
             }
@@ -197,6 +221,29 @@ public class FragmentSearch extends Fragment {
         recyclerView.setAdapter(parentAdapter);
         parentAdapter.notifyDataSetChanged();
 
+    }
+
+    private List<SearchResult> changeAdapter(List<IngredientList> ingredientLists) {
+        List<SearchResult> list = new ArrayList<>();
+        for (IngredientList model: ingredientLists) {
+            if (model != null && model.getName() != null) {
+                SearchResult newSearchResult = new SearchResult(model.getName(), model.getDescription(), model.getUrl());
+                newSearchResult.recipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, this);
+//                System.out.println("Result: " + newSearchResult.name + ": " + newSearchResult.description);
+                newSearchResult.setSearchResultRedirect(new SearchResult.SearchResultRedirect() {
+                    @Override
+                    public void onClick(View view) {
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame_layout_main, model.recipeDetailed)
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                .commit();
+                    }
+                });
+                list.add(newSearchResult);
+            }
+        }
+//        System.out.println("Test: " + list.size());
+        return list;
     }
 
     private List<IngredientList> filter(List<IngredientList> p1, String query) {
