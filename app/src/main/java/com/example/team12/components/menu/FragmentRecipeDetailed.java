@@ -92,7 +92,7 @@ public class FragmentRecipeDetailed extends Fragment {
                         ingredients += value.getIngredient().get(ingredientName).second.first + " " + value.getIngredient().get(ingredientName).second.second + " " + ingredientName + "\n";
                     }
                     tvIngredients.setText(ingredients);
-                    storageReference = ListVariable .storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
+                    storageReference = ListVariable.storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
                     Glide.with(Objects.requireNonNull(getContext())).load(storageReference).into(imgRecipe);
 
                 }
