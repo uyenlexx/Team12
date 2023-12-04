@@ -92,9 +92,14 @@ public class FragmentRecipeDetailed extends Fragment {
                         ingredients += value.getIngredient().get(ingredientName).second.first + " " + value.getIngredient().get(ingredientName).second.second + " " + ingredientName + "\n";
                     }
                     tvIngredients.setText(ingredients);
-                    storageReference = ListVariable .storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
-                    Glide.with(Objects.requireNonNull(getContext())).load(storageReference).into(imgRecipe);
+//                    storageReference = ListVariable .storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
+                    String url = ListVariable.currentRecipe.getImageURL();
+//                    Glide.with(Objects.requireNonNull(getContext())).load(storageReference).into(imgRecipe);
 
+                    Glide.with(requireContext())
+                            .load(url)
+                            .error(R.drawable.img_trending_1)
+                            .into(imgRecipe);
                 }
             });
             User.checkFavoriteRecipe(ListVariable.currentUser.getUserId(), ListVariable.currentRecipe.getRecipeId(), new UserFavoriteRecipeCallback() {
