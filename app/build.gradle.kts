@@ -60,4 +60,7 @@ dependencies {
 
     testImplementation("com.google.truth:truth:1.1.3")
     androidTestImplementation("com.google.truth:truth:1.1.3")
+
+    // FirebaseUI Storage only
+    implementation("com.firebaseui:firebase-ui-storage:7.2.0")
 }

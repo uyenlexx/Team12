@@ -127,13 +127,14 @@ public class Ingredient {
 //                    Ingredient ingredient = ingredientSnapshot.getValue(Ingredient.class);
 //                    ListVariable.ingredientList.set(i, ingredient);
 //                    i++;
+//
                 ListVariable.ingredientList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Ingredient ingredient = snapshot.getValue(Ingredient.class);
                     if (ingredient.getIngredientId() > maxIngredientId) {
                         maxIngredientId = ingredient.getIngredientId();
                     }
-                    ListVariable.ingredientList.add(ingredient);
+                    ListVariable.ingredientList.put(ingredient.getIngredientName(), ingredient);
                 }
             }
 

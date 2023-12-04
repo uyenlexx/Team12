@@ -189,17 +189,18 @@
             android:fontFamily="@font/nunito_bold"
             android:textSize="20dp"
             android:layout_below="@id/recipe_details"/>
+
         <TextView
             android:id="@+id/recipe_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/recipe_ingredients_title"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:justificationMode="inter_word"
             android:fontFamily="@font/nunito_light"
-            android:textSize="15dp"
-            android:text="{ingredients of recipe}"
-            android:layout_below="@+id/recipe_ingredients_title"/>
+            android:justificationMode="inter_word"
+            android:text="{ingredients of recipe\n\n\n"
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/recipe_steps_title"

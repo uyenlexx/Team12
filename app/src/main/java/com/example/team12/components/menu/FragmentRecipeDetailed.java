@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.example.team12.R;
 import com.example.team12.components.FragmentHome;
 import com.example.team12.components.FragmentSearch;
@@ -24,12 +26,15 @@ import com.example.team12.entity.IngredientDetail;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.RecipeDetail;
 import com.example.team12.entity.User;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 import java.util.Objects;
 
 public class FragmentRecipeDetailed extends Fragment {
-    TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvRecipeName;
+    TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvRecipeName, tvDetail, tvIngredients;
+    ImageView imgRecipe;
     Button btnAddToFavorite;
     Toolbar toolbar2;
     int backFrame;
@@ -39,6 +44,7 @@ public class FragmentRecipeDetailed extends Fragment {
         this.backFrame = backFrame;
         this.backFragment = backFragment;
     }
+    StorageReference storageReference;
 
 //    TextView step;
     WebView webView;
@@ -65,6 +71,11 @@ public class FragmentRecipeDetailed extends Fragment {
         tvCarbsValue = view.findViewById(R.id.recipe_carbs_number);
         tvFatValue = view.findViewById(R.id.recipe_fat_number);
         tvProteinValue = view.findViewById(R.id.recipe_protein_number);
+        tvDetail = view.findViewById(R.id.recipe_details);
+        tvIngredients = view.findViewById(R.id.recipe_ingredients);
+        imgRecipe = view.findViewById(R.id.recipe_image);
+
+
         if (ListVariable.currentRecipe != null) {
             //Get recipe detail
             RecipeDetail.getRecipeDetailById(ListVariable.currentRecipe.getRecipeId(), new RecipeDetailCallback() {
@@ -75,6 +86,15 @@ public class FragmentRecipeDetailed extends Fragment {
                     tvCarbsValue.setText(String.valueOf(value.getCarbs()));
                     tvFatValue.setText(String.valueOf(value.getFat()));
                     tvProteinValue.setText(String.valueOf(value.getProtein()));
+                    tvDetail.setText(ListVariable.currentRecipe.getDescription());
+                    String ingredients = "";
+                    for (String ingredientName: value.getIngredient().keySet()) {
+                        ingredients += value.getIngredient().get(ingredientName).second.first + " " + value.getIngredient().get(ingredientName).second.second + " " + ingredientName + "\n";
+                    }
+                    tvIngredients.setText(ingredients);
+                    storageReference = ListVariable .storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
+                    Glide.with(Objects.requireNonNull(getContext())).load(storageReference).into(imgRecipe);
+
                 }
             });
             User.checkFavoriteRecipe(ListVariable.currentUser.getUserId(), ListVariable.currentRecipe.getRecipeId(), new UserFavoriteRecipeCallback() {
