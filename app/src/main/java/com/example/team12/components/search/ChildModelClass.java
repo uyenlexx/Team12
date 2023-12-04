@@ -18,6 +18,9 @@ public class ChildModelClass {
     }
 
     public ChildModelClass() {
+        this.description = "";
+        this.name = "";
+        this.url = "";
 
     }
 

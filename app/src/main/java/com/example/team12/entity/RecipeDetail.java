@@ -15,21 +15,21 @@ import java.util.List;
 public class RecipeDetail {
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("RecipeDetail");
     private int recipeDetailId;
-    private int protein;
-    private int calories;
-    private int fat;
-    private int carbs;
+    private float protein;
+    private float calories;
+    private float fat;
+    private float carbs;
     private String step;
     private HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient;
 
-    public RecipeDetail(int recipeDetailId, int protein, int calories, int fat, int carbs, String step, HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient) {
+    //Init
+    public RecipeDetail(int recipeDetailId, float protein, float calories, float fat, float carbs, String step, HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient) {
         this.recipeDetailId = recipeDetailId;
         this.protein = protein;
         this.calories = calories;
         this.fat = fat;
         this.carbs = carbs;
         this.step = step;
-        this.ingredient = new HashMap<>();
         this.ingredient = ingredient;
     }
 
@@ -49,19 +49,19 @@ public class RecipeDetail {
         return recipeDetailId;
     }
 
-    public int getProtein() {
+    public float getProtein() {
         return protein;
     }
 
-    public int getCalories() {
+    public float getCalories() {
         return calories;
     }
 
-    public int getFat() {
+    public float getFat() {
         return fat;
     }
 
-    public int getCarbs() {
+    public float getCarbs() {
         return carbs;
     }
 
@@ -79,21 +79,22 @@ public class RecipeDetail {
         this.recipeDetailId = recipeDetailId;
     }
 
-    public void setProtein(int protein) {
+    public void setProtein(float protein) {
         this.protein = protein;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(float calories) {
         this.calories = calories;
     }
 
-    public void setFat(int fat) {
+    public void setFat(float fat) {
         this.fat = fat;
     }
 
-    public void setCarbs(int carbs) {
+    public void setCarbs(float carbs) {
         this.carbs = carbs;
     }
+
 
     public void setStep(String steps) {
         this.step = steps;
@@ -112,10 +113,10 @@ public class RecipeDetail {
                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                     RecipeDetail recipeDetail = new RecipeDetail();
                     recipeDetail.setRecipeDetailId(dataSnapshot.child("recipeDetailId").getValue(Integer.class));
-                    recipeDetail.setProtein(dataSnapshot.child("protein").getValue(Integer.class));
-                    recipeDetail.setCalories(dataSnapshot.child("calories").getValue(Integer.class));
-                    recipeDetail.setFat(dataSnapshot.child("fat").getValue(Integer.class));
-                    recipeDetail.setCarbs(dataSnapshot.child("carbs").getValue(Integer.class));
+                    recipeDetail.setProtein(dataSnapshot.child("protein").getValue(Float.class));
+                    recipeDetail.setCalories(dataSnapshot.child("calories").getValue(Float.class));
+                    recipeDetail.setFat(dataSnapshot.child("fat").getValue(Float.class));
+                    recipeDetail.setCarbs(dataSnapshot.child("carbs").getValue(Float.class));
                     recipeDetail.setStep(dataSnapshot.child("step").getValue(String.class));
                     HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient = new HashMap<>();
                     Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully 1.5");

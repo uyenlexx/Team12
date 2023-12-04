@@ -100,9 +100,9 @@ public class Category {
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                         Category category = new Category();
                         category.setCategoryId(Integer.parseInt(snapshot1.getKey()));
-                        category.setCategoryName(snapshot1.child("name").getValue());
+                        category.setCategoryName(snapshot1.child("name").getValue().toString());
                         category.setCategoryType(categoryType);
-                        category.setCategoryImageURL(snapshot1.child("imageURL").getValue());
+                        category.setCategoryImageURL(snapshot1.child("imageURL").getValue().toString());
                         ListVariable.categoryList.add(category);
                         if (category.getCategoryId() > maxCategoryId) {
                             maxCategoryId = category.getCategoryId();
