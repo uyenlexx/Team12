@@ -289,14 +289,17 @@ public class Recipe implements Comparable<Recipe>{
     public static void getRecipeFromFavorite(int userId, RecipeFavoriteCallback callback) {
         List<Recipe> recipeList = new ArrayList<>();
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
-        reference1.orderByChild(String.valueOf(userId)).get().addOnCompleteListener(task -> {
+        reference1.orderByKey().equalTo(String.valueOf(userId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                    int recipeId = Integer.parseInt(dataSnapshot.getKey());
-
-                    for (Recipe recipe : ListVariable.recipeList.values()) {
-                        if (recipe.getRecipeId() == recipeId) {
-                            recipeList.add(recipe);
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        int recipeId = Integer.parseInt(dataSnapshot1.getKey());
+                        Log.i("Recipe getRecipeFromFavorite", "Recipe id: " + recipeId);
+                        for (Recipe recipe : ListVariable.recipeList.values()) {
+                            if (recipe.getRecipeId() == recipeId) {
+                                recipeList.add(recipe);
+                                break;
+                            }
                         }
                     }
                 }
