@@ -18,22 +18,19 @@ public class Category {
     public static int maxCategoryId = 0;
     private int categoryId;
     private String categoryName;
-    private String categoryImageURL;
     private String categoryType;
 
     //Init
-    public Category(String categoryName, String categoryImageURL, String categoryType) {
+    public Category(String categoryName, int categoryIcon, String categoryType) {
         this.categoryId = maxCategoryId + 1;
         this.categoryName = categoryName;
-        this.categoryImageURL = categoryImageURL;
         this.categoryType = categoryType;
     }
 
     public Category() {
         this.categoryId = maxCategoryId + 1;
         this.categoryName = "Temp Category";
-        this.categoryImageURL = "imageURL";
-        this.categoryType = "categoryType";
+        this.categoryType = "Temp Category Type";
     }
 
     // Getters
@@ -52,10 +49,6 @@ public class Category {
 
     public static int getMaxCategoryId() {
         return maxCategoryId;
-    }
-
-    public String getCategoryImageURL() {
-        return categoryImageURL;
     }
 
     public String getCategoryType() {
@@ -80,10 +73,6 @@ public class Category {
         Category.maxCategoryId = maxCategoryId;
     }
 
-    public void setCategoryImageURL(String categoryImageURL) {
-        this.categoryImageURL = categoryImageURL;
-    }
-
     public void setCategoryType(String categoryType) {
         this.categoryType = categoryType;
     }
@@ -102,7 +91,6 @@ public class Category {
                         category.setCategoryId(Integer.parseInt(snapshot1.getKey()));
                         category.setCategoryName(snapshot1.child("name").getValue().toString());
                         category.setCategoryType(categoryType);
-                        category.setCategoryImageURL(snapshot1.child("imageURL").getValue().toString());
                         ListVariable.categoryList.add(category);
                         if (category.getCategoryId() > maxCategoryId) {
                             maxCategoryId = category.getCategoryId();
@@ -122,7 +110,6 @@ public class Category {
     HashMap<String, Object> hashMap = new HashMap<>();
         HashMap<String, Object> hashMap1 = new HashMap<>();
         hashMap1.put("name", this.categoryName);
-        hashMap1.put("imageURL", this.categoryImageURL);
         hashMap.put(String.valueOf(this.categoryId), hashMap1);
         reference.child(this.categoryType).updateChildren(hashMap).addOnSuccessListener(
                 aVoid -> Log.i("Category saveCategoryToFirebase", "Category saved successfully")
@@ -135,7 +122,6 @@ public class Category {
         HashMap<String, Object> hashMap = new HashMap<>();
         HashMap<String, Object> hashMap1 = new HashMap<>();
         hashMap1.put("name", this.categoryName);
-        hashMap1.put("imageURL", this.categoryImageURL);
         hashMap.put(String.valueOf(this.categoryId), hashMap1);
         reference.child(this.categoryType).updateChildren(hashMap).addOnSuccessListener(
                 aVoid -> Log.i("Category updateCategoryToFirebase", "Category updated successfully")

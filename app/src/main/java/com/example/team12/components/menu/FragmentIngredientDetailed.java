@@ -17,85 +17,81 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.team12.R;
+import com.example.team12.components.listener.IngredientDetailCallback;
 import com.example.team12.components.listener.RecipeDetailCallback;
+import com.example.team12.components.listener.UserFavoriteIngredientCallback;
 import com.example.team12.components.listener.UserFavoriteRecipeCallback;
+import com.example.team12.entity.Ingredient;
+import com.example.team12.entity.IngredientDetail;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.RecipeDetail;
 import com.example.team12.entity.User;
 import com.google.firebase.storage.StorageReference;
 
-public class FragmentRecipeDetailed extends Fragment {
-    TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvRecipeName, tvDetail, tvIngredients;
-    ImageView imgRecipe;
+public class FragmentIngredientDetailed extends Fragment {
+    TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvIngredientName, tvDetail, tvIngredients;
+    ImageView imgIngredient;
     Button btnAddToFavorite;
     Toolbar toolbar2;
     int backFrame;
     boolean isFavorite = false;
     Fragment backFragment;
-    public FragmentRecipeDetailed(int backFrame, Fragment backFragment) {
+    public FragmentIngredientDetailed(int backFrame, Fragment backFragment) {
         this.backFrame = backFrame;
         this.backFragment = backFragment;
     }
     StorageReference storageReference;
 
-//    TextView step;
+    //    TextView step;
     WebView webView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View recipeDetailedView = inflater.inflate(R.layout.fragment_recipe_detailed, container, false);
-//        step = recipeDetailedView.findViewById(R.id.recipe_steps);
+        View ingredientDetailedView = inflater.inflate(R.layout.fragment_ingredient_detailed, container, false);
+//        step = ingredientDetailedView.findViewById(R.id.recipe_steps);
 //        step.setText(Html.fromHtml());
-        String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipefriedegg.html?alt=media&token=16b42617-ff71-4af8-b115-38b083aa3ece";
-        webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
-        webView.loadUrl(url);
-        return recipeDetailedView;
+//        String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipefriedegg.html?alt=media&token=16b42617-ff71-4af8-b115-38b083aa3ece";
+//        webView = ingredientDetailedView.findViewById(R.id.ingredient_steps);
+//        webView.loadUrl(url);
+        return ingredientDetailedView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i("Check Recipe", "Current status: " + (ListVariable.currentRecipe == null));
+        Log.i("Check Ingredient", "Current status: " + (ListVariable.currentIngredient == null));
         btnAddToFavorite = view.findViewById(R.id.add_to_favorite_btn);
-        tvRecipeName = view.findViewById(R.id.recipe_title);
-        tvCaloriesValue = view.findViewById(R.id.recipe_calories_number);
-        tvCarbsValue = view.findViewById(R.id.recipe_carbs_number);
-        tvFatValue = view.findViewById(R.id.recipe_fat_number);
-        tvProteinValue = view.findViewById(R.id.recipe_protein_number);
-        tvDetail = view.findViewById(R.id.recipe_details);
-        tvIngredients = view.findViewById(R.id.recipe_ingredients);
-        imgRecipe = view.findViewById(R.id.recipe_image);
+        tvIngredientName = view.findViewById(R.id.ingredient_title);
+        tvCaloriesValue = view.findViewById(R.id.ingredient_calories_number);
+        tvCarbsValue = view.findViewById(R.id.ingredient_carbs_number);
+        tvFatValue = view.findViewById(R.id.ingredient_fat_number);
+        tvProteinValue = view.findViewById(R.id.ingredient_protein_number);
+        tvDetail = view.findViewById(R.id.ingredient_details);
+        imgIngredient = view.findViewById(R.id.ingredient_image);
 
 
-        if (ListVariable.currentRecipe != null) {
-            //Get recipe detail
-            RecipeDetail.getRecipeDetailById(ListVariable.currentRecipe.getRecipeId(), new RecipeDetailCallback() {
+        if (ListVariable.currentIngredient != null) {
+            //Get Ingredient detail
+            IngredientDetail.getIngredientDetailById(ListVariable.currentIngredient.getIngredientId(), new IngredientDetailCallback() {
                 @Override
-                public void onCallback(RecipeDetail value) {
-                    tvRecipeName.setText(ListVariable.currentRecipe.getRecipeName());
+                public void onCallback(IngredientDetail value) {
+                    tvIngredientName.setText(ListVariable.currentIngredient.getIngredientName());
                     tvCaloriesValue.setText(String.valueOf(value.getCalories()));
                     tvCarbsValue.setText(String.valueOf(value.getCarbs()));
                     tvFatValue.setText(String.valueOf(value.getFat()));
                     tvProteinValue.setText(String.valueOf(value.getProtein()));
-                    tvDetail.setText(ListVariable.currentRecipe.getDescription());
-                    webView.loadUrl(value.getStep());
-                    String ingredients = "";
-                    for (String ingredientName: value.getIngredient().keySet()) {
-                        ingredients += value.getIngredient().get(ingredientName).second.first + " " + value.getIngredient().get(ingredientName).second.second + " " + ingredientName + "\n";
-                    }
-                    tvIngredients.setText(ingredients);
-//                    storageReference = ListVariable .storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
-                    String url = ListVariable.currentRecipe.getImageURL();
-//                    Glide.with(Objects.requireNonNull(getContext())).load(storageReference).into(imgRecipe);
+                    tvDetail.setText(value.getDescription());
+//                    tvIngredients.setText(value.getIngredientName());
+                    String url = ListVariable.currentIngredient.getImageURL();
 
                     Glide.with(requireContext())
                             .load(url)
                             .error(R.drawable.img_trending_1)
-                            .into(imgRecipe);
+                            .into(imgIngredient);
                 }
             });
-            User.checkFavoriteRecipe(ListVariable.currentUser.getUserId(), ListVariable.currentRecipe.getRecipeId(), new UserFavoriteRecipeCallback() {
+            User.checkFavoriteIngredient(ListVariable.currentUser.getUserId(), ListVariable.currentIngredient.getIngredientId(), new UserFavoriteIngredientCallback() {
                 @Override
                 public void onCallback(boolean value) {
                     if (value) {
@@ -110,12 +106,12 @@ public class FragmentRecipeDetailed extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isFavorite) {
-                    ListVariable.currentUser.removeFavoriteRecipeFromFirebase(ListVariable.currentRecipe.getRecipeId());
+                    ListVariable.currentUser.removeFavoriteIngredientFromFirebase(ListVariable.currentIngredient.getIngredientId());
                     btnAddToFavorite.setText("Add to favorite");
                     isFavorite = false;
                 }
                 else {
-                    ListVariable.currentUser.addFavoriteRecipeToFirebase(ListVariable.currentRecipe.getRecipeId());
+                    ListVariable.currentUser.addFavoriteIngredientToFirebase(ListVariable.currentIngredient.getIngredientId());
                     btnAddToFavorite.setText("Remove from favorite");
                     isFavorite = true;
                 }

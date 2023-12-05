@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.team12.components.listener.UserFavoriteIngredientCallback;
 import com.example.team12.components.listener.UserFavoriteRecipeCallback;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthCredential;
@@ -312,6 +313,21 @@ public class User {
                 }
             } else {
                 System.out.println("User checkFavoriteRecipe: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void checkFavoriteIngredient(int userId, int ingredientId, UserFavoriteIngredientCallback callback) {
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserIngredient");
+        reference1.child("" + userId).child(String.valueOf(ingredientId)).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().getValue() != null) {
+                    callback.onCallback(true);
+                } else {
+                    callback.onCallback(false);
+                }
+            } else {
+                System.out.println("User checkFavoriteIngredient: " + task.getException().getMessage());
             }
         });
     }
