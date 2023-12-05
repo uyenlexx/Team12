@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.example.team12.MainActivity;
 import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
+import com.example.team12.components.preference.DataLocalManager;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
@@ -115,6 +116,7 @@ public class FragmentLogin extends Fragment {
                                                     ListVariable.currentUser.setName(ds.child("name").getValue().toString());
                                                     ListVariable.currentUser.setUsername(ds.child("username").getValue().toString());
                                                 }
+                                                DataLocalManager.setUserLoggedIn(ListVariable.currentUser.getUserId());
                                                 Log.i("FragmentLogin", "User: " + ListVariable.currentUser.toString());
                                                 future.complete(null);
                                             } else {

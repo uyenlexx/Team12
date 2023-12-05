@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.team12.components.listener.UserFavoriteIngredientCallback;
 import com.example.team12.components.listener.UserFavoriteRecipeCallback;
+import com.example.team12.components.listener.UserLogInCallback;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -56,7 +57,7 @@ public class User {
     }
 
     public User() {
-        this.userId = maxUserId + 1;
+        this.userId = -1;
         this.username = "Temp User";
         this.dateOfBirth = "dateOfBirth";
         this.email = "email";
@@ -328,6 +329,24 @@ public class User {
                 }
             } else {
                 System.out.println("User checkFavoriteIngredient: " + task.getException().getMessage());
+            }
+        });
+    }
+
+    public static void getUserByUserId(int userId, UserLogInCallback callback) {
+        reference.orderByChild("userId").equalTo(userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                User user = new User();
+                for (DataSnapshot child : task.getResult().getChildren()) {
+                    user.setUserId(Integer.parseInt(child.child("userId").getValue().toString()));
+                    user.setUsername(child.child("username").getValue().toString());
+                    user.setDateOfBirth(child.child("dateOfBirth").getValue().toString());
+                    user.setEmail(child.child("email").getValue().toString());
+                    user.setName(child.child("name").getValue().toString());
+                }
+                callback.onCallback(user);
+            } else {
+                System.out.println("User getUserByUserId: " + task.getException().getMessage());
             }
         });
     }
