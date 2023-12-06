@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.team12.R;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
+import com.example.team12.components.preference.DataLocalManager;
 import com.example.team12.components.user.FragmentUserFavorites;
 import com.example.team12.components.user.FragmentUserProfile;
 import com.example.team12.components.user.FragmentUserSettings;
@@ -87,9 +88,14 @@ public class FragmentUser extends Fragment {
         logoutCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), LoggingActivity.class);
-//                startActivity(intent);
-                getActivity().onBackPressed();
+                ListVariable.currentUser = null;
+                ListVariable.currentRecipe = null;
+                ListVariable.currentUser = null;
+
+                DataLocalManager.setUserLoggedIn(-1);
+                Intent intent = new Intent(getActivity(), LoggingActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
     }

@@ -150,7 +150,7 @@ public class User {
         reference.orderByChild("userId").limitToLast(1).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot child : task.getResult().getChildren()) {
-                    if (child.child("userId").getValue() != null)
+                    if (child.child("userId").getValue() == null)
                         maxUserId = -1;
                     else maxUserId = Integer.parseInt(child.child("userId").getValue().toString());
                 }
