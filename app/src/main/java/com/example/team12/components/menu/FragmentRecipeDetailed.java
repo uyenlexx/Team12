@@ -64,26 +64,23 @@ public class FragmentRecipeDetailed extends Fragment {
 //        step = recipeDetailedView.findViewById(R.id.recipe_steps);
 //        step.setText(Html.fromHtml());
         String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipefriedegg.html?alt=media&token=16b42617-ff71-4af8-b115-38b083aa3ece";
-<<<<<<< HEAD
         webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
         webView.loadUrl(url);
-=======
-        webView = recipeDetailedView.findViewById(R.id.recipe_steps);
-        title = recipeDetailedView.findViewById(R.id.recipe_title);
-        calories = recipeDetailedView.findViewById(R.id.recipe_calories_number);
-        protein = recipeDetailedView.findViewById(R.id.recipe_protein_number);
-        carbs = recipeDetailedView.findViewById(R.id.recipe_carbs_number);
-        fat = recipeDetailedView.findViewById(R.id.recipe_fat_number);
-        details = recipeDetailedView.findViewById(R.id.recipe_details);
-
-
-        showData("Fried Egg", 100.0, 10.0, 10.0, 10.0, "Fried egg is a dish made of egg, " +
-                "fried in oil or butter. Fried eggs are traditionally eaten for breakfast in " +
-                "many countries but may also be served at other times of the day. There is a " +
-                "wide variety of ways to cook fried eggs. Many cuisines have their own " +
-                "versions of fried eggs, such as the sunny side up, the Denver omelette, " +
-                "the Scotch egg, the Thai fried egg, and others.", url);
->>>>>>> 92ec59ccc28c47f763ca59c4f3973751b3bcdfc6
+//        webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
+//        title = recipeDetailedView.findViewById(R.id.recipe_title);
+//        calories = recipeDetailedView.findViewById(R.id.recipe_calories_number);
+//        protein = recipeDetailedView.findViewById(R.id.recipe_protein_number);
+//        carbs = recipeDetailedView.findViewById(R.id.recipe_carbs_number);
+//        fat = recipeDetailedView.findViewById(R.id.recipe_fat_number);
+//        details = recipeDetailedView.findViewById(R.id.recipe_details);
+//
+//
+//        showData("Fried Egg", 100.0, 10.0, 10.0, 10.0, "Fried egg is a dish made of egg, " +
+//                "fried in oil or butter. Fried eggs are traditionally eaten for breakfast in " +
+//                "many countries but may also be served at other times of the day. There is a " +
+//                "wide variety of ways to cook fried eggs. Many cuisines have their own " +
+//                "versions of fried eggs, such as the sunny side up, the Denver omelette, " +
+//                "the Scotch egg, the Thai fried egg, and others.", url);
         return recipeDetailedView;
     }
 

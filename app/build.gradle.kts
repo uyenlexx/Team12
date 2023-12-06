@@ -65,11 +65,8 @@ dependencies {
     testImplementation("com.google.truth:truth:1.1.3")
     androidTestImplementation("com.google.truth:truth:1.1.3")
 
-<<<<<<< HEAD
     // FirebaseUI Storage only
     implementation("com.firebaseui:firebase-ui-storage:7.2.0")
-=======
     // for API usage
     implementation("com.squareup.okhttp3:okhttp")
->>>>>>> 92ec59ccc28c47f763ca59c4f3973751b3bcdfc6
 }
