@@ -16,7 +16,6 @@ import com.example.team12.R;
 import com.example.team12.components.menu.FragmentDailyMenu;
 import com.example.team12.components.menu.FragmentWeeklyMenu;
 import com.example.team12.components.menu.MyViewPagerAdapter;
-import com.example.team12.components.recycleview.RecycleViewInterface;
 import com.google.android.material.tabs.TabLayout;
 
 public class FragmentMenu extends Fragment {

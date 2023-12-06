@@ -45,6 +45,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:22.1.2")
     implementation("com.google.firebase:firebase-database:20.2.2")
     implementation("com.firebaseui:firebase-ui-database:8.0.2")
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
+    implementation ("androidx.activity:activity-ktx:1.2.3")
+    implementation ("androidx.fragment:fragment-ktx:1.3.3")
+
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
     implementation("com.google.firebase:firebase-storage")
@@ -63,4 +67,6 @@ dependencies {
 
     // FirebaseUI Storage only
     implementation("com.firebaseui:firebase-ui-storage:7.2.0")
+    // for API usage
+    implementation("com.squareup.okhttp3:okhttp")
 }

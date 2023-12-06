@@ -1,5 +1,6 @@
 package com.example.team12.components;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -10,15 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.team12.R;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.user.FragmentUserFavorites;
 import com.example.team12.components.user.FragmentUserProfile;
 import com.example.team12.components.user.FragmentUserSettings;
+import com.example.team12.entity.ListVariable;
+import com.example.team12.logging.LoggingActivity;
 
 public class FragmentUser extends Fragment {
     FrameLayout frameLayout;
+    TextView username;
     CardView profileCardView;
     CardView favoritesCardView;
     CardView settingsCardView;
@@ -33,6 +38,9 @@ public class FragmentUser extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        username = view.findViewById(R.id.user_name);
+        username.setText(ListVariable.currentUser.getUsername());
 
         frameLayout = view.findViewById(R.id.frame_layout_user);
         profileCardView = view.findViewById(R.id.profile_card);
@@ -79,7 +87,9 @@ public class FragmentUser extends Fragment {
         logoutCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                Intent intent = new Intent(getActivity(), LoggingActivity.class);
+//                startActivity(intent);
+                getActivity().onBackPressed();
             }
         });
     }

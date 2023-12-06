@@ -25,6 +25,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         fragmentHome = new FragmentHome();
+        fragmentHome.setBottomNavigationView(bottomNavigationView);
         fragmentSearch = new FragmentSearch();
         fragmentCalculate = new FragmentCalculate();
         fragmentMenu = new FragmentMenu();

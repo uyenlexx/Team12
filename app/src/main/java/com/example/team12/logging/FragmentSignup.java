@@ -39,6 +39,7 @@ import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
@@ -206,23 +207,24 @@ public class FragmentSignup extends Fragment {
 //            }
 //        });
 
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DATE, day);
+                String myFormat = "dd/MM/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+                dobEditText.setText(sdf.format(calendar.getTime()));
+            }
+        };
+
         dobEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("INFO", "Date of birth is clicked");
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
-                datePickerDialog = new DatePickerDialog(getActivity(), (view, year, monthOfYear, dayOfMonth) -> {
-                    // set day of month , month and year value in the edit text
-                    dobEditText.setText(dayOfMonth + "/"
-                            + (monthOfYear + 1) + "/" + year);
-
-                }, mDay, mMonth, mYear);
-                datePickerDialog.show();
+                new DatePickerDialog(getContext(), date, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE)).show();
             }
         });
 
