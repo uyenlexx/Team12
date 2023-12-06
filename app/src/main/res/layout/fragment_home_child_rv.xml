@@ -28,6 +28,7 @@
                 android:layout_height="170px"
                 android:background="@drawable/edit_text_border"
                 android:fontFamily="@font/nunito_bold"
+                android:textAlignment="center"
                 android:textSize="15dp"
                 android:text="{description}"
                 android:paddingTop="5px"

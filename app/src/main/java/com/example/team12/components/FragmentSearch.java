@@ -23,6 +23,7 @@ import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.menu.RecipeAdapter;
 import com.example.team12.components.menu.RecipeModelClass;
 import com.example.team12.components.search.ChildModelClass;
+import com.example.team12.components.search.FragmentCategory;
 import com.example.team12.components.search.FragmentSearchNotFound;
 import com.example.team12.components.search.IngredientListRedirectInterface;
 import com.example.team12.components.search.ParentAdapter;
@@ -101,7 +102,17 @@ public class FragmentSearch extends Fragment {
         ingredientsArrayList = new ArrayList<>();
         recipeArrayList = new ArrayList<>();
         parentModelClasses = new ArrayList<>();
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red));
+        ChildModelClass fruits = new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red);
+        fruits.setChildModelClassRedirect(new ChildModelClass.ChildModelClassRedirect() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_search, new FragmentCategory())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
+        ingredientsArrayList.add(fruits);
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
         ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));
@@ -191,13 +202,13 @@ public class FragmentSearch extends Fragment {
         for (IngredientList model: ingredientLists) {
             if (model != null && model.getName() != null) {
                 SearchResult newSearchResult = new SearchResult(model.getName(), model.getDescription(), model.getUrl());
-                newSearchResult.recipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, this);
+                newSearchResult.recipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_search, this);
 //                System.out.println("Result: " + newSearchResult.name + ": " + newSearchResult.description);
                 newSearchResult.setSearchResultRedirect(new SearchResult.SearchResultRedirect() {
                     @Override
                     public void onClick(View view) {
                         getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.frame_layout_main, model.recipeDetailed)
+                                .replace(R.id.frame_layout_search, model.recipeDetailed)
                                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .commit();
                     }
