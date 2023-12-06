@@ -16,6 +16,20 @@
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/fragment_menu_section_item">
             </androidx.recyclerview.widget.RecyclerView>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/new_menu_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/button_log"
+                android:text="@string/new_menu"
+                android:textAllCaps="false"
+                android:textSize="20dp"
+                android:fontFamily="@font/nunito_bold"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
     </FrameLayout>
 </RelativeLayout>
