@@ -43,6 +43,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, childModelClassList.get(position).category_item, Toast.LENGTH_SHORT).show();
+                childModelClassList.get(position).onClick(v);
             }
         });
     }

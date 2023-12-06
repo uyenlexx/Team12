@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    Context context;
+//    Context context;
     List<ItemClass> items;
 
-    public MyAdapter(Context context, List<ItemClass> items) {
-        this.context = context;
+    public MyAdapter(List<ItemClass> items) {
+//        this.context = context;
         this.items = items;
     }
 
@@ -32,7 +32,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fragment_home_child_rv, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_child_rv, parent, false);
         return new MyViewHolder(view);
     }
 

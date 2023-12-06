@@ -1,9 +1,11 @@
-package com.example.team12.components.user;
+package com.example.team12.components.search;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+import com.example.team12.components.FragmentSearch;
 import com.example.team12.components.FragmentUser;
 import com.example.team12.components.home.ItemClass;
 import com.example.team12.components.home.ItemInterface;
@@ -27,8 +30,9 @@ import com.example.team12.entity.RecipeDetail;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentUserFavorites extends Fragment {
+public class FragmentCategory extends Fragment {
     Toolbar favoriteToolbar;
+    TextView categoryName;
     RecyclerView favoriteList;
     ArrayList<RecipeModelClass> favoriteRecipesList;
 
@@ -82,12 +86,18 @@ public class FragmentUserFavorites extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         favoriteToolbar = view.findViewById(R.id.favorite_toolbar);
+        favoriteToolbar.setTitle("Search");
+
         favoriteList = view.findViewById(R.id.favorite_list_rv);
+
+        categoryName = view.findViewById(R.id.favorite_header);
+        categoryName.setText("Category: DuckLee");
+
         favoriteRecipesList = new ArrayList<>();
         Recipe.getRecipeFromFavorite(ListVariable.currentUser.getUserId(), new RecipeFavoriteCallback() {
             @Override
             public void onCallback(List<Recipe> value) {
-                    addRecipe(R.drawable.img_example_1, value);
+                addRecipe(R.drawable.img_example_1, value);
 
             }
         });
@@ -107,9 +117,9 @@ public class FragmentUserFavorites extends Fragment {
             @Override
             public void onClick(View v) {
                 //go back to fragment user
-                FragmentUser fragment = new FragmentUser();
+                FragmentSearch fragment = new FragmentSearch();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_user, fragment)
+                        .replace(R.id.frame_layout_search, fragment)
                         .commit();
             }
         });

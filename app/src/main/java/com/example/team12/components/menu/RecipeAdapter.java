@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
@@ -51,7 +52,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.header.setText(recipesList.get(position).header);
         holder.recipeName.setText(recipesList.get(position).recipeName);
         holder.recipeCalories.setText(recipesList.get(position).recipeCalories);
-
+//        holder.recipeList.setLayoutManager(new LinearLayoutManager(
+//                holder.itemView.getContext(), RecyclerView.VERTICAL, false
+//        ));
+//        holder.recipeList.setAdapter(recipesList.get(position).recipesInAMeal);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,12 +102,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         TextView header;
         TextView recipeName;
         TextView recipeCalories;
+//        RecyclerView recipeList;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
             recipeCard = itemView.findViewById(R.id.item_cv);
             recipeImage = itemView.findViewById(R.id.item_img);
             header = itemView.findViewById(R.id.item_header);
+//            recipeList = itemView.findViewById(R.id.menu_meal_recipes);
             recipeName = itemView.findViewById(R.id.item_name);
             recipeCalories = itemView.findViewById(R.id.item_calories);
         }
