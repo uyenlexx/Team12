@@ -1,6 +1,7 @@
 package com.example.team12.components.search;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.team12.components.FragmentSearch;
 import com.example.team12.components.FragmentUser;
 import com.example.team12.components.home.ItemClass;
 import com.example.team12.components.home.ItemInterface;
+import com.example.team12.components.listener.RecipeCategoryCallback;
 import com.example.team12.components.listener.RecipeDetailCallback;
 import com.example.team12.components.listener.RecipeFavoriteCallback;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
@@ -53,6 +55,7 @@ public class FragmentCategory extends Fragment {
                     newRecipe.ItemInterfaceClick(new ItemInterface() {
                         @Override
                         public void onClick(View view, boolean isLongPressed) {
+                            ListVariable.currentRecipe = recipe;
                             getActivity().getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
                                     .commit();
@@ -91,16 +94,24 @@ public class FragmentCategory extends Fragment {
         favoriteList = view.findViewById(R.id.favorite_list_rv);
 
         categoryName = view.findViewById(R.id.favorite_header);
-        categoryName.setText("Category: DuckLee");
+        categoryName.setText("Category: " + ListVariable.currentCategory.getCategoryName());
 
         favoriteRecipesList = new ArrayList<>();
-        Recipe.getRecipeFromFavorite(ListVariable.currentUser.getUserId(), new RecipeFavoriteCallback() {
+        Log.i("Recipe", "onViewCreated: " + ListVariable.currentCategory.getCategoryId());
+        Recipe.getRecipeByCategory(ListVariable.currentCategory.getCategoryId(), new RecipeCategoryCallback() {
             @Override
             public void onCallback(List<Recipe> value) {
                 addRecipe(R.drawable.img_example_1, value);
-
+                Log.i("Recipe", "onCallback: " + value.size());
             }
         });
+//        Recipe.getRecipeFromFavorite(ListVariable.currentUser.getUserId(), new RecipeFavoriteCallback() {
+//            @Override
+//            public void onCallback(List<Recipe> value) {
+//                addRecipe(R.drawable.img_example_1, value);
+//
+//            }
+//        });
 
 //        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_1), "Breakfast", "Recipe 1", "500kcal", this));
 //        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_2), "Lunch", "Recipe 2", "500kcal", this));

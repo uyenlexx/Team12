@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.team12.components.listener.IngredientCategoryCallback;
+import com.example.team12.components.listener.RecipeCategoryCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -230,5 +232,15 @@ public class Ingredient {
             }
         });
         IngredientDetail.removeIngredientDetailFromFirebase(ingredientId);
+    }
+
+    public static void getIngredientByCategory(int _categoryId, IngredientCategoryCallback callback) {
+        List<Ingredient> ingredientList = new ArrayList<>();
+        for (Ingredient ingredient : ListVariable.ingredientList.values()) {
+            if (ingredient.getCategoryId() == _categoryId) {
+                ingredientList.add(ingredient);
+            }
+        }
+        callback.onCallback(ingredientList);
     }
 }
