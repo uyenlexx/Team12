@@ -37,6 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 if (DataLocalManager.getUserLoggedIn() == -1) {
                     startActivity(new Intent(SplashScreenActivity.this, LoggingActivity.class));
+                    finish();
                 } else {
                     User.getUserByUserId(DataLocalManager.getUserLoggedIn(), new UserLogInCallback() {
                         @Override
@@ -44,6 +45,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             if (user.getUserId() == -1) {
                                 DataLocalManager.setUserLoggedIn(-1);
                                 startActivity(new Intent(SplashScreenActivity.this, LoggingActivity.class));
+                                finish();
                             }
                             else {
                                 ListVariable.currentUser = user;
@@ -56,6 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                         throw new RuntimeException(e);
                                     }
                                     startActivity(new Intent(SplashScreenActivity.this, MainScreenActivity.class));
+                                    finish();
                                 });
                             }
                         }
