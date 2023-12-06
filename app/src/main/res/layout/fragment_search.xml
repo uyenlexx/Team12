@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".components.FragmentSearch">
+   <FrameLayout
+       android:id="@+id/frame_layout_search"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <androidx.appcompat.widget.SearchView
+               android:id="@+id/search_input"
+               android:layout_width="380dp"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="15dp"
+               android:layout_marginTop="30dp"
+               android:background="@drawable/edit_text_border"
+               android:backgroundTint="@color/white_grey"
+               app:queryHint="@string/search_hint"
+               app:iconifiedByDefault="false"
+               app:queryBackground="@null"
+               app:submitBackground="@null" />
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/search_recycler_view2"
+               android:layout_width="match_parent"
+
+               android:layout_height="wrap_content"
+               android:layout_below="@id/search_input"
+               android:layout_marginLeft="15dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginRight="20dp"/>
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/search_recycler_view"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/search_recycler_view2"
+               android:layout_marginLeft="15dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginRight="20dp"/>
+
+<!--               tools:listitem="@layout/fragment_search_parent_rv" />-->
+       </RelativeLayout>
+   </FrameLayout>
+</RelativeLayout>

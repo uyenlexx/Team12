@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "149607042255",
+    "firebase_url": "https://calo-a7a97-default-rtdb.firebaseio.com",
+    "project_id": "calo-a7a97",
+    "storage_bucket": "calo-a7a97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149607042255:android:a48c28d15025fd228c7bba",
+        "android_client_info": {
+          "package_name": "com.example.team12"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149607042255-1kt6drormulalfmjrr06s6udmtg4vpaf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.team12",
+            "certificate_hash": "884fb443fca25d0dae29dcb75ba9f92c1b1a3a9b"
+          }
+        },
+        {
+          "client_id": "149607042255-50gqpall2uv6a2n62ssd3ssts4vrvbuc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArol8YdcZO7kA7PSicW_qe1lKtIFMd2ss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149607042255-50gqpall2uv6a2n62ssd3ssts4vrvbuc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
