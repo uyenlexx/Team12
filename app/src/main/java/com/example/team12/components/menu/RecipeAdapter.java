@@ -16,6 +16,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.team12.R;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<RecipeModelClass> recipesList;
+    Context context;
 //    RecycleViewInterface recycleViewInterface;
     public RecipeAdapter(List<RecipeModelClass> recipesList) {
         this.recipesList = recipesList;
@@ -34,9 +37,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View recipeView = LayoutInflater.from(parent.getContext())
+        context = parent.getContext();
+        View recipeView = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_menu_recipe_item, parent, false);
         return new RecipeViewHolder(recipeView);
+    }
+
+    public void add(RecipeModelClass recipe) {
+        recipesList.add(recipe);
     }
 
     private void remove(int position) {
@@ -50,7 +58,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        holder.recipeImage.setImageResource(recipesList.get(position).image);
+        if (recipesList.get(position).url == null) {
+            holder.recipeImage.setImageResource(recipesList.get(position).image);
+        } else {
+            Glide.with(context)
+                    .load(recipesList.get(position).getUrl())
+                    .apply(new RequestOptions().override(300, 300))
+                    .error(R.drawable.img_trending_1)
+                    .into(holder.recipeImage);
+        }
+//        holder.recipeImage.setImageResource(recipesList.get(position).image);
         holder.header.setText(recipesList.get(position).header);
         holder.recipeName.setText(recipesList.get(position).recipeName);
         holder.recipeCalories.setText(recipesList.get(position).recipeCalories);

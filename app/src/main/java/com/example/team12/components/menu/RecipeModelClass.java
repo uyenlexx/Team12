@@ -11,6 +11,7 @@ public class RecipeModelClass implements View.OnClickListener {
     String header;
     String recipeName;
     String recipeCalories;
+    String url;
     private RecipeModelRedirectInterface recipeModelRedirectInterface;
     public FragmentRecipeDetailed fragmentRecipeDetailed;
 
@@ -19,7 +20,15 @@ public class RecipeModelClass implements View.OnClickListener {
         this.header = header;
         this.recipeName = recipeName;
         this.recipeCalories = recipeCalories;
+        this.url = null;
 //        this.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_menu);
+    }
+
+    public RecipeModelClass(String url, String header, String recipeName, String recipeCalories) {
+        this.url = url;
+        this.header = header;
+        this.recipeName = recipeName;
+        this.recipeCalories = recipeCalories;
     }
 
     @Override
@@ -30,5 +39,9 @@ public class RecipeModelClass implements View.OnClickListener {
 
     public void RedirectRecipeModel(RecipeModelRedirectInterface recipeModelRedirectInterface) {
         this.recipeModelRedirectInterface = recipeModelRedirectInterface;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

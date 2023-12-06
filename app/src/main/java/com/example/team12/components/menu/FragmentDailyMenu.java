@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +33,9 @@ public class FragmentDailyMenu extends Fragment implements RecipeAdapter.Recycle
     public FragmentDailyMenu(Fragment menuFragment) {
         this.menuFragment = menuFragment;
     }
-
+    private FragmentDailyMenu getThis() {
+        return this;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,6 +89,15 @@ public class FragmentDailyMenu extends Fragment implements RecipeAdapter.Recycle
 //        sectionList.add(new SectionModelClass(new RecipeAdapter(newMenu()), "Daily Menu 1"));
 
         sectionAdapter = new SectionAdapter(sectionList);
+        sectionAdapter.setSectionAdapterTransaction(new SectionAdapter.SectionAdapterTransaction() {
+            @Override
+            public void onClick(View view, int position) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, new FragmentMiniSearch(menuFragment, sectionAdapter.mList.get(position).recipeList))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(sectionAdapter);
         sectionAdapter.notifyDataSetChanged();
