@@ -1,9 +1,11 @@
 package com.example.team12.components.menu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +24,7 @@ import java.util.List;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> {
     List<SectionModelClass> mList;
-
+    SectionAdapterTransaction sectionAdapterTransaction;
     public SectionAdapter(List<SectionModelClass> mList) {
         this.mList = mList;
     }
@@ -33,11 +36,21 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
         return new SectionViewHolder(view);
     }
 
+    public void setSectionAdapterTransaction(SectionAdapterTransaction sectionAdapterTransaction) {
+        this.sectionAdapterTransaction = sectionAdapterTransaction;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
 //        position = holder.getBindingAdapterPosition();
         SectionModelClass sectionList = mList.get(position);
         holder.sectionTitle.setText(mList.get(position).itemText);
+        holder.addRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sectionAdapterTransaction.onClick(view, position);
+            }
+        });
 
         boolean isExpandable = mList.get(position).isExpandable;
         holder.sectionExpandableList.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
@@ -76,12 +89,18 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
         TextView sectionTitle;
         ImageView expandArrow;
         RecyclerView sectionExpandableList;
+        Button addRecipe;
         public SectionViewHolder(@NonNull View itemView) {
             super(itemView);
             sectionLayout = itemView.findViewById(R.id.relative_layout);
             sectionTitle = itemView.findViewById(R.id.section_text);
             expandArrow = itemView.findViewById(R.id.section_arrow);
             sectionExpandableList = itemView.findViewById(R.id.expanded_rv);
+            addRecipe = itemView.findViewById(R.id.add_recipe_btn);
         }
+    }
+
+    public interface SectionAdapterTransaction {
+        public void onClick(View view, int position);
     }
 }
