@@ -59,7 +59,7 @@ public class FragmentCategory extends Fragment {
                         }
                     });
                     list.add(newRecipe);
-                    RecipeModelClass newMeal = new RecipeModelClass(null, list);
+                    RecipeModelClass newMeal = new RecipeModelClass(img, null, recipe.getRecipeName(), "550kcal");
 //                    newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_user, FragmentUserFavorites.this);
 //                    newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
 //                        @Override

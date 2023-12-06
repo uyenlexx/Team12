@@ -48,14 +48,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-//        holder.recipeImage.setImageResource(recipesList.get(position).image);
+        holder.recipeImage.setImageResource(recipesList.get(position).image);
         holder.header.setText(recipesList.get(position).header);
-//        holder.recipeName.setText(recipesList.get(position).recipeName);
-//        holder.recipeCalories.setText(recipesList.get(position).recipeCalories);
-        holder.recipeList.setLayoutManager(new LinearLayoutManager(
-                holder.itemView.getContext(), RecyclerView.VERTICAL, false
-        ));
-        holder.recipeList.setAdapter(recipesList.get(position).recipesInAMeal);
+        holder.recipeName.setText(recipesList.get(position).recipeName);
+        holder.recipeCalories.setText(recipesList.get(position).recipeCalories);
+//        holder.recipeList.setLayoutManager(new LinearLayoutManager(
+//                holder.itemView.getContext(), RecyclerView.VERTICAL, false
+//        ));
+//        holder.recipeList.setAdapter(recipesList.get(position).recipesInAMeal);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,21 +97,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
-//        CardView recipeCard;
-//        ImageView recipeImage;
+        CardView recipeCard;
+        ImageView recipeImage;
         TextView header;
-//        TextView recipeName;
-//        TextView recipeCalories;
-        RecyclerView recipeList;
+        TextView recipeName;
+        TextView recipeCalories;
+//        RecyclerView recipeList;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
-//            recipeCard = itemView.findViewById(R.id.item_cv);
-//            recipeImage = itemView.findViewById(R.id.item_img);
+            recipeCard = itemView.findViewById(R.id.item_cv);
+            recipeImage = itemView.findViewById(R.id.item_img);
             header = itemView.findViewById(R.id.item_header);
-            recipeList = itemView.findViewById(R.id.menu_meal_recipes);
-//            recipeName = itemView.findViewById(R.id.item_name);
-//            recipeCalories = itemView.findViewById(R.id.item_calories);
+//            recipeList = itemView.findViewById(R.id.menu_meal_recipes);
+            recipeName = itemView.findViewById(R.id.item_name);
+            recipeCalories = itemView.findViewById(R.id.item_calories);
         }
     }
 

@@ -88,7 +88,7 @@ public class FragmentWeeklyMenu extends Fragment {
             }
         });
         list.add(newRecipe);
-        RecipeModelClass newMeal = new RecipeModelClass(header, list);
+        RecipeModelClass newMeal = new RecipeModelClass(img, header, recipeName, "550kcal");
 //        newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, menuFragment);
 //        newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
 //            @Override
