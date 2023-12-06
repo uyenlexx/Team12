@@ -88,7 +88,7 @@ public class FragmentHome extends Fragment {
 //        items.add(new ItemClass(R.drawable.img_trending_4, getText(R.string.trending_4).toString()));
 //        items.add(new ItemClass(R.drawable.img_trending_5, getText(R.string.trending_5).toString()));
 
-        MyAdapter myAdapter = new MyAdapter(this.getContext(), items);
+        MyAdapter myAdapter = new MyAdapter(items);
         recyclerView.setAdapter(myAdapter);
 //        recyclerView.setOnClickListener(new View.OnClickListener() {
 //            @Override
