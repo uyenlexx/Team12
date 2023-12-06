@@ -87,8 +87,9 @@ public class FragmentUser extends Fragment {
         logoutCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoggingActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), LoggingActivity.class);
+//                startActivity(intent);
+                getActivity().onBackPressed();
             }
         });
     }
