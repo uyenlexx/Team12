@@ -105,6 +105,7 @@ public class FragmentLogin extends Fragment {
                                     Ingredient.setUpFirebase();
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = mAuth.getCurrentUser();
+
                                     reference.child("Users").orderByChild("email").equalTo(user.getEmail()).get().addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
                                             if (task1.getResult().getValue() != null) {
@@ -115,6 +116,7 @@ public class FragmentLogin extends Fragment {
                                                     ListVariable.currentUser.setEmail(ds.child("email").getValue().toString());
                                                     ListVariable.currentUser.setName(ds.child("name").getValue().toString());
                                                     ListVariable.currentUser.setUsername(ds.child("username").getValue().toString());
+//                                                    ListVariable.currentUser.setPassword(ds.child("pa"));
                                                 }
                                                 DataLocalManager.setUserLoggedIn(ListVariable.currentUser.getUserId());
                                                 Log.i("FragmentLogin", "User: " + ListVariable.currentUser.toString());
@@ -131,9 +133,11 @@ public class FragmentLogin extends Fragment {
                                         Intent intent = new Intent(getActivity(), MainScreenActivity.class);
                                         startActivity(intent);
                                     });
+//                                    Intent intent = new Intent(getActivity(), MainScreenActivity.class);
+//                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
 
                                 }
                             }

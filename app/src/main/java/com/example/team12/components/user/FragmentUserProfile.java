@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.team12.R;
 import com.example.team12.components.FragmentUser;
@@ -19,12 +20,27 @@ public class FragmentUserProfile extends Fragment {
     TextView tvName, tvDob, tvEmail, tvUsername, tvPassword;
     Button btnEdit, btnSave;
     Toolbar toolbar4;
-
+    TextView name;
+    TextView dateOfBirth;
+    TextView email;
+    TextView username;
+    Button editButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View userProfileView = inflater.inflate(R.layout.fragment_user_profile, container, false);
         return userProfileView;
+    }
+
+    public void setUserInfo() {
+        name.setText(ListVariable.currentUser.getName());
+        dateOfBirth.setText(ListVariable.currentUser.getDateOfBirth());
+        email.setText(ListVariable.currentUser.getEmail());
+        username.setText(ListVariable.currentUser.getUsername());
+    }
+
+    private FragmentUserProfile getThis() {
+        return this;
     }
 
     @Override
@@ -34,7 +50,6 @@ public class FragmentUserProfile extends Fragment {
         tvDob = view.findViewById(R.id.user_dob);
         tvEmail = view.findViewById(R.id.user_email);
         tvUsername = view.findViewById(R.id.user_username);
-        tvPassword = view.findViewById(R.id.user_password);
         btnEdit = view.findViewById(R.id.profile_edit_btn);
         btnSave = view.findViewById(R.id.profile_save_btn);
         //Set text so they can't be edited
@@ -47,6 +62,24 @@ public class FragmentUserProfile extends Fragment {
         tvDob.setText(ListVariable.currentUser.getDateOfBirth());
         tvEmail.setText(ListVariable.currentUser.getEmail());
         tvUsername.setText(ListVariable.currentUser.getUsername());
+        name = view.findViewById(R.id.user_name);
+        dateOfBirth = view.findViewById(R.id.user_dob);
+        email = view.findViewById(R.id.user_email);
+        username = view.findViewById(R.id.user_username);
+        editButton = view.findViewById(R.id.profile_edit_btn);
+
+        setUserInfo();
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentUserEditProfile editProfile = new FragmentUserEditProfile(getThis());
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_user, editProfile)
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
 
         toolbar4 = view.findViewById(R.id.profile_toolbar);
 
@@ -57,6 +90,8 @@ public class FragmentUserProfile extends Fragment {
                 FragmentUser fragment = new FragmentUser();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_user, fragment)
+                        .addToBackStack(null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
         });
@@ -84,5 +119,21 @@ public class FragmentUserProfile extends Fragment {
                 ListVariable.currentUser.updateUserInfoToFirebase();
             }
         });
+    }
+
+    public TextView getName() {
+        return name;
+    }
+
+    public TextView getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public TextView getEmail() {
+        return email;
+    }
+
+    public TextView getUsername() {
+        return username;
     }
 }

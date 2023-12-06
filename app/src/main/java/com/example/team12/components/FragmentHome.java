@@ -26,6 +26,7 @@ import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.team12.entity.RecipeDetail;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class FragmentHome extends Fragment {
     ArrayList<ItemClass> items;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    BottomNavigationView bottomNavigationView;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -119,6 +121,8 @@ public class FragmentHome extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_main, fragment);
                 fragmentTransaction.commit();
+
+                bottomNavigationView.setSelectedItemId(R.id.calculate_tab);
             }
         });
 
@@ -130,11 +134,17 @@ public class FragmentHome extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_main, fragment);
                 fragmentTransaction.commit();
+
+                bottomNavigationView.setSelectedItemId(R.id.menu_tab);
             }
         });
 
 
         future.complete(null);
         return future;
+    }
+
+    public void setBottomNavigationView(BottomNavigationView bottomNavigationView) {
+        this.bottomNavigationView = bottomNavigationView;
     }
 }

@@ -1,9 +1,16 @@
 package com.example.team12.entity;
 
-public class IngredientList {
+import android.view.View;
+
+import com.example.team12.components.menu.FragmentRecipeDetailed;
+import com.example.team12.components.search.IngredientListRedirectInterface;
+
+public class IngredientList implements View.OnClickListener {
     public String url;
     public String description;
     public String name;
+    private IngredientListRedirectInterface ingredientListRedirectInterface;
+    public FragmentRecipeDetailed recipeDetailed;
     public IngredientList(String name, String description, String url) {
         this.description = description;
         this.name = name;
@@ -27,4 +34,12 @@ public class IngredientList {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        ingredientListRedirectInterface.onClick(view);
+    }
+
+    public void setIngredientListRedirectInterface(IngredientListRedirectInterface ingredientListRedirectInterface) {
+        this.ingredientListRedirectInterface = ingredientListRedirectInterface;
+    }
 }

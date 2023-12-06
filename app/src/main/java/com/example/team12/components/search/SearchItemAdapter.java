@@ -41,13 +41,18 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IngredientList ingredientList = searchListItem.get(position);
         holder.itemName.setText(ingredientList.getName());
-        holder.itemDescription.setText(ingredientList.getDescription());
-        Glide.with(context)
-                .load(ingredientList.getUrl())
-                .apply(new RequestOptions().override(300, 300))
-                .error(R.drawable.img_trending_1)
-                .into(holder.itemImg);
-
+//        holder.itemDescription.setText(ingredientList.getDescription());
+//        Glide.with(context)
+//                .load(ingredientList.getUrl())
+//                .apply(new RequestOptions().override(300, 300))
+//                .error(R.drawable.img_trending_1)
+//                .into(holder.itemImg);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchListItem.get(position).onClick(view);
+            }
+        });
     }
 
     @Override
@@ -69,9 +74,9 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemImg = itemView.findViewById(R.id.item_img);
+//            itemImg = itemView.findViewById(R.id.item_img);
             itemName = itemView.findViewById(R.id.item_name);
-            itemDescription = itemView.findViewById(R.id.item_description);
+//            itemDescription = itemView.findViewById(R.id.item_description);
 
 }
     }
