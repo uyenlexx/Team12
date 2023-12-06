@@ -23,6 +23,7 @@ import com.example.team12.components.home.ItemInterface;
 import com.example.team12.components.home.MyAdapter;
 import com.example.team12.components.listener.RecipeDetailCallback;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
+import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -55,20 +56,17 @@ public class FragmentHome extends Fragment {
         itemClass.ItemInterfaceClick(new ItemInterface() {
             @Override
             public void onClick(View view, boolean isLongPressed) {
-                CompletableFuture<Void> future = new CompletableFuture<>();
                 recipe.increaseViewCount();
                 ListVariable.currentRecipe = recipe;
                 Log.i("Check Recipe", "Current status: " + (ListVariable.currentRecipe == null));
-                future.complete(null);
-                future.thenRun(() -> {
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame_layout_main, itemClass.fragmentRecipeDetailed)
                             .commit();
                     Log.d("TAG", "onClick: " + recipe.getRecipeName());
-                });
             }
         });
         items.add(itemClass);
+        Log.i("TAG", "addItems: " + items.size());
     }
 
     @Override
@@ -78,8 +76,12 @@ public class FragmentHome extends Fragment {
         recyclerView = view.findViewById(R.id.trending_recycler_view);
         items = new ArrayList<>();
         Log.i("TAG", "onViewCreated: " + ListVariable.recipeList.size());
-        for (int i = 0; i < ListVariable.recipeList.size(); i++) {
-            addItems(R.drawable.img_example_1, ListVariable.recipeList.get(i));
+        int i = 0;
+        for (String recipeName: ListVariable.recipeList.keySet()) {
+            if (i == 5) break;
+            Recipe recipe = ListVariable.recipeList.get(recipeName);
+            addItems(R.drawable.img_trending_1, recipe);
+            i++;
         }
 
 //        items.add(new ItemClass(R.drawable.img_trending_1, getText(R.string.trending_1).toString()));

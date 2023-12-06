@@ -13,27 +13,24 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Category {
-    public static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Categories");
+    public static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Category");
     public static int totalCategories = 0;
     public static int maxCategoryId = 0;
     private int categoryId;
     private String categoryName;
-    private String categoryImageURL;
     private String categoryType;
 
     //Init
-    public Category(String categoryName, String categoryImageURL, String categoryType) {
+    public Category(String categoryName, int categoryIcon, String categoryType) {
         this.categoryId = maxCategoryId + 1;
         this.categoryName = categoryName;
-        this.categoryImageURL = categoryImageURL;
         this.categoryType = categoryType;
     }
 
     public Category() {
         this.categoryId = maxCategoryId + 1;
         this.categoryName = "Temp Category";
-        this.categoryImageURL = "imageURL";
-        this.categoryType = "categoryType";
+        this.categoryType = "Temp Category Type";
     }
 
     // Getters
@@ -52,10 +49,6 @@ public class Category {
 
     public static int getMaxCategoryId() {
         return maxCategoryId;
-    }
-
-    public String getCategoryImageURL() {
-        return categoryImageURL;
     }
 
     public String getCategoryType() {
@@ -80,10 +73,6 @@ public class Category {
         Category.maxCategoryId = maxCategoryId;
     }
 
-    public void setCategoryImageURL(String categoryImageURL) {
-        this.categoryImageURL = categoryImageURL;
-    }
-
     public void setCategoryType(String categoryType) {
         this.categoryType = categoryType;
     }
@@ -94,17 +83,18 @@ public class Category {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 totalCategories = (int) dataSnapshot.getChildrenCount();
                 maxCategoryId = 0;
-//                int i = 0;
-//                ListVariable.categoryList = Arrays.asList(new Category[totalCategories]);
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    Category category = snapshot.getValue(Category.class);
-//                    ListVariable.categoryList.set(i, category);
                 ListVariable.categoryList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Category category = snapshot.getValue(Category.class);
-                    ListVariable.categoryList.add(category);
-                    if (category.getCategoryId() > maxCategoryId) {
-                        maxCategoryId = category.getCategoryId();
+                    String categoryType = snapshot.getKey();
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        Category category = new Category();
+                        category.setCategoryId(Integer.parseInt(snapshot1.getKey()));
+                        category.setCategoryName(snapshot1.child("name").getValue().toString());
+                        category.setCategoryType(categoryType);
+                        ListVariable.categoryList.add(category);
+                        if (category.getCategoryId() > maxCategoryId) {
+                            maxCategoryId = category.getCategoryId();
+                        }
                     }
                 }
             }
@@ -117,54 +107,36 @@ public class Category {
     }
 
     public void saveCategoryToFirebase() {
-        reference.child(String.valueOf(this.categoryName) + " - " + this.categoryId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().getValue() == null) {
-                    Log.i("Category saveCategoryToFirebase", "Category does not exist");
-                    reference.child(String.valueOf(this.categoryName) + " - " + this.categoryId).setValue(this);
-                } else {
-                    Log.i("Category saveCategoryToFirebase", "Category already exists");
-                }
-            } else {
-                Log.e("Category saveCategoryToFirebase", task.getException().getMessage());
-            }
-        });
+    HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap1 = new HashMap<>();
+        hashMap1.put("name", this.categoryName);
+        hashMap.put(String.valueOf(this.categoryId), hashMap1);
+        reference.child(this.categoryType).updateChildren(hashMap).addOnSuccessListener(
+                aVoid -> Log.i("Category saveCategoryToFirebase", "Category saved successfully")
+        ).addOnFailureListener(
+                e -> Log.e("Category saveCategoryToFirebase", e.getMessage())
+        );
     }
 
     public void updateCategoryToFirebase() {
-        reference.child(String.valueOf(this.categoryName) + " - " + this.categoryId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().getValue() != null) {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("categoryName", this.categoryName);
-                    hashMap.put("categoryImageURL", this.categoryImageURL);
-                    reference.child(String.valueOf(this.categoryName) + " - " + this.categoryId).updateChildren(hashMap).addOnSuccessListener(
-                            aVoid -> Log.i("Category updateCategoryToFirebase", "Category updated successfully")
-                    ).addOnFailureListener(
-                            e -> Log.e("Category updateCategoryToFirebase", e.getMessage())
-                    );
-                } else {
-                    Log.i("Category updateCategoryToFirebase", "Category does not exist");
-                }
-            } else {
-                Log.e("Category updateCategoryToFirebase", task.getException().getMessage());
-            }
-        });
+        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap1 = new HashMap<>();
+        hashMap1.put("name", this.categoryName);
+        hashMap.put(String.valueOf(this.categoryId), hashMap1);
+        reference.child(this.categoryType).updateChildren(hashMap).addOnSuccessListener(
+                aVoid -> Log.i("Category updateCategoryToFirebase", "Category updated successfully")
+        ).addOnFailureListener(
+                e -> Log.e("Category updateCategoryToFirebase", e.getMessage())
+        );
     }
 
     public static List<Category> getCategoryByType(String _categoryType) {
-        List<Category> categoryList = ListVariable.categoryList;
-        categoryList.clear();
-        reference.orderByChild("categoryType").equalTo(_categoryType).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                    Category category = dataSnapshot.getValue(Category.class);
-                    categoryList.add(category);
-                }
-            } else {
-                Log.e("Category getCategoryByType", task.getException().getMessage());
+        List<Category> categoryList = null;
+        for (Category category : ListVariable.categoryList) {
+            if (category.getCategoryType().equals(_categoryType)) {
+                categoryList.add(category);
             }
-        });
+        }
         return categoryList;
     }
 }

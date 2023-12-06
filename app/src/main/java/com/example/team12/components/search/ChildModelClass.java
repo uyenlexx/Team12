@@ -4,6 +4,8 @@ import android.graphics.Color;
 
 import androidx.cardview.widget.CardView;
 
+import com.example.team12.entity.Category;
+
 public class ChildModelClass {
     int icon;
     String category_item;
@@ -18,6 +20,9 @@ public class ChildModelClass {
     }
 
     public ChildModelClass() {
+        this.description = "";
+        this.name = "";
+        this.url = "";
 
     }
 

@@ -13,23 +13,24 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RecipeDetail {
-    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("RecipeDetails");
+    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("RecipeDetail");
     private int recipeDetailId;
-    private int protein;
-    private int calories;
-    private int fat;
-    private int carbs;
-    private String steps;
-    private List<Pair<Integer, Integer>> ingredientList;
+    private float protein;
+    private float calories;
+    private float fat;
+    private float carbs;
+    private String step;
+    private HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient;
 
-    public RecipeDetail(int recipeDetailId, int protein, int calories, int fat, int carbs, String steps, List<Pair<Integer, Integer>> ingredientList) {
+    //Init
+    public RecipeDetail(int recipeDetailId, float protein, float calories, float fat, float carbs, String step, HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient) {
         this.recipeDetailId = recipeDetailId;
         this.protein = protein;
         this.calories = calories;
         this.fat = fat;
         this.carbs = carbs;
-        this.steps = steps;
-        this.ingredientList = ingredientList;
+        this.step = step;
+        this.ingredient = ingredient;
     }
 
     public RecipeDetail() {
@@ -38,8 +39,8 @@ public class RecipeDetail {
         this.calories = 0;
         this.fat = 0;
         this.carbs = 0;
-        this.steps = "";
-        this.ingredientList = null;
+        this.step = "";
+        this.ingredient = new HashMap<>();
     }
 
     // Getters
@@ -48,28 +49,28 @@ public class RecipeDetail {
         return recipeDetailId;
     }
 
-    public int getProtein() {
+    public float getProtein() {
         return protein;
     }
 
-    public int getCalories() {
+    public float getCalories() {
         return calories;
     }
 
-    public int getFat() {
+    public float getFat() {
         return fat;
     }
 
-    public int getCarbs() {
+    public float getCarbs() {
         return carbs;
     }
 
-    public String getSteps() {
-        return steps;
+    public String getStep() {
+        return step;
     }
 
-    public List<Pair<Integer, Integer>> getIngredientList() {
-        return ingredientList;
+    public HashMap<String, Pair<Integer, Pair<Integer, String>>> getIngredient() {
+        return ingredient;
     }
 
     // Setters
@@ -78,49 +79,56 @@ public class RecipeDetail {
         this.recipeDetailId = recipeDetailId;
     }
 
-    public void setProtein(int protein) {
+    public void setProtein(float protein) {
         this.protein = protein;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(float calories) {
         this.calories = calories;
     }
 
-    public void setFat(int fat) {
+    public void setFat(float fat) {
         this.fat = fat;
     }
 
-    public void setCarbs(int carbs) {
+    public void setCarbs(float carbs) {
         this.carbs = carbs;
     }
 
-    public void setSteps(String steps) {
-        this.steps = steps;
+
+    public void setStep(String steps) {
+        this.step = steps;
     }
 
-    public void setIngredientList(List<Pair<Integer, Integer>> ingredientList) {
-        this.ingredientList = ingredientList;
+    public void setIngredient(HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient) {
+        this.ingredient = ingredient;
     }
 
     public static void getRecipeDetailById(int recipeId, RecipeDetailCallback myCallback) {
         Log.i("RecipeDetail getRecipeDetailById", "Loading RecipeDetail");
-        reference.orderByChild("recipeDetailId").equalTo(recipeId).get().addOnCompleteListener(task -> {
+
+        reference.orderByKey().equalTo(String.valueOf(recipeId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully 1");
                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                     RecipeDetail recipeDetail = new RecipeDetail();
                     recipeDetail.setRecipeDetailId(dataSnapshot.child("recipeDetailId").getValue(Integer.class));
-                    recipeDetail.setProtein(dataSnapshot.child("protein").getValue(Integer.class));
-                    recipeDetail.setCalories(dataSnapshot.child("calories").getValue(Integer.class));
-                    recipeDetail.setFat(dataSnapshot.child("fat").getValue(Integer.class));
-                    recipeDetail.setCarbs(dataSnapshot.child("carbs").getValue(Integer.class));
-                    recipeDetail.setSteps(dataSnapshot.child("steps").getValue(String.class));
-                    List<Pair<Integer, Integer>> tempIngredientList = new ArrayList<>();
-                    for (DataSnapshot ingredientSnapshot : dataSnapshot.child("ingredientList").getChildren()) {
-                        Pair<Integer, Integer> ingredient = new Pair<>(Integer.parseInt(ingredientSnapshot.getKey()), ingredientSnapshot.getValue(Integer.class));
-                        tempIngredientList.add(ingredient);
+                    recipeDetail.setProtein(dataSnapshot.child("protein").getValue(Float.class));
+                    recipeDetail.setCalories(dataSnapshot.child("calories").getValue(Float.class));
+                    recipeDetail.setFat(dataSnapshot.child("fat").getValue(Float.class));
+                    recipeDetail.setCarbs(dataSnapshot.child("carbs").getValue(Float.class));
+                    recipeDetail.setStep(dataSnapshot.child("step").getValue(String.class));
+                    HashMap<String, Pair<Integer, Pair<Integer, String>>> ingredient = new HashMap<>();
+                    Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully 1.5");
+                    for (DataSnapshot ingredientSnapshot : dataSnapshot.child("ingredient").getChildren()) {
+                        //Get all ingredient name, all of it is in children element
+                        int ingredientId = ingredientSnapshot.child("ingredientId").getValue(Integer.class);
+                        int quantity = ingredientSnapshot.child("Quantity").getValue(Integer.class);
+                        String unit = ingredientSnapshot.child("unit").getValue(String.class);
+                        Pair<Integer, Pair<Integer, String>> ingredientDetail = new Pair<>(ingredientId, new Pair<>(quantity, unit));
+                        ingredient.put(ingredientSnapshot.getKey(), ingredientDetail);
                     }
-                    recipeDetail.setIngredientList(tempIngredientList);
+                    recipeDetail.setIngredient(ingredient);
                     //Check if Value already exists
                     boolean exists = false;
                     for (RecipeDetail recipeDetail1 : ListVariable.recipeDetailList) {
@@ -139,6 +147,7 @@ public class RecipeDetail {
                     if (!exists) {
                         ListVariable.recipeDetailList.add(recipeDetail);
                     }
+                    Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully 2");
                     myCallback.onCallback(recipeDetail);
                 }
                 Log.i("RecipeDetail getRecipeDetailById", "RecipeDetail loaded successfully");
@@ -158,12 +167,16 @@ public class RecipeDetail {
                     hashMap.put("calories", this.calories);
                     hashMap.put("fat", this.fat);
                     hashMap.put("carbs", this.carbs);
-                    hashMap.put("steps", this.steps);
-                    if (this.ingredientList != null) {
-                        for (Pair<Integer, Integer> ingredient : this.ingredientList) {
-                            hashMap.put("Ingredient/" + ingredient.first, ingredient.second);
-                        }
+                    hashMap.put("step", this.step);
+                    HashMap<String, Object> ingredientHashMap = new HashMap<>();
+                    for (String ingredientName : this.ingredient.keySet()) {
+                        HashMap<String, Object> ingredientDetailHashMap = new HashMap<>();
+                        ingredientDetailHashMap.put("ingredientId", this.ingredient.get(ingredientName).first);
+                        ingredientDetailHashMap.put("Quantity", this.ingredient.get(ingredientName).second.first);
+                        ingredientDetailHashMap.put("unit", this.ingredient.get(ingredientName).second.second);
+                        ingredientHashMap.put(ingredientName, ingredientDetailHashMap);
                     }
+                    hashMap.put("ingredient", ingredientHashMap);
                     reference.child(String.valueOf(this.recipeDetailId)).setValue(hashMap);
                 }
             }
@@ -179,7 +192,7 @@ public class RecipeDetail {
                     hashMap.put("calories", this.calories);
                     hashMap.put("fat", this.fat);
                     hashMap.put("carbs", this.carbs);
-                    hashMap.put("steps", this.steps);
+                    hashMap.put("step", this.step);
                     reference.child(String.valueOf(this.recipeDetailId)).updateChildren(hashMap);
                 }
             }
@@ -200,23 +213,23 @@ public class RecipeDetail {
         });
     }
 
-    public void calculateNutrition() {
-        if (this.ingredientList != null) {
-            this.protein = 0;
-            this.calories = 0;
-            this.fat = 0;
-            this.carbs = 0;
-            for (Pair<Integer, Integer> ingredient : this.ingredientList) {
-                IngredientDetail tempIngredientDetail = new IngredientDetail();
-                tempIngredientDetail.getIngredientDetail(ingredient.first);
-                this.protein += tempIngredientDetail.getProtein() * ingredient.second;
-                this.calories += tempIngredientDetail.getCalories() * ingredient.second;
-                this.fat += tempIngredientDetail.getFat() * ingredient.second;
-                this.carbs += tempIngredientDetail.getCarbs() * ingredient.second;
-            }
-            updateRecipeDetailToFirebase();
-        } else {
-            Log.e("RecipeDetail calculateNutrition", "Ingredient list is null");
-        }
-    }
+//    public void calculateNutrition() {
+//        if (this.ingredient != null) {
+//            this.protein = 0;
+//            this.calories = 0;
+//            this.fat = 0;
+//            this.carbs = 0;
+//            for (Pair<Integer, Integer> ingredient : this.ingredient) {
+//                IngredientDetail tempIngredientDetail = new IngredientDetail();
+//                tempIngredientDetail.getIngredientDetail(ingredient.first);
+//                this.protein += tempIngredientDetail.getProtein() * ingredient.second;
+//                this.calories += tempIngredientDetail.getCalories() * ingredient.second;
+//                this.fat += tempIngredientDetail.getFat() * ingredient.second;
+//                this.carbs += tempIngredientDetail.getCarbs() * ingredient.second;
+//            }
+//            updateRecipeDetailToFirebase();
+//        } else {
+//            Log.e("RecipeDetail calculateNutrition", "Ingredient list is null");
+//        }
+//    }
 }

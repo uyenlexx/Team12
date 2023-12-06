@@ -1,13 +1,13 @@
 package com.example.team12.components.menu;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -15,21 +15,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.example.team12.R;
-import com.example.team12.components.FragmentHome;
-import com.example.team12.components.FragmentSearch;
 import com.example.team12.components.listener.RecipeDetailCallback;
 import com.example.team12.components.listener.UserFavoriteRecipeCallback;
-import com.example.team12.entity.IngredientDetail;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.RecipeDetail;
 import com.example.team12.entity.User;
-
-import java.util.List;
-import java.util.Objects;
+import com.google.firebase.storage.StorageReference;
 
 public class FragmentRecipeDetailed extends Fragment {
-    TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvRecipeName;
+    TextView tvCaloriesValue, tvProteinValue, tvFatValue, tvCarbsValue, tvRecipeName, tvDetail, tvIngredients;
+    ImageView imgRecipe;
     Button btnAddToFavorite;
     Toolbar toolbar2;
     int backFrame;
@@ -39,6 +36,7 @@ public class FragmentRecipeDetailed extends Fragment {
         this.backFrame = backFrame;
         this.backFragment = backFragment;
     }
+    StorageReference storageReference;
 
 
 
@@ -66,21 +64,23 @@ public class FragmentRecipeDetailed extends Fragment {
 //        step = recipeDetailedView.findViewById(R.id.recipe_steps);
 //        step.setText(Html.fromHtml());
         String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipefriedegg.html?alt=media&token=16b42617-ff71-4af8-b115-38b083aa3ece";
-        webView = recipeDetailedView.findViewById(R.id.recipe_steps);
-        title = recipeDetailedView.findViewById(R.id.recipe_title);
-        calories = recipeDetailedView.findViewById(R.id.recipe_calories_number);
-        protein = recipeDetailedView.findViewById(R.id.recipe_protein_number);
-        carbs = recipeDetailedView.findViewById(R.id.recipe_carbs_number);
-        fat = recipeDetailedView.findViewById(R.id.recipe_fat_number);
-        details = recipeDetailedView.findViewById(R.id.recipe_details);
-
-
-        showData("Fried Egg", 100.0, 10.0, 10.0, 10.0, "Fried egg is a dish made of egg, " +
-                "fried in oil or butter. Fried eggs are traditionally eaten for breakfast in " +
-                "many countries but may also be served at other times of the day. There is a " +
-                "wide variety of ways to cook fried eggs. Many cuisines have their own " +
-                "versions of fried eggs, such as the sunny side up, the Denver omelette, " +
-                "the Scotch egg, the Thai fried egg, and others.", url);
+        webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
+        webView.loadUrl(url);
+//        webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
+//        title = recipeDetailedView.findViewById(R.id.recipe_title);
+//        calories = recipeDetailedView.findViewById(R.id.recipe_calories_number);
+//        protein = recipeDetailedView.findViewById(R.id.recipe_protein_number);
+//        carbs = recipeDetailedView.findViewById(R.id.recipe_carbs_number);
+//        fat = recipeDetailedView.findViewById(R.id.recipe_fat_number);
+//        details = recipeDetailedView.findViewById(R.id.recipe_details);
+//
+//
+//        showData("Fried Egg", 100.0, 10.0, 10.0, 10.0, "Fried egg is a dish made of egg, " +
+//                "fried in oil or butter. Fried eggs are traditionally eaten for breakfast in " +
+//                "many countries but may also be served at other times of the day. There is a " +
+//                "wide variety of ways to cook fried eggs. Many cuisines have their own " +
+//                "versions of fried eggs, such as the sunny side up, the Denver omelette, " +
+//                "the Scotch egg, the Thai fried egg, and others.", url);
         return recipeDetailedView;
     }
 
@@ -94,6 +94,11 @@ public class FragmentRecipeDetailed extends Fragment {
         tvCarbsValue = view.findViewById(R.id.recipe_carbs_number);
         tvFatValue = view.findViewById(R.id.recipe_fat_number);
         tvProteinValue = view.findViewById(R.id.recipe_protein_number);
+        tvDetail = view.findViewById(R.id.recipe_details);
+        tvIngredients = view.findViewById(R.id.recipe_ingredients);
+        imgRecipe = view.findViewById(R.id.recipe_image);
+
+
         if (ListVariable.currentRecipe != null) {
             //Get recipe detail
             RecipeDetail.getRecipeDetailById(ListVariable.currentRecipe.getRecipeId(), new RecipeDetailCallback() {
@@ -104,6 +109,21 @@ public class FragmentRecipeDetailed extends Fragment {
                     tvCarbsValue.setText(String.valueOf(value.getCarbs()));
                     tvFatValue.setText(String.valueOf(value.getFat()));
                     tvProteinValue.setText(String.valueOf(value.getProtein()));
+                    tvDetail.setText(ListVariable.currentRecipe.getDescription());
+                    webView.loadUrl(value.getStep());
+                    String ingredients = "";
+                    for (String ingredientName: value.getIngredient().keySet()) {
+                        ingredients += value.getIngredient().get(ingredientName).second.first + " " + value.getIngredient().get(ingredientName).second.second + " " + ingredientName + "\n";
+                    }
+                    tvIngredients.setText(ingredients);
+//                    storageReference = ListVariable .storage.getReferenceFromUrl(ListVariable.currentRecipe.getImageURL());
+                    String url = ListVariable.currentRecipe.getImageURL();
+//                    Glide.with(Objects.requireNonNull(getContext())).load(storageReference).into(imgRecipe);
+
+                    Glide.with(requireContext())
+                            .load(url)
+                            .error(R.drawable.img_trending_1)
+                            .into(imgRecipe);
                 }
             });
             User.checkFavoriteRecipe(ListVariable.currentUser.getUserId(), ListVariable.currentRecipe.getRecipeId(), new UserFavoriteRecipeCallback() {

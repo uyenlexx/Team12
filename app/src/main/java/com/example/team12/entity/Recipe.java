@@ -18,8 +18,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class Recipe {
+public class Recipe implements Comparable<Recipe>{
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Recipes");
     public static int totalRecipes = 0;
     public static int maxRecipeId = 0;
@@ -116,16 +117,15 @@ public class Recipe {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 totalRecipes = (int) snapshot.getChildrenCount();
                 maxRecipeId = 0;
-                ListVariable.recipeList = new ArrayList<>();
+                ListVariable.recipeList = new TreeMap<>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                    ListVariable.recipeList.add(recipe);
+                    ListVariable.recipeList.put(recipe.getRecipeName(), recipe);
                     if (recipe.getRecipeId() > maxRecipeId) {
                         maxRecipeId = recipe.getRecipeId();
                     }
                 }
-                //Sort recipe list by view count in descending order
-                Collections.sort(ListVariable.recipeList, (o1, o2) -> o2.getViewCount() - o1.getViewCount());
+                //Sort recipe list by view count in descending order (HashMap)
                 Log.i("Recipe setUpFirebase", "Total recipe: " + totalRecipes + " - Max recipe id: " + maxRecipeId);
             }
 
@@ -275,9 +275,8 @@ public class Recipe {
                 ListVariable.recipeList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                    ListVariable.recipeList.add(recipe);
+                    ListVariable.recipeList.put(recipe.getRecipeName(), recipe);
                 }
-                Collections.sort(ListVariable.recipeList, (o1, o2) -> o2.getViewCount() - o1.getViewCount());
             }
 
             @Override
@@ -290,15 +289,17 @@ public class Recipe {
     public static void getRecipeFromFavorite(int userId, RecipeFavoriteCallback callback) {
         List<Recipe> recipeList = new ArrayList<>();
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child("UserRecipe");
-        reference1.orderByChild(String.valueOf(userId)).get().addOnCompleteListener(task -> {
+        reference1.orderByKey().equalTo(String.valueOf(userId)).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                    int recipeId = Integer.parseInt(dataSnapshot.getKey());
-
-                    for (Recipe recipe : ListVariable.recipeList) {
-                        if (recipe.getRecipeId() == recipeId) {
-                            recipeList.add(recipe);
-                            break;
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        int recipeId = Integer.parseInt(dataSnapshot1.getKey());
+                        Log.i("Recipe getRecipeFromFavorite", "Recipe id: " + recipeId);
+                        for (Recipe recipe : ListVariable.recipeList.values()) {
+                            if (recipe.getRecipeId() == recipeId) {
+                                recipeList.add(recipe);
+                                break;
+                            }
                         }
                     }
                 }
@@ -307,6 +308,11 @@ public class Recipe {
                 Log.e("Recipe getRecipeFromFavorite", task.getException().getMessage());
             }
         });
+    }
+
+    @Override
+    public int compareTo(Recipe recipe) {
+        return this.viewCount - recipe.viewCount;
     }
 }
 
