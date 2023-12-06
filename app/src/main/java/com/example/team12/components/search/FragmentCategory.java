@@ -50,30 +50,29 @@ public class FragmentCategory extends Fragment {
             RecipeDetail.getRecipeDetailById(recipe.getRecipeId(), new RecipeDetailCallback() {
                 @Override
                 public void onCallback(RecipeDetail value) {
-                    List<ItemClass> list = new ArrayList<>();
-                    ItemClass newRecipe = new ItemClass(img, recipe.getRecipeName());
-                    newRecipe.ItemInterfaceClick(new ItemInterface() {
-                        @Override
-                        public void onClick(View view, boolean isLongPressed) {
-                            ListVariable.currentRecipe = recipe;
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
-                                    .commit();
-                        }
-                    });
-                    list.add(newRecipe);
-                    RecipeModelClass newMeal = new RecipeModelClass(img, null, recipe.getRecipeName(), "550kcal");
-//                    newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_user, FragmentUserFavorites.this);
-//                    newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+//                    List<ItemClass> list = new ArrayList<>();
+//                    ItemClass newRecipe = new ItemClass(img, recipe.getRecipeName());
+//                    newRecipe.ItemInterfaceClick(new ItemInterface() {
 //                        @Override
-//                        public void onClick(View view) {
-//                            recipe.increaseViewCount();
-//                            ListVariable.currentRecipe = recipe;
+//                        public void onClick(View view, boolean isLongPressed) {
 //                            getActivity().getSupportFragmentManager().beginTransaction()
-//                                    .replace(R.id.frame_layout_user, newRecipe.fragmentRecipeDetailed)
+//                                    .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
 //                                    .commit();
 //                        }
 //                    });
+//                    list.add(newRecipe);
+                    RecipeModelClass newMeal = new RecipeModelClass(img, null, recipe.getRecipeName(), value.getCalories() + "kcal");
+                    newMeal.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_user, FragmentCategory.this);
+                    newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+                        @Override
+                        public void onClick(View view) {
+                            recipe.increaseViewCount();
+                            ListVariable.currentRecipe = recipe;
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_layout_user, newMeal.fragmentRecipeDetailed)
+                                    .commit();
+                        }
+                    });
                     favoriteRecipesList.add(newMeal);
                     RecipeAdapter adapter = new RecipeAdapter(favoriteRecipesList);
                     favoriteList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -112,16 +111,6 @@ public class FragmentCategory extends Fragment {
 //
 //            }
 //        });
-
-//        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_1), "Breakfast", "Recipe 1", "500kcal", this));
-//        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_2), "Lunch", "Recipe 2", "500kcal", this));
-//        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_3), "Dinner", "Recipe 3", "500kcal", this));
-//        addRecipe(R.drawable.img_example_1, "Breakfast", "Recipe 1", "500kcal");
-//        addRecipe(R.drawable.img_example_2, "Lunch", "Recipe 2", "500kcal");
-//        addRecipe(R.drawable.img_example_3, "Dinner", "Recipe 3", "500kcal");
-//        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_1), "", "Recipe 1", "500kcal"));
-//        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_2), "", "Recipe 2", "500kcal"));
-//        favoriteRecipesList.add(new RecipeModelClass((R.drawable.img_example_3), "", "Recipe 3", "500kcal"));
 
 
         favoriteToolbar.setNavigationOnClickListener(new View.OnClickListener() {

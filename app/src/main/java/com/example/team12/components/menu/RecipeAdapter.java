@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+import com.example.team12.entity.ListVariable;
+import com.example.team12.entity.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,10 +73,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             @Override
             public boolean onLongClick(View view) {
                 new AlertDialog.Builder(view.getContext())
-                        .setTitle("Do you want to remove " + recipesList.get(position).header + " from favorite list?")
+                        .setTitle("Do you want to remove " + recipesList.get(position).recipeName + " from favorite list?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                int recipeId = -1;
+                                for (Recipe recipe: ListVariable.recipeList.values()) {
+                                    if (recipe.getRecipeName().equals(recipesList.get(position).recipeName)) {
+                                        recipeId = recipe.getRecipeId();
+                                        break;
+                                    }
+                                }
+                                ListVariable.currentUser.removeFavoriteRecipeFromFirebase(recipeId);
                                 remove(position);
                             }
                         })
