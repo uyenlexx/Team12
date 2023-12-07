@@ -18,13 +18,21 @@ import com.example.team12.components.FragmentSearch;
 import com.example.team12.components.FragmentUser;
 import com.example.team12.components.home.ItemClass;
 import com.example.team12.components.home.ItemInterface;
+import com.example.team12.components.listener.IngredientCategoryCallback;
+import com.example.team12.components.listener.IngredientDetailCallback;
 import com.example.team12.components.listener.RecipeCategoryCallback;
 import com.example.team12.components.listener.RecipeDetailCallback;
 import com.example.team12.components.listener.RecipeFavoriteCallback;
+import com.example.team12.components.menu.FragmentIngredientDetailed;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
+import com.example.team12.components.menu.IngredientAdapter;
+import com.example.team12.components.menu.IngredientModelClass;
+import com.example.team12.components.menu.IngredientModelRedirectInterface;
 import com.example.team12.components.menu.RecipeAdapter;
 import com.example.team12.components.menu.RecipeModelClass;
 import com.example.team12.components.menu.RecipeModelRedirectInterface;
+import com.example.team12.entity.Ingredient;
+import com.example.team12.entity.IngredientDetail;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
 import com.example.team12.entity.RecipeDetail;
@@ -37,6 +45,7 @@ public class FragmentCategory extends Fragment {
     TextView categoryName;
     RecyclerView favoriteList;
     ArrayList<RecipeModelClass> favoriteRecipesList;
+    ArrayList<IngredientModelClass> favoriteIngredientsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +92,45 @@ public class FragmentCategory extends Fragment {
         }
     }
 
+    private void addIngredient(int img, List<Ingredient> ingredientList) {
+        for (Ingredient ingredient: ingredientList) {
+            IngredientDetail.getIngredientDetailById(ingredient.getIngredientId(), new IngredientDetailCallback() {
+                @Override
+                public void onCallback(IngredientDetail value) {
+//                    List<ItemClass> list = new ArrayList<>();
+//                    ItemClass newRecipe = new ItemClass(img, recipe.getRecipeName());
+//                    newRecipe.ItemInterfaceClick(new ItemInterface() {
+//                        @Override
+//                        public void onClick(View view, boolean isLongPressed) {
+//                            getActivity().getSupportFragmentManager().beginTransaction()
+//                                    .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
+//                                    .commit();
+//                        }
+//                    });
+//                    list.add(newRecipe);
+                    Log.i("Ingredient", "onCallback: " + value.getCalories());
+                    IngredientModelClass newMeal = new IngredientModelClass(img, null, ingredient.getIngredientName(), value.getCalories() + "kcal");
+                    newMeal.fragmentIngredientDetailed = new FragmentIngredientDetailed(R.id.frame_layout_main, FragmentCategory.this);
+                    newMeal.RedirectIngredientModel(new IngredientModelRedirectInterface() {
+                        @Override
+                        public void onClick(View view) {
+//                            recipe.increaseViewCount();
+                            ListVariable.currentIngredient = ingredient;
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_layout_main, newMeal.fragmentIngredientDetailed)
+                                    .commit();
+                        }
+                    });
+                    favoriteIngredientsList.add(newMeal);
+                    IngredientAdapter adapter = new IngredientAdapter(favoriteIngredientsList);
+                    favoriteList.setLayoutManager(new LinearLayoutManager(getContext()));
+                    favoriteList.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,13 +145,23 @@ public class FragmentCategory extends Fragment {
 
         favoriteRecipesList = new ArrayList<>();
         Log.i("Recipe", "onViewCreated: " + ListVariable.currentCategory.getCategoryId());
-        Recipe.getRecipeByCategory(ListVariable.currentCategory.getCategoryId(), new RecipeCategoryCallback() {
-            @Override
-            public void onCallback(List<Recipe> value) {
-                addRecipe(R.drawable.img_example_1, value);
-                Log.i("Recipe", "onCallback: " + value.size());
-            }
-        });
+        if (ListVariable.currentCategory.getCategoryType().equals("Ingredient")) {
+            Ingredient.getIngredientByCategory(ListVariable.currentCategory.getCategoryId(), new IngredientCategoryCallback() {
+                @Override
+                public void onCallback(List<Ingredient> value) {
+                    addIngredient(R.drawable.img_example_1, value);
+                    Log.i("Ingredient 1", "onCallback: " + value.size());
+                }
+            });
+        } else {
+            Recipe.getRecipeByCategory(ListVariable.currentCategory.getCategoryId(), new RecipeCategoryCallback() {
+                @Override
+                public void onCallback(List<Recipe> value) {
+                    addRecipe(R.drawable.img_example_1, value);
+                    Log.i("Recipe", "onCallback: " + value.size());
+                }
+            });
+        }
 //        Recipe.getRecipeFromFavorite(ListVariable.currentUser.getUserId(), new RecipeFavoriteCallback() {
 //            @Override
 //            public void onCallback(List<Recipe> value) {

@@ -10,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class IngredientDetail {
-    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("IngredientDetail");
+    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("IngredientDetails");
     private int ingredientDetailId;
     private String unit;
     private float protein;
