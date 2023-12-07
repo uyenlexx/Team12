@@ -9,12 +9,14 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
 import com.example.team12.components.home.ItemClass;
 import com.example.team12.components.home.ItemInterface;
+import com.example.team12.entity.ListVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,27 +79,28 @@ public class FragmentWeeklyMenu extends Fragment {
     }
 
     private void addRecipe(int img, String header, String recipeName) {
-        List<ItemClass> list = new ArrayList<>();
-        ItemClass newRecipe = new ItemClass(img, recipeName);
-        newRecipe.ItemInterfaceClick(new ItemInterface() {
-            @Override
-            public void onClick(View view, boolean isLongPressed) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
-                        .commit();
-            }
-        });
-        list.add(newRecipe);
-        RecipeModelClass newMeal = new RecipeModelClass(img, header, recipeName, "550kcal");
-//        newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, menuFragment);
-//        newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+//        List<ItemClass> list = new ArrayList<>();
+//        ItemClass newRecipe = new ItemClass(img, recipeName);
+//        newRecipe.ItemInterfaceClick(new ItemInterface() {
 //            @Override
-//            public void onClick(View view) {
+//            public void onClick(View view, boolean isLongPressed) {
 //                getActivity().getSupportFragmentManager().beginTransaction()
 //                        .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
 //                        .commit();
 //            }
 //        });
+//        list.add(newRecipe);
+        RecipeModelClass newMeal = new RecipeModelClass(ListVariable.recipeList.get(recipeName).getImageURL(), header, recipeName, "550kcal");
+        newMeal.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, menuFragment);
+        newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+            @Override
+            public void onClick(View view) {
+                ListVariable.currentRecipe = ListVariable.recipeList.get(recipeName);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, newMeal.fragmentRecipeDetailed)
+                        .commit();
+            }
+        });
         recipeList.add(newMeal);
     }
 
@@ -108,9 +111,9 @@ public class FragmentWeeklyMenu extends Fragment {
         recyclerView = view.findViewById(R.id.menu_weekly_rv);
 
         recipeList = new ArrayList<>();
-        addRecipe(R.drawable.img_example_1, "Breakfast", "Recipe 1");
-        addRecipe(R.drawable.img_example_2, "Lunch", "Recipe 2");
-        addRecipe(R.drawable.img_example_3, "Dinner", "Recipe 3");
+        addRecipe(R.drawable.img_example_1, "Breakfast", "Bun rieu");
+        addRecipe(R.drawable.img_example_2, "Lunch", "Chicken soup");
+        addRecipe(R.drawable.img_example_3, "Dinner", "Bruschetta");
 
         sectionList = new ArrayList<>();
         String days[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -118,6 +121,15 @@ public class FragmentWeeklyMenu extends Fragment {
             sectionList.add(new SectionModelClass(new RecipeAdapter(recipeList), days[i]));
         }
         SectionAdapter sectionAdapter = new SectionAdapter(sectionList);
+        sectionAdapter.setSectionAdapterTransaction(new SectionAdapter.SectionAdapterTransaction() {
+            @Override
+            public void onClick(View view, int position) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, new FragmentMiniSearch(menuFragment, sectionAdapter.mList.get(position).recipeList))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(sectionAdapter);
         sectionAdapter.notifyDataSetChanged();
