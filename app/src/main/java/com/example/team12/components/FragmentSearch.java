@@ -275,22 +275,23 @@ public class FragmentSearch extends Fragment {
 
             Log.i("Category", category.getCategoryType() + " " + color + " " + icon);
             ChildModelClass newCategory = new ChildModelClass(icon, category, color);
-            if (category.getCategoryType().equals("Ingredient")) {
-                ingredientsArrayList.add(newCategory);
-            } else {
-                recipeArrayList.add(newCategory);
-            }
             Log.i("Category", category.getCategoryName());
             newCategory.setChildModelClassRedirect(new ChildModelClass.ChildModelClassRedirect() {
                 @Override
                 public void onClick(View view) {
                     ListVariable.currentCategory = category;
+                    FragmentCategory fragmentCategory = new FragmentCategory();
                     getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame_layout_search, new FragmentCategory())
+                            .replace(R.id.frame_layout_main, fragmentCategory)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .commit();
                 }
             });
+            if (category.getCategoryType().equals("Ingredient")) {
+                ingredientsArrayList.add(newCategory);
+            } else {
+                recipeArrayList.add(newCategory);
+            }
         }
     }
 }

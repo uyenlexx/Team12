@@ -62,14 +62,14 @@ public class FragmentCategory extends Fragment {
 //                    });
 //                    list.add(newRecipe);
                     RecipeModelClass newMeal = new RecipeModelClass(img, null, recipe.getRecipeName(), value.getCalories() + "kcal");
-                    newMeal.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_user, FragmentCategory.this);
+                    newMeal.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, FragmentCategory.this);
                     newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
                         @Override
                         public void onClick(View view) {
                             recipe.increaseViewCount();
                             ListVariable.currentRecipe = recipe;
                             getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_layout_user, newMeal.fragmentRecipeDetailed)
+                                    .replace(R.id.frame_layout_main, newMeal.fragmentRecipeDetailed)
                                     .commit();
                         }
                     });
@@ -116,11 +116,13 @@ public class FragmentCategory extends Fragment {
         favoriteToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //go back to fragment user
+                //go back to fragment search
                 FragmentSearch fragment = new FragmentSearch();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_search, fragment)
+                        .replace(R.id.frame_layout_main, fragment)
+                        .addToBackStack(null)
                         .commit();
+//                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }
