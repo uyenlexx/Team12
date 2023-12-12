@@ -61,9 +61,9 @@ public class FragmentUserProfile extends Fragment {
 //        dateOfBirth.setText(ListVariable.currentUser.getDateOfBirth());
 //        email.setText(ListVariable.currentUser.getEmail());
 //        username.setText(ListVariable.currentUser.getUsername());
-        name = view.findViewById(R.id.user_name);
-        dateOfBirth = view.findViewById(R.id.user_dob);
-        email = view.findViewById(R.id.user_email);
+        name = view.findViewById(R.id.user_name_1);
+        dateOfBirth = view.findViewById(R.id.user_dob_1);
+        email = view.findViewById(R.id.user_email_1);
         username = view.findViewById(R.id.user_username);
         editButton = view.findViewById(R.id.profile_edit_btn);
         name.setInputType(0);

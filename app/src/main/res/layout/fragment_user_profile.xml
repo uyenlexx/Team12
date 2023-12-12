@@ -32,7 +32,7 @@
             android:layout_below="@id/user_header"/>
 
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/user_name_1"
             android:layout_width="380dp"
             android:layout_height="50dp"
             android:layout_below="@id/user_username"
@@ -41,11 +41,12 @@
             android:background="@drawable/edit_text_border"
             android:padding="15dp"
             android:text="{name}" />
+
         <TextView
-            android:id="@+id/user_dob"
+            android:id="@+id/user_dob_1"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_below="@id/user_name"
+            android:layout_below="@id/user_name_1"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_border"
@@ -54,10 +55,10 @@
             android:paddingTop="20dp"
             android:text="{dob}" />
         <EditText
-            android:id="@+id/user_email"
+            android:id="@+id/user_email_1"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/user_dob"
+            android:layout_below="@+id/user_dob_1"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_border"
@@ -93,7 +94,7 @@
             android:fontFamily="@font/nunito_bold"
             android:textAllCaps="false"
             android:textSize="20dp"
-            android:layout_below="@+id/user_email"/>
+            android:layout_below="@+id/user_email_1"/>
 <!--        <androidx.appcompat.widget.AppCompatButton-->
 <!--            android:id="@+id/profile_save_btn"-->
 <!--            android:layout_width="120dp"-->
