@@ -74,7 +74,7 @@ public class FragmentLogoutTest {
     }
 
     @Test
-    public void testBmiCalculatorAfterLogin() {
+    public void testLogout() {
         // Login
         Espresso.onView(ViewMatchers.withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
         Espresso.onView(ViewMatchers.withId(R.id.password_input)).perform(ViewActions.typeText("password"));
