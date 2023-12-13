@@ -1,7 +1,5 @@
 package com.example.test;
 
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
@@ -22,12 +20,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class FragmentSearchTest {
+public class FragmentLogoutTest {
 
     private static class DelayIdlingResource implements IdlingResource {
         private volatile ResourceCallback resourceCallback;
         private long startTime;
         private long waitingTime = 10000;
+
         @Override
         public String getName() {
             return DelayIdlingResource.class.getName();
@@ -75,36 +74,26 @@ public class FragmentSearchTest {
     }
 
     @Test
-    public void testSearch() {
+    public void testBmiCalculatorAfterLogin() {
         // Login
-        Espresso.onView(withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
-        Espresso.onView(withId(R.id.password_input)).perform(ViewActions.typeText("password"));
+        Espresso.onView(ViewMatchers.withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
+        Espresso.onView(ViewMatchers.withId(R.id.password_input)).perform(ViewActions.typeText("password"));
         Espresso.closeSoftKeyboard();
-        Espresso.onView(withId(R.id.login_button)).perform(ViewActions.click());
+        Espresso.onView(ViewMatchers.withId(R.id.login_button)).perform(ViewActions.click());
         delayIdlingResource.startWaiting();
-        Espresso.onView(withId(R.id.frame_layout_main)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Espresso.onView(withId(R.id.bottom_navigation_view)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.frame_layout_main)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_navigation_view)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
 
-        // Navigate to Search
-        Espresso.onView(withId(R.id.search_tab)).perform(ViewActions.click());
-        delayIdlingResource.startWaiting();
-
-        Espresso.onView(withId(R.id.search_recycler_view)).perform(ViewActions.typeText("Bun Cha"));
-
-        // Close keyboard
-        Espresso.closeSoftKeyboard();
-
-        // Wait for animation/transition to complete
+        // Navigate to BMI Calculator
+        Espresso.onView(ViewMatchers.withId(R.id.user_tab)).perform(ViewActions.click());
         delayIdlingResource.startWaiting();
 
-        // Perform a click action
-        Espresso.onView(withId(R.id.search_recycler_view)).perform(ViewActions.click());
+        Espresso.onView(ViewMatchers.withText(R.string.logout)).perform(ViewActions.click());
 
-        // Wait for animation/transition to complete
-        delayIdlingResource.startWaiting();
-
-        // Check if the BMI result is displayed correctly
-        Espresso.onView(withId(R.id.frame_layout_main)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Espresso.onView(withId(R.id.bottom_navigation_view)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));  // Update with the expected result
+        // Check if the login screen is displayed correctly
+        Espresso.onView(ViewMatchers.withId(R.id.login_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.username_input)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.password_input)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.login_button)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 }
