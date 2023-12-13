@@ -1,13 +1,16 @@
 package com.example.test;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -22,7 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class FragmentSearchTest {
+public class FragmentRecipeDetailTest {
 
     private static class DelayIdlingResource implements IdlingResource {
         private volatile ResourceCallback resourceCallback;
@@ -77,34 +80,25 @@ public class FragmentSearchTest {
     @Test
     public void testSearch() {
         // Login
-        Espresso.onView(withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
-        Espresso.onView(withId(R.id.password_input)).perform(ViewActions.typeText("password"));
+        onView(withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
+        onView(withId(R.id.password_input)).perform(ViewActions.typeText("password"));
         Espresso.closeSoftKeyboard();
-        Espresso.onView(withId(R.id.login_button)).perform(ViewActions.click());
+        onView(withId(R.id.login_button)).perform(click());
         delayIdlingResource.startWaiting();
-        Espresso.onView(withId(R.id.frame_layout_main)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Espresso.onView(withId(R.id.bottom_navigation_view)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        onView(withId(R.id.frame_layout_main)).check(matches(isDisplayed()));
+        onView(withId(R.id.bottom_navigation_view)).check(matches(isDisplayed()));
 
-        // Navigate to Search
-        Espresso.onView(withId(R.id.search_tab)).perform(ViewActions.click());
-        delayIdlingResource.startWaiting();
+//        // Navigate to Search
+//        Espresso.onView(withId(R.id.search_tab)).perform(ViewActions.click());
+//        delayIdlingResource.startWaiting();
 
-        Espresso.onView(withId(R.id.search_input)).perform(ViewActions.typeText("Bun Cha"));
-
-        // Close keyboard
-        Espresso.closeSoftKeyboard();
+        onView(withText("Bruschetta")).perform(click());
 
         // Wait for animation/transition to complete
         delayIdlingResource.startWaiting();
 
-        // Perform a click action
-        Espresso.onView(withId(R.id.search_recycler_view)).perform(ViewActions.click());
-
-        // Wait for animation/transition to complete
-        delayIdlingResource.startWaiting();
-
-        // Check if the BMI result is displayed correctly
-        Espresso.onView(withId(R.id.frame_layout_main)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Espresso.onView(withId(R.id.bottom_navigation_view)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));  // Update with the expected result
+        // Check if the recipe detail is displayed correctly
+        onView(withId(R.id.fragment_recipe_detailed_background))
+                .check(matches(isDisplayed()));
     }
 }
