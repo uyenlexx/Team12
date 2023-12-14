@@ -97,6 +97,9 @@
 
     <string name="find">Find recipes</string>
     <string name="cancel">Cancel</string>
+    <!-- Các mục string khác có thể đã có ở đây -->
+    <string name="default_web_client_id">149607042255-50gqpall2uv6a2n62ssd3ssts4vrvbuc.apps.googleusercontent.com</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_menu">New menu</string>

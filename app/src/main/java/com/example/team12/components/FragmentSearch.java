@@ -23,6 +23,7 @@ import com.example.team12.components.menu.FragmentRecipeDetailed;
 import com.example.team12.components.menu.RecipeAdapter;
 import com.example.team12.components.menu.RecipeModelClass;
 import com.example.team12.components.search.ChildModelClass;
+import com.example.team12.components.search.FragmentCategory;
 import com.example.team12.components.search.FragmentSearchNotFound;
 import com.example.team12.components.search.IngredientListRedirectInterface;
 import com.example.team12.components.search.ParentAdapter;
@@ -30,8 +31,10 @@ import com.example.team12.components.search.ParentModelClass;
 import com.example.team12.components.search.SearchItemAdapter;
 import com.example.team12.components.search.SearchResult;
 import com.example.team12.components.search.SearchResultAdapter;
+import com.example.team12.entity.Category;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.IngredientList;
+import com.example.team12.entity.ListVariable;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +46,7 @@ import java.util.EventListener;
 import java.util.List;
 
 public class FragmentSearch extends Fragment {
+//    Integer[] drawableList = new Integer[R.drawable.img_fruits, R.drawable.img_vegetables, R.drawable.img_meat, R.drawable.img_seafood, R.drawable.img_dessert, R.drawable.img_drinks, R.drawable.img_fried, R.drawable.img_grilled, R.drawable.img_steamed];
     SearchView searchBar;
     RecyclerView recyclerView;
     ArrayList<ParentModelClass> parentModelClasses;
@@ -101,18 +105,29 @@ public class FragmentSearch extends Fragment {
         ingredientsArrayList = new ArrayList<>();
         recipeArrayList = new ArrayList<>();
         parentModelClasses = new ArrayList<>();
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red));
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
-        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));
-
+        addCategory();
+//        ChildModelClass fruits = new ChildModelClass(R.drawable.img_fruits, getText(R.string.fruits).toString(), R.color.fade_red);
+//        fruits.setChildModelClassRedirect(new ChildModelClass.ChildModelClassRedirect() {
+//            @Override
+//            public void onClick(View view) {
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.frame_layout_search, new FragmentCategory())
+//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                        .commit();
+//            }
+//        });
+//        ingredientsArrayList.add(fruits);
+//        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_vegetables, getText(R.string.vegetables).toString(), R.color.fade_green));
+//        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_meat, getText(R.string.meat).toString(), R.color.fade_yellow));
+//        ingredientsArrayList.add(new ChildModelClass(R.drawable.img_seafood, getText(R.string.seafood).toString(), R.color.fade_blue));
+//
         parentModelClasses.add(new ParentModelClass(getText(R.string.ingredients_category).toString(), ingredientsArrayList));
-
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_dessert, getText(R.string.dessert).toString(), R.color.fade_red));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_drinks, getText(R.string.drink).toString(), R.color.fade_green));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_fried, getText(R.string.fried).toString(), R.color.fade_yellow));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_grilled, getText(R.string.grilled).toString(), R.color.fade_blue));
-        recipeArrayList.add(new ChildModelClass(R.drawable.img_steamed, getText(R.string.steamed).toString(), R.color.fade_purple));
+//
+//        recipeArrayList.add(new ChildModelClass(R.drawable.img_dessert, getText(R.string.dessert).toString(), R.color.fade_red));
+//        recipeArrayList.add(new ChildModelClass(R.drawable.img_drinks, getText(R.string.drink).toString(), R.color.fade_green));
+//        recipeArrayList.add(new ChildModelClass(R.drawable.img_fried, getText(R.string.fried).toString(), R.color.fade_yellow));
+//        recipeArrayList.add(new ChildModelClass(R.drawable.img_grilled, getText(R.string.grilled).toString(), R.color.fade_blue));
+//        recipeArrayList.add(new ChildModelClass(R.drawable.img_steamed, getText(R.string.steamed).toString(), R.color.fade_purple));
 
         parentModelClasses.add(new ParentModelClass(getText(R.string.recipes_category).toString(), recipeArrayList));
 //        parentModelClasses.add(new ParentModelClass(getText(R.string.recipes_category).toString(), searchListItem));
@@ -191,13 +206,13 @@ public class FragmentSearch extends Fragment {
         for (IngredientList model: ingredientLists) {
             if (model != null && model.getName() != null) {
                 SearchResult newSearchResult = new SearchResult(model.getName(), model.getDescription(), model.getUrl());
-                newSearchResult.recipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, this);
+                newSearchResult.recipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_search, this);
 //                System.out.println("Result: " + newSearchResult.name + ": " + newSearchResult.description);
                 newSearchResult.setSearchResultRedirect(new SearchResult.SearchResultRedirect() {
                     @Override
                     public void onClick(View view) {
                         getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.frame_layout_main, model.recipeDetailed)
+                                .replace(R.id.frame_layout_search, model.recipeDetailed)
                                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .commit();
                     }
@@ -221,5 +236,62 @@ public class FragmentSearch extends Fragment {
             }
         }
         return filteredModeList;
+    }
+
+    public void addCategory() {
+        for (Category category : ListVariable.categoryList) {
+            int icon, color;
+            if (category.getCategoryName().equals("Fruits")) {
+                icon = R.drawable.img_fruits;
+                color = R.color.fade_red;
+            } else if (category.getCategoryName().equals("Vegetables")) {
+                icon = R.drawable.img_vegetables;
+                color = R.color.fade_green;
+            } else if (category.getCategoryName().equals("Meat")) {
+                icon = R.drawable.img_meat;
+                color = R.color.fade_yellow;
+            } else if (category.getCategoryName().equals("Seafood")) {
+                icon = R.drawable.img_seafood;
+                color = R.color.fade_blue;
+            } else if (category.getCategoryName().equals("Dessert")) {
+                icon = R.drawable.img_dessert;
+                color = R.color.fade_red;
+            } else if (category.getCategoryName().equals("Drink")) {
+                icon = R.drawable.img_drinks;
+                color = R.color.fade_green;
+            } else if (category.getCategoryName().equals("Fried")) {
+                icon = R.drawable.img_fried;
+                color = R.color.fade_yellow;
+            } else if (category.getCategoryName().equals("Grilled")) {
+                icon = R.drawable.img_grilled;
+                color = R.color.fade_blue;
+            } else if (category.getCategoryName().equals("Steamed")) {
+                icon = R.drawable.img_steamed;
+                color = R.color.fade_purple;
+            } else {
+                icon = R.drawable.img_steamed;
+                color = R.color.fade_purple;
+            }
+
+            Log.i("Category", category.getCategoryType() + " " + color + " " + icon);
+            ChildModelClass newCategory = new ChildModelClass(icon, category, color);
+            Log.i("Category", category.getCategoryName());
+            newCategory.setChildModelClassRedirect(new ChildModelClass.ChildModelClassRedirect() {
+                @Override
+                public void onClick(View view) {
+                    ListVariable.currentCategory = category;
+                    FragmentCategory fragmentCategory = new FragmentCategory();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout_main, fragmentCategory)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .commit();
+                }
+            });
+            if (category.getCategoryType().equals("Ingredient")) {
+                ingredientsArrayList.add(newCategory);
+            } else {
+                recipeArrayList.add(newCategory);
+            }
+        }
     }
 }

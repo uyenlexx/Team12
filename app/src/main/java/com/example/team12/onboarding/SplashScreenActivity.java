@@ -12,6 +12,7 @@ import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
 import com.example.team12.components.listener.UserLogInCallback;
 import com.example.team12.components.preference.DataLocalManager;
+import com.example.team12.entity.Category;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
@@ -36,7 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (DataLocalManager.getUserLoggedIn() == -1) {
-                    startActivity(new Intent(SplashScreenActivity.this, LoggingActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, NavigationActivity.class));
                     finish();
                 } else {
                     User.getUserByUserId(DataLocalManager.getUserLoggedIn(), new UserLogInCallback() {
@@ -73,6 +74,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Recipe.setUpFirebase();
         Ingredient.setUpFirebase();
+        Category.setUpFirebase();
         future.complete(null);
         return future;
     }

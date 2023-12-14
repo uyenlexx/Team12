@@ -37,12 +37,13 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ChildAdapter.ViewHolder holder, int position) {
         holder.icon.setImageResource(childModelClassList.get(position).icon);
-        holder.category_item.setText(childModelClassList.get(position).category_item);
+        holder.category_item.setText(childModelClassList.get(position).category.getCategoryName());
         holder.cardView.setCardBackgroundColor(context.getColor(childModelClassList.get(position).category_bg_color));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, childModelClassList.get(position).category_item, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, childModelClassList.get(position).category.getCategoryName(), Toast.LENGTH_SHORT).show();
+                childModelClassList.get(position).onClick(v);
             }
         });
     }

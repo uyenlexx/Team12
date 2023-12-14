@@ -20,6 +20,7 @@ public class ListVariable {
 
     public static Recipe currentRecipe = null;
     public static Ingredient currentIngredient = null;
+    public static Category currentCategory = null;
 
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static FirebaseStorage storage = FirebaseStorage.getInstance();

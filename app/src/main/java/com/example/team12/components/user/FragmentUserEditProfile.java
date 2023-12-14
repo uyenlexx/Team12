@@ -47,9 +47,9 @@ public class FragmentUserEditProfile extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        name = view.findViewById(R.id.user_name);
-        dob = view.findViewById(R.id.user_dob);
-        email = view.findViewById(R.id.user_email);
+        name = view.findViewById(R.id.user_name_2);
+        dob = view.findViewById(R.id.user_dob_2);
+        email = view.findViewById(R.id.user_email_2);
         username = view.findViewById(R.id.user_username);
 
         name.setText(ListVariable.currentUser.getName());

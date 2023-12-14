@@ -97,6 +97,7 @@ public class Category {
                         }
                     }
                 }
+                Log.i("Category setUpFirebase", "Total categories: " + maxCategoryId);
             }
 
             @Override

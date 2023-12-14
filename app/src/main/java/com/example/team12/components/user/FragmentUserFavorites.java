@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
 import com.example.team12.components.FragmentUser;
+import com.example.team12.components.home.ItemClass;
+import com.example.team12.components.home.ItemInterface;
 import com.example.team12.components.listener.RecipeDetailCallback;
 import com.example.team12.components.listener.RecipeFavoriteCallback;
 import com.example.team12.components.menu.FragmentRecipeDetailed;
@@ -42,19 +44,30 @@ public class FragmentUserFavorites extends Fragment {
             RecipeDetail.getRecipeDetailById(recipe.getRecipeId(), new RecipeDetailCallback() {
                 @Override
                 public void onCallback(RecipeDetail value) {
-                    RecipeModelClass newRecipe = new RecipeModelClass(img, null, recipe.getRecipeName(), value.getCalories() + "kcal");
-                    newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_user, FragmentUserFavorites.this);
-                    newRecipe.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+//                    List<ItemClass> list = new ArrayList<>();
+//                    ItemClass newRecipe = new ItemClass(img, recipe.getRecipeName());
+//                    newRecipe.ItemInterfaceClick(new ItemInterface() {
+//                        @Override
+//                        public void onClick(View view, boolean isLongPressed) {
+//                            getActivity().getSupportFragmentManager().beginTransaction()
+//                                    .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
+//                                    .commit();
+//                        }
+//                    });
+//                    list.add(newRecipe);
+                    RecipeModelClass newMeal = new RecipeModelClass(img, null, recipe.getRecipeName(), value.getCalories() + "kcal");
+                    newMeal.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_user, FragmentUserFavorites.this);
+                    newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
                         @Override
                         public void onClick(View view) {
                             recipe.increaseViewCount();
                             ListVariable.currentRecipe = recipe;
                             getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_layout_user, newRecipe.fragmentRecipeDetailed)
+                                    .replace(R.id.frame_layout_user, newMeal.fragmentRecipeDetailed)
                                     .commit();
                         }
                     });
-                    favoriteRecipesList.add(newRecipe);
+                    favoriteRecipesList.add(newMeal);
                     RecipeAdapter adapter = new RecipeAdapter(favoriteRecipesList);
                     favoriteList.setLayoutManager(new LinearLayoutManager(getContext()));
                     favoriteList.setAdapter(adapter);

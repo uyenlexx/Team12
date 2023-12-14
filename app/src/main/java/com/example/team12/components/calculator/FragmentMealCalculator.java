@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.team12.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,8 +43,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -56,7 +59,7 @@ public class FragmentMealCalculator extends Fragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String TAG = "MainActivity";
     private static final String IMG_URL = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/egg.png?alt=media&token=72163b7e-056a-40b8-909e-ea9e92248aa3";
-    private static final String API_USER_TOKEN = "4c89d7bacc291b3bf1a1535dd9461db2e464b782";
+    private static final String API_USER_TOKEN = "1376153748deb7783ae7951ae72359950d6f4d56";
     private static final String LOGMEAL_API_URL = "https://api.logmeal.es/v2";
     ImageView captureImage;
     TextView captureText;
@@ -143,10 +146,13 @@ public class FragmentMealCalculator extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                onGetFoodName();
+                try {
+                    onGetFoodName();
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 //            public void onClick(View v) {
-                resultText.setVisibility(View.VISIBLE);
-                resultCalories.setVisibility(View.VISIBLE);
+
             }
         });
     }
@@ -190,9 +196,9 @@ public class FragmentMealCalculator extends Fragment {
         }
     }
 
-    public void onGetFoodName() {
+    public void onGetFoodName() throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
+        Future<String> future = executor.submit(() -> {
             try {
                 // Step 1: Download Image
                 byte[] imgData = getImg();
@@ -202,12 +208,19 @@ public class FragmentMealCalculator extends Fragment {
                     String imageId = uploadImageForSegmentation(imgData);
 
                     // Step 3: Get Nutritional Info
-                    getNutritionalInfo(imageId);
+                    return getNutritionalInfo(imageId);
                 }
             } catch (IOException | JSONException e) {
                 Log.e("ExecutorError: ", String.valueOf(e));
             }
+
+            return null;
         });
+        String jsonData = future.get();
+        showInfo(jsonData, resultText, resultCalories);
+        resultText.setVisibility(View.VISIBLE);
+        resultCalories.setVisibility(View.VISIBLE);
+
     }
 
     private byte[] getImg() {
@@ -244,10 +257,10 @@ public class FragmentMealCalculator extends Fragment {
         }
     }
 
-    private void getNutritionalInfo(String imageId) throws IOException, JSONException {
+    private String getNutritionalInfo(String imageId) throws IOException, JSONException {
         JSONObject json = new JSONObject();
         json.put("imageId", imageId);
-
+        String jsonData = null;
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
         Request request = new Request.Builder()
@@ -258,7 +271,7 @@ public class FragmentMealCalculator extends Fragment {
 
         try (Response response = new OkHttpClient().newCall(request).execute()) {
             if (response.isSuccessful()) {
-                String jsonData = response.body().string();
+                jsonData = response.body().string();
                 JSONObject jsonObject = new JSONObject(jsonData);
                 Log.d("NutritionalInfo: ",jsonObject.toString(4)); // Indented with 4 spaces
             } else {
@@ -266,5 +279,46 @@ public class FragmentMealCalculator extends Fragment {
                 throw new IOException("Failed to get nutritional info");
             }
         }
+
+        return jsonData;
+    }
+
+    private void showInfo(String jsonData, TextView view1, TextView view2) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        JSONArray foodNameArray = null;
+        try {
+            foodNameArray = jsonObject.getJSONArray("foodName");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        String foodName = null;
+        try {
+            foodName = foodNameArray.getString(0);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        view1.setText(foodName);
+        // Get calories
+        try {
+            JSONObject nutritionalInfo = jsonObject.getJSONObject("nutritional_info");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+//        double calories = nutritionalInfo.getDouble("calories");
+        String caloriesAmount = null;
+        try {
+            caloriesAmount = jsonObject.getJSONObject("nutritional_info").getString("calories");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        caloriesAmount = caloriesAmount + " calories";
+        view2.setText(caloriesAmount);
+
     }
 }

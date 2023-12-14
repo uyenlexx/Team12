@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.team12.components.listener.RecipeCategoryCallback;
 import com.example.team12.components.listener.RecipeDetailCallback;
 import com.example.team12.components.listener.RecipeFavoriteCallback;
 import com.google.firebase.database.DataSnapshot;
@@ -183,19 +184,14 @@ public class Recipe implements Comparable<Recipe>{
         Log.i("Recipe getRecipeByViewCount", "Total recipe: " + ListVariable.recipeList.size());
     }
 
-    public static List<Recipe> getRecipeByCategory(int _categoryId) {
+    public static void getRecipeByCategory(int _categoryId, RecipeCategoryCallback callback) {
         List<Recipe> recipeList = new ArrayList<>();
-        reference.orderByChild("categoryId").equalTo(_categoryId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                    Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                    recipeList.add(recipe);
-                }
-            } else {
-                Log.e("Recipe getRecipeByCategory", task.getException().getMessage());
+        for (Recipe recipe : ListVariable.recipeList.values()) {
+            if (recipe.getCategoryId() == _categoryId) {
+                recipeList.add(recipe);
             }
-        });
-        return recipeList;
+        }
+        callback.onCallback(recipeList);
     }
 
     public static List<Recipe> getRecipeByUserId(int _userId) {

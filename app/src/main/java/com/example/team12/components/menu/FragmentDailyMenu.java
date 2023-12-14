@@ -11,12 +11,17 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team12.R;
+import com.example.team12.components.home.ItemClass;
+import com.example.team12.components.home.ItemInterface;
+import com.example.team12.entity.ListVariable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentDailyMenu extends Fragment implements RecipeAdapter.RecycleViewInterface {
     FrameLayout frameLayout;
@@ -29,7 +34,9 @@ public class FragmentDailyMenu extends Fragment implements RecipeAdapter.Recycle
     public FragmentDailyMenu(Fragment menuFragment) {
         this.menuFragment = menuFragment;
     }
-
+    private FragmentDailyMenu getThis() {
+        return this;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,25 +76,6 @@ public class FragmentDailyMenu extends Fragment implements RecipeAdapter.Recycle
                             }
                         });
                 builder.create().show();
-//                new AlertDialog.Builder(view.getContext())
-//                        .setTitle("Set the name for your new daily menu")
-//                        .setView(R.layout.new_menu_name)
-//                        .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                EditText editText = view.findViewById(R.id.new_menu_name);
-//                                System.out.println(editText.getText().toString());
-//                                sectionList.add(new SectionModelClass(new RecipeAdapter(newMenu()), "Fuck"));
-//                                sectionAdapter.notifyDataSetChanged();
-//                            }
-//                        })
-//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                dialogInterface.dismiss();
-//                            }
-//                        })
-//                        .create().show();
             }
         });
 
@@ -102,31 +90,54 @@ public class FragmentDailyMenu extends Fragment implements RecipeAdapter.Recycle
 //        sectionList.add(new SectionModelClass(new RecipeAdapter(newMenu()), "Daily Menu 1"));
 
         sectionAdapter = new SectionAdapter(sectionList);
+        sectionAdapter.setSectionAdapterTransaction(new SectionAdapter.SectionAdapterTransaction() {
+            @Override
+            public void onClick(View view, int position) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_main, new FragmentMiniSearch(menuFragment, sectionAdapter.mList.get(position).recipeList))
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(sectionAdapter);
         sectionAdapter.notifyDataSetChanged();
         return dailyMenuView;
     }
 
-    private void addRecipe(int img, String header, String recipeName, String recipeCalories, ArrayList<RecipeModelClass> recipesList) {
-        RecipeModelClass newRecipe = new RecipeModelClass(img, header, recipeName, recipeCalories);
-        newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, menuFragment);
-        newRecipe.RedirectRecipeModel(new RecipeModelRedirectInterface() {
+    private void addMeal(int img, String header, String recipeName, ArrayList<RecipeModelClass> recipesList) {
+//        List<ItemClass> list = new ArrayList<>();
+//        ItemClass newRecipe = new ItemClass(img, recipeName);
+//        newRecipe.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, FragmentDailyMenu.this);
+//        newRecipe.ItemInterfaceClick(new ItemInterface() {
+//            @Override
+//            public void onClick(View view, boolean isLongPressed) {
+//                ListVariable.currentRecipe = ListVariable.recipeList.get(recipeName);
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
+//                        .commit();
+//            }
+//        });
+//        list.add(newRecipe);
+        RecipeModelClass newMeal = new RecipeModelClass(ListVariable.recipeList.get(recipeName).getImageURL(), header, recipeName, "550kcal");
+        newMeal.fragmentRecipeDetailed = new FragmentRecipeDetailed(R.id.frame_layout_main, menuFragment);
+        newMeal.RedirectRecipeModel(new RecipeModelRedirectInterface() {
             @Override
             public void onClick(View view) {
+                ListVariable.currentRecipe = ListVariable.recipeList.get(recipeName);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_main, newRecipe.fragmentRecipeDetailed)
+                        .replace(R.id.frame_layout_main, newMeal.fragmentRecipeDetailed)
                         .commit();
             }
         });
-        recipesList.add(newRecipe);
+        recipesList.add(newMeal);
     }
 
     private ArrayList<RecipeModelClass> newMenu() {
         ArrayList<RecipeModelClass> newRecipeList = new ArrayList<>();
-        addRecipe(R.drawable.img_example_1, "Breakfast", "Recipe 1", "500kcal", newRecipeList);
-        addRecipe(R.drawable.img_example_2, "Lunch", "Recipe 2", "500kcal", newRecipeList);
-        addRecipe(R.drawable.img_example_3, "Dinner", "Recipe 3", "500kcal", newRecipeList);
+        addMeal(R.drawable.img_example_1, "Breakfast", "Bun rieu", newRecipeList);
+        addMeal(R.drawable.img_example_2, "Lunch", "Chicken soup",  newRecipeList);
+        addMeal(R.drawable.img_example_3, "Dinner", "Bruschetta", newRecipeList);
         return newRecipeList;
     }
 

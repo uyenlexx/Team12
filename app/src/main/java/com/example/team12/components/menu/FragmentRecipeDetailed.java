@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -31,6 +33,8 @@ public class FragmentRecipeDetailed extends Fragment {
     Toolbar toolbar2;
     int backFrame;
     boolean isFavorite = false;
+    ProgressBar progressBar;
+    ScrollView scrollView;
     Fragment backFragment;
     public FragmentRecipeDetailed(int backFrame, Fragment backFragment) {
         this.backFrame = backFrame;
@@ -64,7 +68,7 @@ public class FragmentRecipeDetailed extends Fragment {
 //        step = recipeDetailedView.findViewById(R.id.recipe_steps);
 //        step.setText(Html.fromHtml());
         String url = "https://firebasestorage.googleapis.com/v0/b/calo-a7a97.appspot.com/o/recipefriedegg.html?alt=media&token=16b42617-ff71-4af8-b115-38b083aa3ece";
-        webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
+        webView = recipeDetailedView.findViewById(R.id.recipe_steps);
         webView.loadUrl(url);
 //        webView = recipeDetailedView.findViewById(R.id.ingredient_steps);
 //        title = recipeDetailedView.findViewById(R.id.recipe_title);
@@ -97,6 +101,8 @@ public class FragmentRecipeDetailed extends Fragment {
         tvDetail = view.findViewById(R.id.recipe_details);
         tvIngredients = view.findViewById(R.id.recipe_ingredients);
         imgRecipe = view.findViewById(R.id.recipe_image);
+        progressBar = view.findViewById(R.id.progress_bar);
+        scrollView = view.findViewById(R.id.fragment_recipe_detailed_background);
 
 
         if (ListVariable.currentRecipe != null) {
@@ -104,6 +110,8 @@ public class FragmentRecipeDetailed extends Fragment {
             RecipeDetail.getRecipeDetailById(ListVariable.currentRecipe.getRecipeId(), new RecipeDetailCallback() {
                 @Override
                 public void onCallback(RecipeDetail value) {
+                    progressBar.setVisibility(View.GONE);
+                    scrollView.setVisibility(View.VISIBLE);
                     tvRecipeName.setText(ListVariable.currentRecipe.getRecipeName());
                     tvCaloriesValue.setText(String.valueOf(value.getCalories()));
                     tvCarbsValue.setText(String.valueOf(value.getCarbs()));

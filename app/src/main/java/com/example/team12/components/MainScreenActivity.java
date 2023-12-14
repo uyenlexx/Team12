@@ -1,10 +1,10 @@
 package com.example.team12.components;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.team12.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -61,4 +61,8 @@ public class MainScreenActivity extends AppCompatActivity {
     public void screenTransaction() {
 
     }
+    public void navigateToCalculateFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main, fragmentCalculate).commit();
+    }
+
 }

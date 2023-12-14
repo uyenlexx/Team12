@@ -23,6 +23,7 @@ import com.example.team12.MainActivity;
 import com.example.team12.R;
 import com.example.team12.components.MainScreenActivity;
 import com.example.team12.components.preference.DataLocalManager;
+import com.example.team12.entity.Category;
 import com.example.team12.entity.Ingredient;
 import com.example.team12.entity.ListVariable;
 import com.example.team12.entity.Recipe;
@@ -103,6 +104,7 @@ public class FragmentLogin extends Fragment {
                                     CompletableFuture<Void> future = new CompletableFuture<>();
                                     Recipe.setUpFirebase();
                                     Ingredient.setUpFirebase();
+                                    Category.setUpFirebase();
                                     // Sign in success, update UI with the signed-in user's information
                                     FirebaseUser user = mAuth.getCurrentUser();
 
