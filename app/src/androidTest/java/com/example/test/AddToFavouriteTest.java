@@ -11,6 +11,8 @@ import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -25,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class FragmentRecipeDetailTest {
+public class AddToFavouriteTest {
 
     private static class DelayIdlingResource implements IdlingResource {
         private volatile ResourceCallback resourceCallback;
@@ -78,7 +80,7 @@ public class FragmentRecipeDetailTest {
     }
 
     @Test
-    public void testRecipeDetail() {
+    public void addToFavouriteTest() {
         // Login
         onView(withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
         onView(withId(R.id.password_input)).perform(ViewActions.typeText("password"));
@@ -97,8 +99,18 @@ public class FragmentRecipeDetailTest {
         // Wait for animation/transition to complete
         delayIdlingResource.startWaiting();
 
+        Espresso.onView(ViewMatchers.withId(R.id.add_to_favorite_btn))
+                .perform(ViewActions.scrollTo());
+
+        onView(withId(R.id.add_to_favorite_btn)).perform(click());
+
         // Check if the recipe detail is displayed correctly
-        onView(withId(R.id.fragment_recipe_detailed_background))
-                .check(matches(isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.add_to_favorite_btn))
+                .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        Espresso.onView(ViewMatchers.withId(R.id.add_to_favorite_btn))
+                .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+                .check(ViewAssertions.matches(ViewMatchers.withText("Remove from favorite")));
+
+        onView(withId(R.id.add_to_favorite_btn)).perform(click());
     }
 }

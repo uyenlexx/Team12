@@ -78,7 +78,7 @@ public class FragmentEditProfileTest {
     }
 
     @Test
-    public void testBmiCalculatorAfterLogin() {
+    public void testEditProfile() {
         // Login
         Espresso.onView(withId(R.id.username_input)).perform(ViewActions.typeText("haha@gmail.com"));
         Espresso.onView(withId(R.id.password_input)).perform(ViewActions.typeText("password"));
